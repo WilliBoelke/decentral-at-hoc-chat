@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
 
+# file: ~/.gitignore_global
+.DS_Store
+.idea
+
 # Log file
 *.log
 
