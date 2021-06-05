@@ -39,23 +39,21 @@ public class Controller  implements PropertyChangeListener
 
           confiureSerialPort();
           configureLoraModule();
-
-          try
-          {
                logger.info("Software initialized. Listening for messages now.");
                while (true)
                {
                     System.out.printf("Write");
                     SerialOutput.getInstance().sendString("Test");
                     System.out.printf("Wait");
-                    wait(2000);
+                    try
+                    {
+                         wait(2000);
+                    }
+                    catch (IllegalMonitorStateException | InterruptedException e )
+                    {
+
+                    }
                }
-          }
-          catch (Exception e)
-          {
-               logger.info("Failed to initialize software.");
-               e.printStackTrace();
-          }
      }
 
 
