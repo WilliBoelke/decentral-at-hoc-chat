@@ -1,4 +1,4 @@
-package io;
+package htwb.ai.willi.io;
 
 import java.io.PrintWriter;
 import java.util.Random;

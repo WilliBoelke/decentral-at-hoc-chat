@@ -1,4 +1,4 @@
-package controller;
+package htwb.ai.willi.controller;
 
 /**
  * Contains all  values

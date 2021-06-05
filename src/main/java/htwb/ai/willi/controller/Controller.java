@@ -1,7 +1,7 @@
-package controller;
+package htwb.ai.willi.controller;
 
-import io.SerialInput;
-import io.SerialOutput;
+import htwb.ai.willi.io.SerialInput;
+import htwb.ai.willi.io.SerialOutput;
 import purejavacomm.CommPortIdentifier;
 import purejavacomm.NoSuchPortException;
 import purejavacomm.PortInUseException;
@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Logger;
 /**
- * The main controller of the application
+ * The main htwb.au.willi.controller of the application
  */
 public class Controller  implements PropertyChangeListener
 {
