@@ -141,7 +141,7 @@ public class Controller  implements PropertyChangeListener
           }
           else if (event.getSource() instanceof SerialInput && changedData instanceof String)
           {
-               if (((String) changedData).contains("LR."))
+               if (((String) changedData).contains("LR,"))
                {
                     LOG.info(">> received:  " + changedData);
                }
