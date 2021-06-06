@@ -30,4 +30,7 @@ public class Constants
       */
      public static final String BROADCAST_ADDRESS = "FFFF";
 
+
+     public static final String CARRIAGE_RETURN_LINE_FEED = "\r\n";
+
 }

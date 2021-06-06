@@ -58,7 +58,7 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>htwb.ai.willi.controller.App</Main-Class>
+                                        <Main-Class>htwb.ai.willi.App</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>

@@ -14,7 +14,16 @@ import java.util.logging.Logger;
  */
 public class SerialInput implements SerialPortEventListener, Runnable
 {
+     //--------------static variables--------------//
+
      public static final Logger LOG = Logger.getLogger(SerialInput.class.getName());
+
+     /**
+      * SerialInput from LoRa-Module
+      */
+     private static SerialInput eventListener;
+
+     //--------------instance variables--------------//
 
      /**
       * PropertyChangeSupport, updates with new received String
@@ -22,14 +31,12 @@ public class SerialInput implements SerialPortEventListener, Runnable
      private PropertyChangeSupport changes;
 
      /**
-      * SerialInput from LoRa-Module
-      */
-     private static SerialInput eventListener;
-
-     /**
       * Scanner for SerialInput
       */
      private Scanner inputScanner;
+
+
+     //--------------constructors and init--------------//
 
      private SerialInput()
      {
@@ -48,6 +55,10 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
           return eventListener;
      }
+
+
+     //--------------public methods--------------//
+
 
      /**
       *  Starts the SerialInput thread and

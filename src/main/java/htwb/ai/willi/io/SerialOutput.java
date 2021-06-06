@@ -1,5 +1,7 @@
 package htwb.ai.willi.io;
 
+import htwb.ai.willi.controller.Constants;
+
 import java.io.PrintWriter;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -14,7 +16,6 @@ public class SerialOutput
 
      //--------------static variable--------------//
 
-
      private static SerialOutput SerialOutput;
 
      /**
@@ -23,7 +24,7 @@ public class SerialOutput
      private static PrintWriter printWriter;
 
 
-     //--------------class variable--------------//
+     //--------------instance variable--------------//
 
      /**
       * The log tag
@@ -64,16 +65,19 @@ public class SerialOutput
      //--------------getter and setter--------------//
 
      /**
-      * Sets the PrintWriter and flush's it
+      * Sets the print writer
       *
       * @param printWriter
-      *         PrintWriter
+      *         the new PrintWriter(to the serial port)
       */
      public void setPrintWriter(PrintWriter printWriter)
      {
           this.printWriter = printWriter;
           this.printWriter.flush();
      }
+
+
+     //--------------getter and setter--------------//
 
      /**
       *
@@ -106,11 +110,14 @@ public class SerialOutput
           }
           LOG.info("sendString: " + message);
           // Writing the String with AT command and carriage return
-          printWriter.println("AT+SEND=" + messageLength +"\r\n");
+          printWriter.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
-          printWriter.println(message+ "\r\n");
+          printWriter.println(message+  Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
      }
+
+
+     //--------------public methods--------------//
 
      /**
       * Writes an AT commands /  configuration string  to the Serial port
@@ -124,7 +131,7 @@ public class SerialOutput
           LOG.info("sendConfiguration: " + config);
           try
           {
-               printWriter.println(config +"\r\n");
+               printWriter.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                Thread.sleep(2000);
           }

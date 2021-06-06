@@ -1,4 +1,6 @@
-package htwb.ai.willi.controller;
+package htwb.ai.willi;
+
+import htwb.ai.willi.controller.Controller;
 
 import java.util.logging.Logger;
 
