@@ -150,19 +150,26 @@ public class Controller  implements PropertyChangeListener
                {
                     LOG.info(">> received:  " + changedData);
 
-                    Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
-                    Matcher headerMatcher = headerPattern.matcher((String) changedData);
-                    headerMatcher.find();
-                    String header = headerMatcher.group();
+                    try
+                    {
+                         Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
+                         Matcher headerMatcher = headerPattern.matcher((String) changedData);
+                         headerMatcher.find();
+                         String header = headerMatcher.group();
 
-                    Pattern addressPattern = Pattern.compile("[0-9]{4}");
-                    Matcher  addressMatcher= addressPattern.matcher(header);
-                    addressMatcher.find();
-                    String address = addressMatcher.group();
+                         Pattern addressPattern = Pattern.compile("[0-9]{4}");
+                         Matcher addressMatcher = addressPattern.matcher(header);
+                         addressMatcher.find();
+                         String address = addressMatcher.group();
 
-                    SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
-                    RoutingTable.getInstance().addAddress(address);
-                    SerialOutput.getInstance().sendString("Known Addresses : " +RoutingTable.getInstance().gteKnowDevices().toString());
+                         SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
+                         RoutingTable.getInstance().addAddress(address);
+                         SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance().gteKnowDevices().toString());
+                    }
+                    catch (IllegalStateException e)
+                    {
+                         LOG.info("No address for " + changedData + " found");
+                    }
                }
           }
      }
