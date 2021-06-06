@@ -55,14 +55,12 @@ public class Controller  implements PropertyChangeListener
      {
 
                logger.info("Configure Device.");
-               SerialOutput.getInstance().sendConfiguration("AT");
-               SerialOutput.getInstance().sendConfiguration("AT");
                SerialOutput.getInstance().sendConfiguration("AT+RST");
                SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
-               SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
                SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
                SerialOutput.getInstance().sendConfiguration("AT+RX");
-               SerialOutput.getInstance().sendConfiguration("AT+SAVE");
+               SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
+               //SerialOutput.getInstance().sendConfiguration("AT+SAVE");
 
      }
 
@@ -71,6 +69,7 @@ public class Controller  implements PropertyChangeListener
           try
           {
                SerialPort  ser =  ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
+               logger.info("Serial name: " + ser.getName());
                SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
                SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
                new Thread(SerialInput.getInstance()).start();
