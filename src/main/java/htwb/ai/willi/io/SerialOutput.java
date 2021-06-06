@@ -104,6 +104,7 @@ public class SerialOutput
           {
                e.printStackTrace();
           }
+          LOG.info("sendString: " + message);
           // Writing the String with AT command and carriage return
           printWriter.println("AT+SEND=" + messageLength + System.lineSeparator());
           printWriter.flush();
@@ -112,7 +113,7 @@ public class SerialOutput
      }
 
      /**
-      * Writes an AT command configuration string  to the Serial port
+      * Writes an AT commands /  configuration string  to the Serial port
       * and thus to the Lora module
       *
       * @param config
