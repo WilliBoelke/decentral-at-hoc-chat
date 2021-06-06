@@ -150,7 +150,7 @@ public class Controller  implements PropertyChangeListener
                {
                     LOG.info(">> received:  " + changedData);
 
-                    Pattern headerPattern = Pattern.compile("LR\\.[0-9]{4}\\.");
+                    Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
                     Matcher headerMatcher = headerPattern.matcher((String) changedData);
                     headerMatcher.find();
                     String header = headerMatcher.group();
