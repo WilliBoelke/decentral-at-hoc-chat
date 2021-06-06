@@ -108,7 +108,6 @@ public class SerialOutput
           {
                e.printStackTrace();
           }
-          LOG.info("sendString: " + message);
           // Writing the String with AT command and carriage return
           printWriter.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();

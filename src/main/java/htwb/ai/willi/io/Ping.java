@@ -27,7 +27,7 @@ public class Ping implements Runnable
                SerialOutput.getInstance().sendString(message);
                try
                {
-                    wait(interval);
+                    Thread.sleep(interval);
                }
                catch (InterruptedException e)
                {
