@@ -149,14 +149,17 @@ public class Controller  implements PropertyChangeListener
                if (((String) changedData).contains("LR,"))
                {
                     LOG.info(">> received:  " + changedData);
-                    Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
-                    Matcher  headerMatcher = headerPattern.matcher((String) changedData);
-                    String header = headerMatcher.group(0);
-                    LOG.info("found header: " + header);
+
+                    Pattern headerPattern = Pattern.compile("LR\\.[0-9]{4}\\.");
+                    Matcher headerMatcher = headerPattern.matcher((String) changedData);
+                    headerMatcher.find();
+                    String header = headerMatcher.group();
+
                     Pattern addressPattern = Pattern.compile("[0-9]{4}");
-                    Matcher  addressMater = addressPattern.matcher(header);
-                    String address = addressMater.group(0);
-                    LOG.info("found address: " + address);
+                    Matcher  addressMatcher= addressPattern.matcher(header);
+                    addressMatcher.find();
+                    String address = addressMatcher.group();
+
                     SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
                     RoutingTable.getInstance().addAddress(address);
                     SerialOutput.getInstance().sendString("Known Addresses : " +RoutingTable.getInstance().gteKnowDevices().toString());
