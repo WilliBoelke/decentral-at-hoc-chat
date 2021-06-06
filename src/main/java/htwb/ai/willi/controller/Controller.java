@@ -2,10 +2,7 @@ package htwb.ai.willi.controller;
 
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
-import purejavacomm.CommPortIdentifier;
-import purejavacomm.NoSuchPortException;
-import purejavacomm.PortInUseException;
-import purejavacomm.SerialPort;
+import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -66,9 +63,19 @@ public class Controller  implements PropertyChangeListener
 
      private void confiureSerialPort()
      {
+
+          logger.info("Finished configuring serial port.");
+
           try
           {
                SerialPort  ser =  ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
+               ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+               ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
+
+               ser.disableReceiveTimeout();
+               ser.disableReceiveFraming();
+               ser.disableReceiveThreshold();
+
                logger.info("Serial name: " + ser.getName());
                SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
                SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
@@ -87,6 +94,10 @@ public class Controller  implements PropertyChangeListener
           catch (IOException e)
           {
                e.printStackTrace();
+          }
+          catch (UnsupportedCommOperationException unsupportedCommOperationException)
+           {
+          unsupportedCommOperationException.printStackTrace();
           }
      }
 

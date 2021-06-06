@@ -57,6 +57,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
      @Override
      public void run()
      {
+          LOG.info("run: running SerialInput ");
           while (true)
           {
                if (inputScanner.hasNext())
