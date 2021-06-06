@@ -1,5 +1,6 @@
 package htwb.ai.willi.controller;
 
+import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
@@ -42,12 +43,13 @@ public class Controller  implements PropertyChangeListener
 
           configureSerialPort();
           configureLoraModule();
+          startPing();
+     }
 
-          while (true)
-          {
-               LOG.info("start: write");
-               SerialOutput.getInstance().sendString("Test");
-          }
+     private void startPing()
+     {
+          Ping ping  = new Ping(6000, "ping");
+          new Thread(ping).start();
      }
 
 

@@ -68,13 +68,11 @@ public class SerialInput implements SerialPortEventListener, Runnable
      @Override
      public void run()
      {
-          LOG.info("run: running SerialInput ");
           while (true)
           {
                if (inputScanner.hasNext())
                {
                     String msg = inputScanner.nextLine();
-                    LOG.info("run: received message "+ msg);
                     changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
 
                }
