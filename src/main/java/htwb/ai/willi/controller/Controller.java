@@ -34,7 +34,7 @@ public class Controller  implements PropertyChangeListener
      {
           this.address = address;
 
-          confiureSerialPort();
+          configureSerialPort();
           configureLoraModule();
                logger.info("Software initialized. Listening for messages now.");
 
@@ -50,33 +50,40 @@ public class Controller  implements PropertyChangeListener
       */
      private void configureLoraModule()
      {
+          logger.info("configureLoraModule: start configuration");
+
+          logger.info("configureLoraModule: reset module");
           SerialOutput.getInstance().sendConfiguration("AT+RST");
+          logger.info("configureLoraModule: send config string");
           SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
+          logger.info("configureLoraModule: rx");
           SerialOutput.getInstance().sendConfiguration("AT+RX");
+          logger.info("configureLoraModule: send address");
           SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
-          SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
+          SerialOutput.getInstance().sendConfiguration("AT+SAVE");
+          //SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
      }
 
-     private void confiureSerialPort()
+     private void configureSerialPort()
      {
 
-          logger.info("Finished configuring serial port.");
+          logger.info("configureSerialPort: start configuration");
 
           try
           {
                SerialPort  ser =  ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
                ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
                ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
-
                ser.disableReceiveTimeout();
                ser.disableReceiveFraming();
                ser.disableReceiveThreshold();
 
-               logger.info("Serial name: " + ser.getName());
+               logger.info("configureSerialPort: serial port name: " + ser.getName());
+
+               logger.info("configureSerialPort: setup serial in- and output");
                SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
                SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
                new Thread(SerialInput.getInstance()).start();
-
                SerialInput.getInstance().registerPropertyChangeListener(this);
           }
           catch (PortInUseException e)
@@ -100,6 +107,6 @@ public class Controller  implements PropertyChangeListener
      @Override
      public void propertyChange(PropertyChangeEvent event)
      {
-          System.out.printf(event.toString());
+          System.out.printf("propertyChange: Received: " + event.getNewValue().toString());
      }
 }
