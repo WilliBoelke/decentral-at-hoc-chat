@@ -54,13 +54,13 @@ public class Controller  implements PropertyChangeListener
      private void configureLoraModule()
      {
 
-               logger.info("Configure Device.");
-               SerialOutput.getInstance().sendConfiguration("AT+RST");
-               SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
-               SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
-               SerialOutput.getInstance().sendConfiguration("AT+RX");
-               SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
-               SerialOutput.getInstance().sendConfiguration("AT+SAVE");
+          SerialOutput.getInstance().sendConfiguration("AT");
+          SerialOutput.getInstance().sendConfiguration("AT");
+          SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
+          SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
+          SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
+          SerialOutput.getInstance().sendConfiguration("AT+RX");
+          SerialOutput.getInstance().sendConfiguration("AT+SAVE");
 
      }
 

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class SerialInput implements SerialPortEventListener, Runnable
 {
-     public static final Logger logger = Logger.getLogger(SerialInput.class.getName());
+     public static final Logger LOG = Logger.getLogger(SerialInput.class.getName());
 
      /**
       * PropertyChangeSupport, updates with new received String
@@ -43,7 +43,6 @@ public class SerialInput implements SerialPortEventListener, Runnable
      {
           if (eventListener == null)
           {
-               logger.info("New Event listener gets initialized.");
                eventListener = new SerialInput();
           }
 
@@ -63,6 +62,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
                if (inputScanner.hasNext())
                {
                     String msg = inputScanner.nextLine();
+                    LOG.info("run: received message "+ msg);
                     changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
 
                }

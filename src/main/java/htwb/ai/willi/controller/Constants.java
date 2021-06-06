@@ -23,7 +23,7 @@ public class Constants
       * The Lora modules configuration command with
       * the chosen values
       */
-     public static final String CONFIG = "AT+CFG=433000000,20,9,12,4,1,0,0,0,0,3000,8,4";
+     public static final String CONFIG = "AT+CFG=4333000000,20,9,12,4,1,0,0,0,0,3000,8,4";
 
      /**
       * The broadcast Adress
