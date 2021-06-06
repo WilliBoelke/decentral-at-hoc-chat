@@ -56,7 +56,6 @@ public class Controller  implements PropertyChangeListener
 
                logger.info("Configure Device.");
                SerialOutput.getInstance().sendConfiguration("AT");
-               SerialOutput.getInstance().sendConfiguration("AT");
                SerialOutput.getInstance().sendConfiguration("AT+RST");
                SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
                SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);

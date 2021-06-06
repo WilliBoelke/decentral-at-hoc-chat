@@ -121,6 +121,7 @@ public class SerialOutput
       */
      public void sendConfiguration(String config)
      {
+          LOG.info("sendConfiguration: " + config);
           try
           {
                printWriter.println(config + System.lineSeparator());
