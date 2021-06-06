@@ -60,7 +60,7 @@ public class Controller  implements PropertyChangeListener
                SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
                SerialOutput.getInstance().sendConfiguration("AT+RX");
                SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
-               //SerialOutput.getInstance().sendConfiguration("AT+SAVE");
+               SerialOutput.getInstance().sendConfiguration("AT+SAVE");
 
      }
 

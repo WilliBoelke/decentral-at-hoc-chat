@@ -106,9 +106,9 @@ public class SerialOutput
           }
           LOG.info("sendString: " + message);
           // Writing the String with AT command and carriage return
-          printWriter.println("AT+SEND=" + messageLength + System.lineSeparator());
+          printWriter.println("AT+SEND=" + messageLength +"\r\n");
           printWriter.flush();
-          printWriter.println(message + System.lineSeparator());
+          printWriter.println(message+ "\r\n");
           printWriter.flush();
      }
 
@@ -124,7 +124,7 @@ public class SerialOutput
           LOG.info("sendConfiguration: " + config);
           try
           {
-               printWriter.println(config + System.lineSeparator());
+               printWriter.println(config +"\r\n");
                printWriter.flush();
                Thread.sleep(2000);
           }
