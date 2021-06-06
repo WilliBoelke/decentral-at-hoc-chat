@@ -4,6 +4,7 @@ import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
+import htwb.ai.willi.routing.RoutingTable;
 import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
@@ -13,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -41,10 +43,11 @@ public class Controller  implements PropertyChangeListener
      public void start(String address)
      {
           this.address = address;
-
+          LOG.info("====================================================");
           configureSerialPort();
           configureLoraModule();
           startPing();
+          LOG.info("====================================================");
      }
 
      private void startPing()
@@ -60,8 +63,9 @@ public class Controller  implements PropertyChangeListener
       */
      private void configureLoraModule()
      {
-          LOG.info("configureLoraModule: start configuration");
 
+
+          LOG.info("configureLoraModule: start configuration");
           LOG.info("configureLoraModule: reset module");
           SerialOutput.getInstance().sendConfiguration("AT+RST");
           LOG.info("configureLoraModule: send config string");
@@ -141,9 +145,21 @@ public class Controller  implements PropertyChangeListener
           }
           else if (event.getSource() instanceof SerialInput && changedData instanceof String)
           {
+               //Message from another node
                if (((String) changedData).contains("LR,"))
                {
                     LOG.info(">> received:  " + changedData);
+                    Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
+                    Matcher  headerMatcher = headerPattern.matcher((String) changedData);
+                    String header = headerMatcher.group(1);
+                    LOG.info("found header: " + header);
+                    Pattern addressPattern = Pattern.compile("[0-9]{4}");
+                    Matcher  addressMater = addressPattern.matcher(header);
+                    String address = addressMater.group(1);
+                    LOG.info("found address: " + address);
+                    SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
+                    RoutingTable.getInstance().addAddress(address);
+                    SerialOutput.getInstance().sendString("Known Addresses : " +RoutingTable.getInstance().gteKnowDevices().toString());
                }
           }
      }

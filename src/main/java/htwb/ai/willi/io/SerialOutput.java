@@ -21,7 +21,7 @@ public class SerialOutput
      /**
       * PrintWriter which has a reference to the serial output
       */
-     private static PrintWriter printWriter;
+     private static PrintWriter instance;
 
 
      //--------------instance variable--------------//
@@ -72,8 +72,8 @@ public class SerialOutput
       */
      public void setPrintWriter(PrintWriter printWriter)
      {
-          this.printWriter = printWriter;
-          this.printWriter.flush();
+          this.instance = printWriter;
+          this.instance.flush();
      }
 
 
@@ -109,10 +109,10 @@ public class SerialOutput
                e.printStackTrace();
           }
           // Writing the String with AT command and carriage return
-          printWriter.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
-          printWriter.println(message+  Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
+          instance.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+          instance.println(message+  Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
      }
 
 
@@ -130,8 +130,8 @@ public class SerialOutput
           LOG.info("sendConfiguration: " + config);
           try
           {
-               printWriter.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
-               printWriter.flush();
+               instance.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
+               instance.flush();
                Thread.sleep(2000);
           }
           catch (InterruptedException e)
@@ -145,7 +145,7 @@ public class SerialOutput
       */
      public void close()
      {
-          printWriter.close();
+          instance.close();
      }
 
 }
