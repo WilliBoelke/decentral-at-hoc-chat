@@ -81,7 +81,7 @@ public class UserInput implements Runnable
           while (inputScanner.hasNext())
           {
                String input = inputScanner.nextLine();
-               LOG.info("run: new user input: " +input);
+               changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", input));;
           }
      }
 

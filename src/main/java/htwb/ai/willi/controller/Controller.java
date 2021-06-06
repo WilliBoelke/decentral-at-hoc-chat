@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 
 
 /**
@@ -48,7 +49,7 @@ public class Controller  implements PropertyChangeListener
 
      private void startPing()
      {
-          Ping ping  = new Ping(6000, "ping");
+          Ping ping  = new Ping(10000, "ping");
           new Thread(ping).start();
      }
 
@@ -140,9 +141,9 @@ public class Controller  implements PropertyChangeListener
           }
           else if (event.getSource() instanceof SerialInput && changedData instanceof String)
           {
-               if (!((String) changedData).contains("AT"))
+               if (((String) changedData).contains("LR."))
                {
-                    LOG.info("propertyChange: received new message from other node" + changedData);
+                    LOG.info(">> received:  " + changedData);
                }
           }
      }
