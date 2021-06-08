@@ -6,6 +6,10 @@ import purejavacomm.SerialPortEventListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -25,6 +29,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
      //--------------instance variables--------------//
 
+     private final String[] systemMessages =  {"AT,OK", "AT,SENDED","AT,SENDING", "ERR:CPU_BUSY"};
      /**
       * PropertyChangeSupport, updates with new received String
       */
@@ -73,10 +78,18 @@ public class SerialInput implements SerialPortEventListener, Runnable
                if (inputScanner.hasNext())
                {
                     String msg = inputScanner.nextLine();
-                    changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
-
+                    if(! isSystemMessage(msg))
+                    {
+                         changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
+                    }
                }
           }
+     }
+
+     private boolean isSystemMessage(String message)
+     {
+          List<String> list = Arrays.asList(systemMessages);
+          return list.contains(message);
      }
 
      /**
@@ -118,4 +131,5 @@ public class SerialInput implements SerialPortEventListener, Runnable
      {
           inputScanner = scanner;
      }
+
 }

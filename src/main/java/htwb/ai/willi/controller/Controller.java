@@ -141,8 +141,10 @@ public class Controller  implements PropertyChangeListener
           if (event.getSource() instanceof UserInput && changedData instanceof String)
           {
                LOG.info("propertyChange: received user input" + changedData);
+
                SerialOutput.getInstance().sendString(changedData.toString());
           }
+
           else if (event.getSource() instanceof SerialInput && changedData instanceof String)
           {
                //Message from another node
@@ -162,9 +164,12 @@ public class Controller  implements PropertyChangeListener
                          addressMatcher.find();
                          String address = addressMatcher.group();
 
+
                          SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
-                         RoutingTable.getInstance().addAddress(address);
-                         SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance().gteKnowDevices().toString());
+                         if(  RoutingTable.getInstance().addAddress(address))
+                         {
+                              SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance().getKnownDevices().toString());
+                         }
                     }
                     catch (IllegalStateException e)
                     {

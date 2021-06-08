@@ -23,17 +23,19 @@ public class RoutingTable
      }
 
 
-     public ArrayList<String> gteKnowDevices()
+     public ArrayList<String> getKnownDevices()
      {
           return knownDevices;
      }
 
-     public void addAddress(String address)
+     public boolean addAddress(String address)
      {
           if(!knownDevices.contains(address))
           {
                knownDevices.add(address);
+               return true;
           }
+          return false;
      }
 
 }
