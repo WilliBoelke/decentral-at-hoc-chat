@@ -166,10 +166,12 @@ public class Controller  implements PropertyChangeListener
 
 
                          SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
+                         /**
                          if(  RoutingTable.getInstance().addAddress(address))
                          {
                               SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance().getKnownDevices().toString());
                          }
+                          */
                     }
                     catch (IllegalStateException e)
                     {
