@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class SendTextRequest extends Request
 {
-     private final byte type = 5;
+     private final byte type = SEND_TEXT_REQUEST;
      private byte originAddress = 13;
      private byte destinationAddress;
      private String message;
