@@ -6,8 +6,6 @@ import purejavacomm.SerialPortEventListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -29,11 +27,11 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
      //--------------instance variables--------------//
 
-     private final String[] systemMessages =  {"AT,OK", "AT,SENDED","AT,SENDING", "ERR:CPU_BUSY"};
+     private final String[] systemMessages = {"AT,OK", "AT,SENDED", "AT,SENDING", "ERR:CPU_BUSY"};
      /**
       * PropertyChangeSupport, updates with new received String
       */
-     private PropertyChangeSupport changes;
+     private final PropertyChangeSupport changes;
 
      /**
       * Scanner for SerialInput
@@ -66,9 +64,9 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
 
      /**
-      *  Starts the SerialInput thread and
-      *  reads new input from it in an asynchronous manner
-      *  notifies Listeners when a new event occurs (new input)
+      * Starts the SerialInput thread and
+      * reads new input from it in an asynchronous manner
+      * notifies Listeners when a new event occurs (new input)
       */
      @Override
      public void run()
@@ -78,7 +76,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
                if (inputScanner.hasNext())
                {
                     String msg = inputScanner.nextLine();
-                    if(! isSystemMessage(msg))
+                    if (!isSystemMessage(msg))
                     {
                          changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
                     }

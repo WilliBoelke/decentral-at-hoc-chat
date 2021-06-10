@@ -20,8 +20,8 @@ public class App
 
      public static void main(String[] args)
      {
-         String addr = "";
-          if(args.length != 1)
+          String addr = "";
+          if (args.length != 1)
           {
                System.out.println("please set an adr4ess for your node...");
                System.out.println("using 0013 now");

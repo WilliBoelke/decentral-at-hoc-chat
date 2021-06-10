@@ -3,7 +3,7 @@ package htwb.ai.willi.message;
 public class RouteError
 {
      private final byte type = 3;
-     private byte originAddress = 13;
+     private final byte originAddress = 13;
      private byte destinationCount;
      private byte unreachableDestinationAddress;
      private String message;

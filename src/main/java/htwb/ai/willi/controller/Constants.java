@@ -2,14 +2,14 @@ package htwb.ai.willi.controller;
 
 /**
  * Contains all  values
- *
  */
 public class Constants
 {
 
 
      private Constants()
-     {}
+     {
+     }
 
 
      /**

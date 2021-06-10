@@ -8,7 +8,7 @@ public class RequestEncoderAndDecoder
 
      public String encode(Request request)
      {
-        return  request.encode();
+          return request.encode();
      }
 
 

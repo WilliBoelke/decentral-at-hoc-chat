@@ -2,5 +2,5 @@ package htwb.ai.willi.message;
 
 public class SendTextRequestAck
 {
-     private byte type = 7;
+     private final byte type = 7;
 }

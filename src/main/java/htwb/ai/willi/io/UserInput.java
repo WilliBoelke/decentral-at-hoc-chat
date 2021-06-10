@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 /**
  * Reads user input asynchronous
- *
  */
 public class UserInput implements Runnable
 {
@@ -29,12 +28,12 @@ public class UserInput implements Runnable
      /**
       * scanner to scan for user input
       */
-     private Scanner inputScanner;
+     private final Scanner inputScanner;
 
      /**
       * Changes when the user send a message
       */
-     private PropertyChangeSupport changes;
+     private final PropertyChangeSupport changes;
 
 
      //--------------constructors and init--------------//
@@ -66,14 +65,13 @@ public class UserInput implements Runnable
      }
 
 
-
      //--------------public methods--------------//
 
 
      /**
-      *  Starts the UserInput thread and
-      *  reads new input from System.in in an asynchronous manner
-      *  notifies Listeners when a new event occurs (new user input)
+      * Starts the UserInput thread and
+      * reads new input from System.in in an asynchronous manner
+      * notifies Listeners when a new event occurs (new user input)
       */
      @Override
      public void run()
@@ -81,7 +79,7 @@ public class UserInput implements Runnable
           while (inputScanner.hasNext())
           {
                String input = inputScanner.nextLine();
-               changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", input));;
+               changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", input));
           }
      }
 

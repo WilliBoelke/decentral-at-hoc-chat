@@ -43,7 +43,7 @@ public class SendTextRequest extends Request
 
      public String getEncodedMessage()
      {
-        return getEncodedMessage();
+          return getEncodedMessage();
      }
 
 
@@ -56,17 +56,18 @@ public class SendTextRequest extends Request
           byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.sequenceNumber);
-          String encodedHeader = new String(byteArrayOutputStream.toByteArray());
+          String encodedHeader = byteArrayOutputStream.toString();
           String encodedMessage = new String(message.getBytes(StandardCharsets.US_ASCII));
 
-          return  encodedHeader+encodedMessage;
+          return encodedHeader + encodedMessage;
      }
 
 
      private String decode(String encoded)
      {
-          ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
-          return  new String(byteArrayInputStream.readAllBytes());
+          ByteArrayInputStream byteArrayInputStream =
+                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
+          return new String(byteArrayInputStream.readAllBytes());
      }
 
      private void setUpInstanceFromString(String encoded)
@@ -75,7 +76,8 @@ public class SendTextRequest extends Request
           this.originAddress = bytes[1];
           this.destinationAddress = bytes[2];
           this.sequenceNumber = bytes[3];
-          ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
+          ByteArrayInputStream byteArrayInputStream =
+                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
           byteArrayInputStream.skip(4);
           this.message = new String(byteArrayInputStream.readAllBytes());
 

@@ -36,7 +36,6 @@ public class SerialOutput
      public final Logger LOG = Logger.getLogger(TAG);
 
 
-
      //--------------constructors and init--------------//
 
      /**
@@ -72,15 +71,14 @@ public class SerialOutput
       */
      public void setPrintWriter(PrintWriter printWriter)
      {
-          this.instance = printWriter;
-          this.instance.flush();
+          instance = printWriter;
+          instance.flush();
      }
 
 
      //--------------getter and setter--------------//
 
      /**
-      *
       * Writes a normal String to the serial output
       *
       * @param message
@@ -99,7 +97,7 @@ public class SerialOutput
                e.printStackTrace();
           }
 
-          int messageLength= message.length();
+          int messageLength = message.length();
           try
           {
                Thread.sleep(250);
@@ -111,7 +109,7 @@ public class SerialOutput
           // Writing the String with AT command and carriage return
           instance.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
           instance.flush();
-          instance.println(message+  Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.println(message + Constants.CARRIAGE_RETURN_LINE_FEED);
           instance.flush();
      }
 
@@ -123,7 +121,7 @@ public class SerialOutput
       * and thus to the Lora module
       *
       * @param config
-      * the configuration Strinf
+      *         the configuration Strinf
       */
      public void sendConfiguration(String config)
      {

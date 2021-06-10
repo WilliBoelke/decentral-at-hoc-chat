@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteRequest extends Request
 {
-     private final byte type  = ROUTE_REQUEST;;
+     private final byte type = ROUTE_REQUEST;
      private byte originAddress = 13;
      private byte hopCount;
      private byte destinationAddress;
@@ -15,7 +15,8 @@ public class RouteRequest extends Request
      private byte uFlag;
 
 
-     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber, byte destinationSequenceNumber)
+     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber,
+                         byte destinationSequenceNumber)
      {
 
      }
@@ -34,8 +35,9 @@ public class RouteRequest extends Request
 
      private String decode(String encoded)
      {
-          ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
-          return  new String(byteArrayInputStream.readAllBytes());
+          ByteArrayInputStream byteArrayInputStream =
+                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
+          return new String(byteArrayInputStream.readAllBytes());
      }
 
      private void setUpInstanceFromString(String encoded)
@@ -44,10 +46,9 @@ public class RouteRequest extends Request
           this.uFlag = bytes[1];
           this.hopCount = bytes[2];
           this.originAddress = bytes[3];
-          this.originAddress = bytes[4];
-          this.originSequenceNumber = bytes[5];
-          this.destinationAddress = bytes[6];
-          this.destinationSequenceNumber = bytes[7];
+          this.originSequenceNumber = bytes[4];
+          this.destinationAddress = bytes[5];
+          this.destinationSequenceNumber = bytes[6];
      }
 
      @Override
@@ -63,6 +64,6 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.originSequenceNumber);
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.destinationSequenceNumber);
-          return  new String(byteArrayOutputStream.toByteArray());
+          return byteArrayOutputStream.toString();
      }
 }

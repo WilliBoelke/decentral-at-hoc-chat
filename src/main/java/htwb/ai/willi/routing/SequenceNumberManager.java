@@ -1,7 +1,5 @@
 package htwb.ai.willi.routing;
 
-import htwb.ai.willi.io.UserInput;
-
 public class SequenceNumberManager
 {
 
@@ -30,7 +28,7 @@ public class SequenceNumberManager
 
      public static SequenceNumberManager getInstance()
      {
-          if(instance == null)
+          if (instance == null)
           {
                instance = new SequenceNumberManager();
           }

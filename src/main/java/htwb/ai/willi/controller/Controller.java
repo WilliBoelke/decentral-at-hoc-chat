@@ -4,7 +4,6 @@ import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
-import htwb.ai.willi.routing.RoutingTable;
 import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
  * Is the central point for incoming data
  * redirects incoming data
  */
-public class Controller  implements PropertyChangeListener
+public class Controller implements PropertyChangeListener
 {
      public static final Logger LOG = Logger.getLogger(Controller.class.getName());
 
@@ -52,7 +51,7 @@ public class Controller  implements PropertyChangeListener
 
      private void startPing()
      {
-          Ping ping  = new Ping(240000, "ping");
+          Ping ping = new Ping(240000, "ping");
           new Thread(ping).start();
      }
 
@@ -165,12 +164,14 @@ public class Controller  implements PropertyChangeListener
                          String address = addressMatcher.group();
 
 
-                         SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message from you");
+                         SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message " +
+                                 "from you");
                          /**
-                         if(  RoutingTable.getInstance().addAddress(address))
-                         {
-                              SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance().getKnownDevices().toString());
-                         }
+                          if(  RoutingTable.getInstance().addAddress(address))
+                          {
+                          SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance()
+                          .getKnownDevices().toString());
+                          }
                           */
                     }
                     catch (IllegalStateException e)
