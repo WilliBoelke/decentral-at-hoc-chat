@@ -52,16 +52,20 @@ public class UserCommandProcessor
           String destinationAddress = "";
           String message = "";
 
-          while (!isValidAddress(destinationAddress))
+          do
           {
                System.out.println("Enter the Destination Address ");
                destinationAddress = scanner.nextLine();
           }
-          while (!isValidAddress(destinationAddress))
+          while ( (!isValidAddress(destinationAddress)));
+
+          do
           {
                System.out.println("Enter a message: ");
                message = scanner.nextLine();
           }
+          while (!isValidAddress(destinationAddress));
+
 
           return new SendTextRequest(Byte.parseByte(destinationAddress),
                   SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement(), message);
