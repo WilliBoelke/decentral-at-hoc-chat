@@ -19,17 +19,17 @@ public class RequestEncoderAndDecoder
                case Request.ROUTE_REQUEST:
                     return RouteRequest.getInstanceFromEncodedString(request);
                case Request.ROUTE_REPLY:
-                    return null;
+                    return RouteReply.getInstanceFromEncodedString(request);
                case Request.ROUTE_ERROR:
-                    return null;
+                    return RouteError.getInstanceFromEncodedString(request);
                case Request.ROUTE_ACK:
-                    return null;
+                    return RouteAck.getInstanceFromEncodedString(request);
                case Request.SEND_TEXT_REQUEST:
                     return SendTextRequest.getInstanceFromEncodedString(request);
                case Request.HOP_ACK:
-                    return null;
+                    return HopAck.getInstanceFromEncodedString(request);
                case Request.SEND_TEXT_REQUEST_ACK:
-                    return null;
+                    return SendTextRequestAck.getInstanceFromEncodedString(request);
           }
           return null;
      }

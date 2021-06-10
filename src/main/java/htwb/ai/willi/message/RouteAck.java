@@ -20,6 +20,11 @@ public class RouteAck extends Request
           this.setUpInstanceFromString(encoded);
      }
 
+     public static RouteReply getInstanceFromEncodedString(String encoded)
+     {
+          return new RouteReply(encoded);
+     }
+
 
      private String decode(String encoded)
      {
