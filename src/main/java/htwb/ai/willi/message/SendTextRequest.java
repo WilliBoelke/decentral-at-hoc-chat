@@ -5,7 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-public class SendTextRequest
+public class SendTextRequest extends Request
 {
      private final byte type = 5;
      private byte originAddress = 13;
@@ -26,6 +26,10 @@ public class SendTextRequest
           this.setUpInstanceFromString(encodedMessage);
      }
 
+     public static SendTextRequest getInstanceFromEncodedString(String encoded)
+     {
+          return new SendTextRequest(encoded);
+     }
 
      private byte getDestinationAddress()
      {
@@ -43,7 +47,7 @@ public class SendTextRequest
      }
 
 
-     private String encode()
+     public String encode()
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
