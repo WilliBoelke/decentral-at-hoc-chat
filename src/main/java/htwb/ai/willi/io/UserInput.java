@@ -1,5 +1,8 @@
 package htwb.ai.willi.io;
 
+import htwb.ai.willi.dataProcessor.UserCommandProcessor;
+import htwb.ai.willi.message.SendTextRequest;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -79,6 +82,11 @@ public class UserInput implements Runnable
           while (inputScanner.hasNext())
           {
                String input = inputScanner.nextLine();
+               if(input.equals("msg"))
+               {
+                   SendTextRequest request = UserCommandProcessor.getInstance().createSendTextRequest();
+                    changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", request));
+               }
                changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", input));
           }
      }

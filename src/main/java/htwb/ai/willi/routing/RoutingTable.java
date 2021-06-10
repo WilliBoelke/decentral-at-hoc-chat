@@ -32,6 +32,17 @@ public class RoutingTable
 
      }
 
+
+     @Override
+     public String toString()
+     {
+          String table = "| destination       | hops     | next hop   |  destination sequence      | \n" +
+                                   "|-----------------|---------|------------|----------------------------| \n" ;
+
+
+          return table;
+     }
+
      /**
       * The Route class
       * <p>

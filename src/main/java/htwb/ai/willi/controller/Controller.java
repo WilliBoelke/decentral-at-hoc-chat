@@ -1,9 +1,11 @@
 package htwb.ai.willi.controller;
 
+import htwb.ai.willi.dataProcessor.UserCommandProcessor;
 import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
+import htwb.ai.willi.message.SendTextRequest;
 import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
@@ -137,11 +139,17 @@ public class Controller implements PropertyChangeListener
           Object changedData = event.getNewValue();
 
           // if User Input
-          if (event.getSource() instanceof UserInput && changedData instanceof String)
+          if (event.getSource() instanceof UserInput )
           {
-               LOG.info("propertyChange: received user input" + changedData);
-
-               SerialOutput.getInstance().sendString(changedData.toString());
+               if(changedData instanceof String)
+               {
+                    LOG.info("propertyChange: received user command" + changedData);
+                    UserCommandProcessor.getInstance().processData((String) changedData);
+               }
+               if(changedData instanceof SendTextRequest)
+               {
+                    LOG.info("propertyChange: received new SendTextRequest from user " );
+               }
           }
 
           else if (event.getSource() instanceof SerialInput && changedData instanceof String)

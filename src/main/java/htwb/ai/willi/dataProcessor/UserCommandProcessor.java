@@ -1,7 +1,9 @@
 package htwb.ai.willi.dataProcessor;
 
 import htwb.ai.willi.message.SendTextRequest;
+import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
+import jdk.dynalink.beans.StaticClass;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -17,17 +19,34 @@ import java.util.Scanner;
 public class UserCommandProcessor
 {
 
+     private static UserCommandProcessor instance;
+
+     private UserCommandProcessor()
+     {
+
+     }
+
+     public static UserCommandProcessor getInstance()
+     {
+          if(instance == null)
+          {
+               instance = new UserCommandProcessor();
+          }
+          return instance;
+     }
+
+
      public void processData(String data)
      {
           switch (data)
           {
-               case "msg":
-                    createSendTextRequest();
+               case"tab":
+                    System.out.println(RoutingTable.getInstance().toString());
           }
      }
 
 
-     private SendTextRequest createSendTextRequest()
+     public SendTextRequest createSendTextRequest()
      {
           Scanner scanner = new Scanner(System.in);
           String destinationAddress = "";
