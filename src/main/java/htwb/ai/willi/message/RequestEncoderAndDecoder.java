@@ -1,7 +1,5 @@
 package htwb.ai.willi.message;
 
-import htwb.ai.willi.io.SerialOutput;
-
 import java.nio.charset.StandardCharsets;
 
 public class RequestEncoderAndDecoder

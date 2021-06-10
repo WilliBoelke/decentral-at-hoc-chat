@@ -3,7 +3,6 @@ package htwb.ai.willi.message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class SendTextRequest extends Request
@@ -74,7 +73,46 @@ public class SendTextRequest extends Request
           byteArrayInputStream.skip(4);
 
           this.message = new String(byteArrayInputStream.readAllBytes());
+     }
 
 
+     public byte getType()
+     {
+          return type;
+     }
+
+     public byte getOriginAddress()
+     {
+          return originAddress;
+     }
+
+     public void setOriginAddress(byte originAddress)
+     {
+          this.originAddress = originAddress;
+     }
+
+     public void setDestinationAddress(byte destinationAddress)
+     {
+          this.destinationAddress = destinationAddress;
+     }
+
+     public String getMessage()
+     {
+          return message;
+     }
+
+     public void setMessage(String message)
+     {
+          this.message = message;
+     }
+
+     public byte getSequenceNumber()
+     {
+          return sequenceNumber;
+     }
+
+     public void setSequenceNumber(byte sequenceNumber)
+     {
+          this.sequenceNumber = sequenceNumber;
      }
 }

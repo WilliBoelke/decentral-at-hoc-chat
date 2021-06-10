@@ -1,6 +1,5 @@
 package htwb.ai.willi.message;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -40,5 +39,20 @@ public class RouteAck extends Request
           //destination address
           byteArrayOutputStream.write(this.destinationAddress);
           return byteArrayOutputStream.toString();
+     }
+
+     public byte getType()
+     {
+          return type;
+     }
+
+     public byte getDestinationAddress()
+     {
+          return destinationAddress;
+     }
+
+     public void setDestinationAddress(byte destinationAddress)
+     {
+          this.destinationAddress = destinationAddress;
      }
 }

@@ -1,6 +1,5 @@
 package htwb.ai.willi.message;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -58,5 +57,58 @@ public class RouteError extends Request
           return byteArrayOutputStream.toString();
      }
 
+     public byte getType()
+     {
+          return type;
+     }
 
+     public byte getOriginAddress()
+     {
+          return originAddress;
+     }
+
+     public void setOriginAddress(byte originAddress)
+     {
+          this.originAddress = originAddress;
+     }
+
+     public byte getDestinationCount()
+     {
+          return destinationCount;
+     }
+
+     public void setDestinationCount(byte destinationCount)
+     {
+          this.destinationCount = destinationCount;
+     }
+
+     public byte getUnreachableDestinationAddress()
+     {
+          return unreachableDestinationAddress;
+     }
+
+     public void setUnreachableDestinationAddress(byte unreachableDestinationAddress)
+     {
+          this.unreachableDestinationAddress = unreachableDestinationAddress;
+     }
+
+     public byte getUnreachableDestinationSequenceNumber()
+     {
+          return unreachableDestinationSequenceNumber;
+     }
+
+     public void setUnreachableDestinationSequenceNumber(byte unreachableDestinationSequenceNumber)
+     {
+          this.unreachableDestinationSequenceNumber = unreachableDestinationSequenceNumber;
+     }
+
+     public byte getOriginSequenceNumber()
+     {
+          return originSequenceNumber;
+     }
+
+     public void setOriginSequenceNumber(byte originSequenceNumber)
+     {
+          this.originSequenceNumber = originSequenceNumber;
+     }
 }

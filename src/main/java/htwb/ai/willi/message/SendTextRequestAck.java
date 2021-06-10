@@ -1,8 +1,5 @@
 package htwb.ai.willi.message;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-
 public class SendTextRequestAck extends Request
 {
      private final byte type = SEND_TEXT_REQUEST_ACK;
@@ -24,7 +21,6 @@ public class SendTextRequestAck extends Request
      }
 
 
-
      private void setUpInstanceFromString(String encoded)
      {
      }
@@ -33,5 +29,10 @@ public class SendTextRequestAck extends Request
      public String encode()
      {
           return null;
+     }
+
+     public byte getType()
+     {
+          return type;
      }
 }

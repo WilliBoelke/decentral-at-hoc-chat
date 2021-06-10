@@ -43,6 +43,13 @@ public class SequenceNumberManager
           return currentSequenceNumber;
      }
 
+     public byte getCurrentSequenceNumberAndIncrement()
+     {
+          byte seqNum = currentSequenceNumber;
+          currentSequenceNumber++;
+          return seqNum;
+     }
+
      public void increaseSequenceNumber()
      {
           currentSequenceNumber++;
