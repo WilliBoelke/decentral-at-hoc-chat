@@ -3,6 +3,7 @@ package htwb.ai.willi.message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class SendTextRequest extends Request
@@ -62,14 +63,6 @@ public class SendTextRequest extends Request
           return encodedHeader + encodedMessage;
      }
 
-
-     private String decode(String encoded)
-     {
-          ByteArrayInputStream byteArrayInputStream =
-                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
-          return new String(byteArrayInputStream.readAllBytes());
-     }
-
      private void setUpInstanceFromString(String encoded)
      {
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
@@ -79,7 +72,9 @@ public class SendTextRequest extends Request
           ByteArrayInputStream byteArrayInputStream =
                   new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
           byteArrayInputStream.skip(4);
+
           this.message = new String(byteArrayInputStream.readAllBytes());
+
 
      }
 }

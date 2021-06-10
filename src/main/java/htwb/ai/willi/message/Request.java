@@ -1,5 +1,8 @@
 package htwb.ai.willi.message;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+
 public abstract class Request
 {
      public static final byte ROUTE_REQUEST = 1;
@@ -18,6 +21,13 @@ public abstract class Request
      }
 
      public abstract String encode();
+
+     private String decode(String encoded)
+     {
+          ByteArrayInputStream byteArrayInputStream =
+                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
+          return new String(byteArrayInputStream.readAllBytes());
+     }
 
 
 }

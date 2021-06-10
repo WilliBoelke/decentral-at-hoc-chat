@@ -1,5 +1,7 @@
 package htwb.ai.willi.message;
 
+import htwb.ai.willi.io.SerialOutput;
+
 import java.nio.charset.StandardCharsets;
 
 public class RequestEncoderAndDecoder
@@ -25,6 +27,7 @@ public class RequestEncoderAndDecoder
                case Request.ROUTE_ACK:
                     return RouteAck.getInstanceFromEncodedString(request);
                case Request.SEND_TEXT_REQUEST:
+                    System.out.println("Text");
                     return SendTextRequest.getInstanceFromEncodedString(request);
                case Request.HOP_ACK:
                     return HopAck.getInstanceFromEncodedString(request);

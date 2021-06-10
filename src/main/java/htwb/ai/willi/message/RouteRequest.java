@@ -33,12 +33,6 @@ public class RouteRequest extends Request
      }
 
 
-     private String decode(String encoded)
-     {
-          ByteArrayInputStream byteArrayInputStream =
-                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
-          return new String(byteArrayInputStream.readAllBytes());
-     }
 
      private void setUpInstanceFromString(String encoded)
      {
