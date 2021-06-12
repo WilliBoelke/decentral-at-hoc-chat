@@ -6,6 +6,7 @@ import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
 import htwb.ai.willi.message.SendTextRequest;
+import htwb.ai.willi.routingManager.SendTextRequestManager;
 import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
@@ -148,7 +149,8 @@ public class Controller implements PropertyChangeListener
                }
                if(changedData instanceof SendTextRequest)
                {
-                    LOG.info("propertyChange: received new SendTextRequest from user " );
+                    SendTextRequestManager sendTextRequestManager = new SendTextRequestManager();
+                    sendTextRequestManager.processRequest((SendTextRequest) changedData);
                }
           }
 

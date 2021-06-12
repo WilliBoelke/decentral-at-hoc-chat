@@ -1,5 +1,7 @@
 package htwb.ai.willi.routing;
 
+import htwb.ai.willi.message.Request;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -41,6 +43,19 @@ public class RoutingTable
 
 
           return table;
+     }
+
+     public boolean hasFittingRoute(Request request)
+     {
+          byte destination = request.getDestinationAddress();
+          for (Route r: routes)
+          {
+               if(r.getDestinationAddress() == destination)
+               {
+                    return true;
+               }
+          }
+          return false;
      }
 
      /**
