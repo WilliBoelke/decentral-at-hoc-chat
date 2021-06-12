@@ -35,4 +35,16 @@ public class SendTextRequestAck extends Request
      {
           return type;
      }
+
+     @Override
+     public byte getDestinationAddress()
+     {
+          return 13;
+     }
+
+     @Override
+     public byte getOriginAddress()
+     {
+          return -1;
+     }
 }

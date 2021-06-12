@@ -31,10 +31,6 @@ public class SendTextRequest extends Request
           return new SendTextRequest(encoded);
      }
 
-     private byte getDestinationAddress()
-     {
-          return this.destinationAddress;
-     }
 
      public String getReadableMessage()
      {
@@ -79,6 +75,12 @@ public class SendTextRequest extends Request
      public byte getType()
      {
           return type;
+     }
+
+     @Override
+     public byte getDestinationAddress()
+     {
+          return destinationAddress;
      }
 
      public byte getOriginAddress()

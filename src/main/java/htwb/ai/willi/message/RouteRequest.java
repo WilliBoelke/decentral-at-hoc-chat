@@ -60,4 +60,16 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.destinationSequenceNumber);
           return byteArrayOutputStream.toString();
      }
+
+     @Override
+     public byte getDestinationAddress()
+     {
+          return destinationAddress;
+     }
+
+     @Override
+     public byte getOriginAddress()
+     {
+          return originAddress;
+     }
 }

@@ -34,4 +34,16 @@ public class HopAck extends Request
           return null;
      }
 
+
+     @Override
+     public byte getDestinationAddress()
+     {
+          return 13;
+     }
+
+     @Override
+     public byte getOriginAddress()
+     {
+          return -1;
+     }
 }

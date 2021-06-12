@@ -51,6 +51,12 @@ public class RouteAck extends Request
           return destinationAddress;
      }
 
+     @Override
+     public byte getOriginAddress()
+     {
+          return -1;
+     }
+
      public void setDestinationAddress(byte destinationAddress)
      {
           this.destinationAddress = destinationAddress;

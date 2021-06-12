@@ -62,6 +62,12 @@ public class RouteError extends Request
           return type;
      }
 
+     @Override
+     public byte getDestinationAddress()
+     {
+          return -1;
+     }
+
      public byte getOriginAddress()
      {
           return originAddress;

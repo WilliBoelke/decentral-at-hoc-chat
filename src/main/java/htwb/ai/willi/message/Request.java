@@ -3,7 +3,7 @@ package htwb.ai.willi.message;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 
-public abstract class Request
+public abstract class Request implements Routable
 {
      public static final byte ROUTE_REQUEST = 1;
      public static final byte ROUTE_REPLY = 2;
@@ -13,7 +13,9 @@ public abstract class Request
      public static final byte HOP_ACK = 6;
      public static final byte SEND_TEXT_REQUEST_ACK = 7;
 
+     private byte originAddress;
 
+     private byte destinationAddress;
 
      public abstract String encode();
 
@@ -23,6 +25,7 @@ public abstract class Request
                   new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
           return new String(byteArrayInputStream.readAllBytes());
      }
+
 
 }
 
