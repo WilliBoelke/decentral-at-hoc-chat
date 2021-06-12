@@ -1,17 +1,24 @@
 package htwb.ai.willi.routingManager;
 
+import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RequestEncoderAndDecoder;
 import htwb.ai.willi.routing.RoutingTable;
 
+import java.util.logging.Logger;
+
 public class SendTextRequestManager extends Manager
 {
+     public static final Logger LOG = Logger.getLogger(SendTextRequestManager.class.getName());
+
      @Override
      public void processRequest(Request request)
      {
+          LOG.info("process request");
           if(isRequestFromMe(request))
           {
+               LOG.info("sending request");
                sendRequest(request);
           }
           else if(isRequestForMe(request))

@@ -55,7 +55,7 @@ public class RoutingTable
                     return true;
                }
           }
-          return false;
+          return true;
      }
 
      /**
