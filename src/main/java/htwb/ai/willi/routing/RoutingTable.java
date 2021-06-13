@@ -4,6 +4,9 @@ import htwb.ai.willi.message.Request;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class RoutingTable
 {
@@ -29,9 +32,31 @@ public class RoutingTable
           return instance;
      }
 
-     public void addRoute(Route route)
+     public void addRoute(Request request)
      {
 
+     }
+
+     /**
+      * Returns the next hop / next nodes Address on the shortest (Hop Count)
+      * route to destination address
+      *
+      * @param destinationAddress
+      * @return
+      */
+     public byte getNextInRouteTo(byte destinationAddress)
+     {
+          Optional<Route> routeOptional = routes.stream()
+                  .filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList())
+                  .stream().min(Comparator.comparing(Route::getHops));
+
+          Route route;
+          if(routeOptional.isPresent())
+          {
+               route = routeOptional.get();
+               return route.getNextInRoute();
+          }
+          return -1;
      }
 
 
@@ -56,6 +81,10 @@ public class RoutingTable
                }
           }
           return true;
+     }
+
+     public void removeRoute(byte destinationAddress)
+     {
      }
 
      /**
@@ -83,6 +112,11 @@ public class RoutingTable
            * address of the destination node
            */
           private byte destinationAddress;
+
+          /**
+           * The last known destination sequence number
+           */
+          private byte destinationSequenceNumber;
 
           /**
            * The address of the next node

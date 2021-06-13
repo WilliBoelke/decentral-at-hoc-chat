@@ -5,14 +5,13 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteAck extends Request
 {
-     private final byte type = ROUTE_ACK;
+
      private byte destinationAddress;
 
 
      public RouteAck()
      {
      }
-
 
      public RouteAck(String encoded)
      {
@@ -28,6 +27,7 @@ public class RouteAck extends Request
      {
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.destinationAddress = bytes[2];
+          this.setType(ROUTE_ACK);
      }
 
      @Override
@@ -35,16 +35,12 @@ public class RouteAck extends Request
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
-          byteArrayOutputStream.write(this.type);
+          byteArrayOutputStream.write(this.getType());
           //destination address
           byteArrayOutputStream.write(this.destinationAddress);
           return byteArrayOutputStream.toString();
      }
 
-     public byte getType()
-     {
-          return type;
-     }
 
      public byte getDestinationAddress()
      {

@@ -6,15 +6,17 @@ import java.nio.charset.StandardCharsets;
 public class HopAck extends Request
 {
 
-     private final byte type = HOP_ACK;
 
      public HopAck()
      {
+          this.setType(HOP_ACK);
      }
 
 
      public HopAck(String encoded)
      {
+          this.setType(HOP_ACK);
+
           this.setUpInstanceFromString(encoded);
      }
 
@@ -38,7 +40,7 @@ public class HopAck extends Request
      @Override
      public byte getDestinationAddress()
      {
-          return 13;
+          return -1;
      }
 
      @Override

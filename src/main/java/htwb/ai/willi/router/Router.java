@@ -1,11 +1,18 @@
-package htwb.ai.willi.routingManager;
+package htwb.ai.willi.router;
 
 import htwb.ai.willi.message.Request;
 
-public abstract class Manager
+
+/**
+ * A router instance takes a incoming or outgoing request
+ * and decides what to do next wih it based on its parameters
+ *
+ */
+public abstract class Router
 {
 
-     public abstract void processRequest(Request request);
+
+     public abstract void route(Request request);
 
      public abstract void requestFromMe(Request request);
      public abstract void requestToForward(Request request);

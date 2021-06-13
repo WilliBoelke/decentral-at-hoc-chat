@@ -1,24 +1,25 @@
 package htwb.ai.willi.message;
 
-import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-public class RouteRequest extends Request
+public class  RouteRequest extends Request
 {
-     private final byte type = ROUTE_REQUEST;
      private byte originAddress = 13;
      private byte hopCount;
      private byte destinationAddress;
      private byte originSequenceNumber;
      private byte destinationSequenceNumber;
      private byte uFlag;
+     private SendTextRequest sendTextRequest;
 
-
-     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber,
-                         byte destinationSequenceNumber)
+     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber)
      {
-
+          this.hopCount = hopCount;
+          this.destinationAddress = destinationAddress;
+          this.originSequenceNumber = originSequenceNumber;
+          this.destinationSequenceNumber = destinationSequenceNumber;
      }
 
 
@@ -36,6 +37,7 @@ public class RouteRequest extends Request
 
      private void setUpInstanceFromString(String encoded)
      {
+          this.setType(ROUTE_REQUEST);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.uFlag = bytes[1];
           this.hopCount = bytes[2];
@@ -50,7 +52,7 @@ public class RouteRequest extends Request
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
-          byteArrayOutputStream.write(this.type);
+          byteArrayOutputStream.write(this.getType());
           //origin address
           byteArrayOutputStream.write(this.uFlag);
           byteArrayOutputStream.write(this.hopCount);
@@ -71,5 +73,15 @@ public class RouteRequest extends Request
      public byte getOriginAddress()
      {
           return originAddress;
+     }
+
+     public SendTextRequest getSendTextRequest()
+     {
+          return sendTextRequest;
+     }
+
+     public void setSendTextRequest(SendTextRequest sendTextRequest)
+     {
+          this.sendTextRequest = sendTextRequest;
      }
 }

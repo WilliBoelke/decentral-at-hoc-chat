@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 
 public class SendTextRequest extends Request
 {
-     private final byte type = SEND_TEXT_REQUEST;
      private byte originAddress = 13;
      private byte destinationAddress;
      private String message;
@@ -16,6 +15,7 @@ public class SendTextRequest extends Request
 
      public SendTextRequest(byte destinationAddress, byte sequenceNumber, String message)
      {
+          this.setType(SEND_TEXT_REQUEST);
           this.sequenceNumber = sequenceNumber;
           this.destinationAddress = destinationAddress;
           this.message = message;
@@ -23,6 +23,7 @@ public class SendTextRequest extends Request
 
      public SendTextRequest(String encodedMessage)
      {
+          this.setType(SEND_TEXT_REQUEST);
           this.setUpInstanceFromString(encodedMessage);
      }
 
@@ -34,7 +35,7 @@ public class SendTextRequest extends Request
 
      public String getReadableMessage()
      {
-          return originAddress + " >> " + message;
+          return ">>" + originAddress + "  said >> " + message;
      }
 
      public String getEncodedMessage()
@@ -47,7 +48,7 @@ public class SendTextRequest extends Request
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
-          byteArrayOutputStream.write(this.type);
+          byteArrayOutputStream.write(this.getType());
           //origin address
           byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
@@ -69,12 +70,6 @@ public class SendTextRequest extends Request
           byteArrayInputStream.skip(4);
 
           this.message = new String(byteArrayInputStream.readAllBytes());
-     }
-
-
-     public byte getType()
-     {
-          return type;
      }
 
      @Override

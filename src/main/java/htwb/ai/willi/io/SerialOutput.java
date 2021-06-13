@@ -1,6 +1,7 @@
 package htwb.ai.willi.io;
 
 import htwb.ai.willi.controller.Constants;
+import htwb.ai.willi.message.Request;
 
 import java.io.PrintWriter;
 import java.util.Random;
@@ -146,4 +147,27 @@ public class SerialOutput
           instance.close();
      }
 
+     public void sendRequest(Request request)
+     {
+          String encodedRequest = request.encode();
+
+          instance.println("AT+DEST=" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+          instance.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+          instance.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+     }
+
+     public void broadcast(Request request)
+     {
+          String encodedRequest = request.encode();
+
+          instance.println("AT+DEST=" + Constants.BROADCAST_ADDRESS+ Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+          instance.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+          instance.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.flush();
+     }
 }

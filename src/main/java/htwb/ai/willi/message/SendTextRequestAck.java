@@ -2,16 +2,17 @@ package htwb.ai.willi.message;
 
 public class SendTextRequestAck extends Request
 {
-     private final byte type = SEND_TEXT_REQUEST_ACK;
 
 
      public SendTextRequestAck()
      {
+          this.setType(SEND_TEXT_REQUEST_ACK);
      }
 
 
      public SendTextRequestAck(String encoded)
      {
+          this.setType(SEND_TEXT_REQUEST_ACK);
           this.setUpInstanceFromString(encoded);
      }
 
@@ -31,15 +32,11 @@ public class SendTextRequestAck extends Request
           return null;
      }
 
-     public byte getType()
-     {
-          return type;
-     }
 
      @Override
      public byte getDestinationAddress()
      {
-          return 13;
+          return -1;
      }
 
      @Override

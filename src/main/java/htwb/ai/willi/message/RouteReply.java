@@ -5,8 +5,6 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteReply extends Request
 {
-
-     private final byte type = ROUTE_REPLY;
      private byte originAddress = 13;
      private byte hopCount;
      private byte destinationAddress;
@@ -34,6 +32,7 @@ public class RouteReply extends Request
 
      private void setUpInstanceFromString(String encoded)
      {
+          this.setType(ROUTE_REPLY);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.hopCount = bytes[2];
           this.originAddress = bytes[3];
@@ -47,7 +46,7 @@ public class RouteReply extends Request
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
-          byteArrayOutputStream.write(this.type);
+          byteArrayOutputStream.write(this.getType());
           //origin address
           byteArrayOutputStream.write(this.hopCount);
           byteArrayOutputStream.write(this.originAddress);
@@ -57,10 +56,6 @@ public class RouteReply extends Request
      }
 
 
-     public byte getType()
-     {
-          return type;
-     }
 
      public byte getOriginAddress()
      {

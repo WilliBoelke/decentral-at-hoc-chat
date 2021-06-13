@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteError extends Request
 {
-     private final byte type = ROUTE_ERROR;
      private byte originAddress = 13;
      private byte destinationCount;
      private byte unreachableDestinationAddress;
@@ -34,6 +33,7 @@ public class RouteError extends Request
 
      private void setUpInstanceFromString(String encoded)
      {
+          this.setType(ROUTE_ERROR);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.destinationCount = bytes[2];
           this.unreachableDestinationAddress = bytes[3];
@@ -47,7 +47,7 @@ public class RouteError extends Request
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
-          byteArrayOutputStream.write(this.type);
+          byteArrayOutputStream.write(this.getType());
           //origin address
           byteArrayOutputStream.write(this.destinationCount);
           byteArrayOutputStream.write(this.unreachableDestinationAddress);
@@ -57,10 +57,6 @@ public class RouteError extends Request
           return byteArrayOutputStream.toString();
      }
 
-     public byte getType()
-     {
-          return type;
-     }
 
      @Override
      public byte getDestinationAddress()

@@ -1,6 +1,8 @@
 package htwb.ai.willi.message;
 
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RequestEncoderAndDecoder
 {
@@ -12,27 +14,41 @@ public class RequestEncoderAndDecoder
      }
 
 
-     public Request decode(String request)
+     public Request decode(String encodedRequest)
      {
-          switch (getEncodedMessageType(request))
+          Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
+          Matcher headerMatcher = headerPattern.matcher((String) encodedRequest);
+          headerMatcher.find();
+          String header = headerMatcher.group();
+
+          Pattern addressPattern = Pattern.compile("[0-9]{4}");
+          Matcher addressMatcher = addressPattern.matcher(header);
+          addressMatcher.find();
+          String address = addressMatcher.group();
+          String requestBody = encodedRequest.replace(header, "");
+
+          Request request = null;
+
+          switch (getEncodedMessageType(requestBody))
           {
                case Request.ROUTE_REQUEST:
-                    return RouteRequest.getInstanceFromEncodedString(request);
+                    request =  RouteRequest.getInstanceFromEncodedString(requestBody);
                case Request.ROUTE_REPLY:
-                    return RouteReply.getInstanceFromEncodedString(request);
+                    request = RouteReply.getInstanceFromEncodedString(requestBody);
                case Request.ROUTE_ERROR:
-                    return RouteError.getInstanceFromEncodedString(request);
+                    request = RouteError.getInstanceFromEncodedString(requestBody);
                case Request.ROUTE_ACK:
-                    return RouteAck.getInstanceFromEncodedString(request);
+                    request = RouteAck.getInstanceFromEncodedString(requestBody);
                case Request.SEND_TEXT_REQUEST:
-                    System.out.println("Text");
-                    return SendTextRequest.getInstanceFromEncodedString(request);
+                    request = SendTextRequest.getInstanceFromEncodedString(requestBody);
                case Request.HOP_ACK:
-                    return HopAck.getInstanceFromEncodedString(request);
+                    request = HopAck.getInstanceFromEncodedString(requestBody);
                case Request.SEND_TEXT_REQUEST_ACK:
-                    return SendTextRequestAck.getInstanceFromEncodedString(request);
+                    request = SendTextRequestAck.getInstanceFromEncodedString(requestBody);
           }
-          return null;
+
+          request.setLastHopInRoute(Byte.parseByte(address));
+          return request;
      }
 
      private byte getEncodedMessageType(String encoded)

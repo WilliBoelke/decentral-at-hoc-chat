@@ -5,8 +5,8 @@ import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
-import htwb.ai.willi.message.SendTextRequest;
-import htwb.ai.willi.routingManager.SendTextRequestManager;
+import htwb.ai.willi.message.*;
+import htwb.ai.willi.router.*;
 import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -150,40 +148,52 @@ public class Controller implements PropertyChangeListener
                else if(changedData instanceof SendTextRequest)
                {
                     LOG.info("propertyChange: received messae from user, sending to manager" + changedData);
-                    SendTextRequestManager sendTextRequestManager = new SendTextRequestManager();
-                    sendTextRequestManager.processRequest((SendTextRequest) changedData);
+                    SendTextRequestRouter sendTextRequestManager = new SendTextRequestRouter();
+                    sendTextRequestManager.route((SendTextRequest) changedData);
                }
           }
-
           else if (event.getSource() instanceof SerialInput && changedData instanceof String)
           {
                //Message from another node
                if (((String) changedData).contains("LR,"))
                {
                     LOG.info(">> received:  " + changedData);
-
                     try
                     {
-                         Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
-                         Matcher headerMatcher = headerPattern.matcher((String) changedData);
-                         headerMatcher.find();
-                         String header = headerMatcher.group();
-
-                         Pattern addressPattern = Pattern.compile("[0-9]{4}");
-                         Matcher addressMatcher = addressPattern.matcher(header);
-                         addressMatcher.find();
-                         String address = addressMatcher.group();
-
-
-                         SerialOutput.getInstance().sendString("Hello module " + address + ", i received a message " +
-                                 "from you");
-                         /**
-                          if(  RoutingTable.getInstance().addAddress(address))
-                          {
-                          SerialOutput.getInstance().sendString("Known Addresses : " + RoutingTable.getInstance()
-                          .getKnownDevices().toString());
-                          }
-                          */
+                         RequestEncoderAndDecoder decoder = new RequestEncoderAndDecoder();
+                         Request request = decoder.decode((String) changedData);
+                         Router router;
+                         switch(request.getType())
+                         {
+                              case Request.ROUTE_REQUEST:
+                                   router = new RouteRequestRouter();
+                                   router.route(request);
+                                   break;
+                              case Request.ROUTE_REPLY:
+                                   router = new RouteReqplyRouter();
+                                   router.route(request);
+                                   break;
+                              case Request.ROUTE_ERROR:
+                                   router = new RouteErrorRouter();
+                                   router.route(request);
+                                   break;
+                              case Request.ROUTE_ACK:
+                                   router = new RouteAckRouter();
+                                   router.route(request);
+                                   break;
+                              case Request.SEND_TEXT_REQUEST:
+                                   router = new SendTextRequestRouter();
+                                   router.route(request);
+                                   break;
+                              case Request.HOP_ACK:
+                                   router = new HopAckRouter();
+                                   router.route(request);
+                                   break;
+                              case Request.SEND_TEXT_REQUEST_ACK:
+                                   router = new SendTextRequestAckRouter();
+                                   router.route(request);
+                                   break;
+                         }
                     }
                     catch (IllegalStateException e)
                     {

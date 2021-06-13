@@ -13,9 +13,38 @@ public abstract class Request implements Routable
      public static final byte HOP_ACK = 6;
      public static final byte SEND_TEXT_REQUEST_ACK = 7;
 
+
+     private byte type;
+
+     private byte nextHopInRoute;
+
+
+
+     private byte lastHopInRoute;
+
      private byte originAddress;
 
      private byte destinationAddress;
+
+     public byte getType()
+     {
+          return type;
+     }
+
+     public void setType(byte type)
+     {
+          this.type = type;
+     }
+     public byte getLastHopInRoute()
+     {
+          return lastHopInRoute;
+     }
+
+     public void setLastHopInRoute(byte lastHopInRoute)
+     {
+          this.lastHopInRoute = lastHopInRoute;
+     }
+
 
      public abstract String encode();
 
@@ -26,7 +55,15 @@ public abstract class Request implements Routable
           return new String(byteArrayInputStream.readAllBytes());
      }
 
+     public byte getNextHopInRoute()
+     {
+          return nextHopInRoute;
+     }
 
+     public void setNextHopInRoute(byte nextHopInRoute)
+     {
+          this.nextHopInRoute = nextHopInRoute;
+     }
 }
 
 
