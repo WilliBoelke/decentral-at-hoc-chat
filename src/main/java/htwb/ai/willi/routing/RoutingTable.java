@@ -2,6 +2,9 @@ package htwb.ai.willi.routing;
 
 import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteReply;
+import htwb.ai.willi.message.RouteRequest;
+import htwb.ai.willi.message.SendTextRequest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,10 +37,25 @@ public class RoutingTable
           return instance;
      }
 
+     public void addRoute(Route route)
+     {
+          routes.add(route);
+     }
+
      public void addRoute(Request request)
      {
-
+          if(request instanceof RouteReply)
+          {
+               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), ((RouteReply) request).getHopCount(), (byte) -1);
+               addRoute(route);
+          }
+          else if(request instanceof RouteRequest)
+          {
+               Route  route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), ((RouteRequest) request).getHopCount(), ((RouteRequest) request).getOriginSequenceNumber());
+               addRoute(route);
+          }
      }
+
 
      /**
       * Returns the next hop / next nodes Address on the shortest (Hop Count)
@@ -81,7 +99,6 @@ public class RoutingTable
                LOG.info("Comparing" + destination + " / " + r.getDestinationAddress() );
                if(r.getDestinationAddress() == destination)
                {
-
                     return true;
                }
           }
@@ -140,8 +157,9 @@ public class RoutingTable
 
           //--------------constructors and init--------------//
 
-          public Route(byte destinationAddress, byte nextInRoute, byte hops)
+          public Route(byte destinationAddress, byte nextInRoute, byte hops, byte destinationSequenceNumber)
           {
+               this.destinationSequenceNumber = destinationSequenceNumber;
                this.destinationAddress = destinationAddress;
                this.nextInRoute = nextInRoute;
                this.hops = hops;

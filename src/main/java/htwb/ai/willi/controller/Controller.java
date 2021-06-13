@@ -42,11 +42,11 @@ public class Controller implements PropertyChangeListener
       */
      public void start(String address)
      {
-          this.address = address;
+          Address.getInstance().setAddress( Byte.parseByte(address));
           LOG.info("====================================================");
           configureSerialPort();
           configureLoraModule();
-          startPing();
+          //startPing();
           LOG.info("====================================================");
      }
 
@@ -170,7 +170,7 @@ public class Controller implements PropertyChangeListener
                                    router.route(request);
                                    break;
                               case Request.ROUTE_REPLY:
-                                   router = new RouteReqplyRouter();
+                                   router = new RouteReplyRouter();
                                    router.route(request);
                                    break;
                               case Request.ROUTE_ERROR:

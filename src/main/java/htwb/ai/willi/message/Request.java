@@ -18,8 +18,6 @@ public abstract class Request implements Routable
 
      private byte nextHopInRoute;
 
-
-
      private byte lastHopInRoute;
 
      private byte originAddress;
@@ -35,6 +33,7 @@ public abstract class Request implements Routable
      {
           this.type = type;
      }
+
      public byte getLastHopInRoute()
      {
           return lastHopInRoute;
@@ -64,6 +63,8 @@ public abstract class Request implements Routable
      {
           this.nextHopInRoute = nextHopInRoute;
      }
+
+
 }
 
 

@@ -63,4 +63,8 @@ public class SendService
 
      }
 
+     public void gotReply(Request request)
+     {
+
+     }
 }

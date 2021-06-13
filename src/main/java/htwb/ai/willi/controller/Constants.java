@@ -37,4 +37,6 @@ public class Constants
 
      public static final int SEND_MESSAGE_TIMEOUT = 1000;
 
+     public static final byte SDT_TTL = 5;
+
 }

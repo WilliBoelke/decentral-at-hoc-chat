@@ -20,7 +20,7 @@ public class SendTextRequestRouter extends Router
           LOG.info("process request");
           if(isRequestFromMe(request))
           {
-               sendRequest(request);
+               requestFromMe(request);
           }
           else if(isRequestForMe(request))
           {
@@ -28,11 +28,13 @@ public class SendTextRequestRouter extends Router
           }
           else if(isRequestToForward(request))
           {
-               requestFromMe(request);
+               requestToForward(request);
           }
      }
 
-     private void requestForMe(Request request)
+
+     @Override
+     void requestForMe(Request request)
      {
           //Adding a new Route
           RoutingTable.getInstance().addRoute(request);
@@ -44,7 +46,8 @@ public class SendTextRequestRouter extends Router
           SendService.getInstance().send(acknowledge);
      }
 
-     private void sendRequest(Request request)
+     @Override
+     public void requestFromMe(Request request)
      {
           LOG.info("Sending request");
           if (RoutingTable.getInstance().hasFittingRoute(request))
@@ -55,22 +58,9 @@ public class SendTextRequestRouter extends Router
           else
           {
                LOG.info("No matching route found");
-               RouteRequest routeRequest = new RouteRequest((byte) 0, request.getDestinationAddress(), SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+               RouteRequest routeRequest = buildRequest((SendTextRequest) request);
                SendService.getInstance().sendAsynchronously(routeRequest);
           }
-     }
-
-
-     @Override
-     public void requestFromMe(Request request)
-     {
-
-     }
-
-     @Override
-     public void requestToForward(Request request)
-     {
-
      }
 
 

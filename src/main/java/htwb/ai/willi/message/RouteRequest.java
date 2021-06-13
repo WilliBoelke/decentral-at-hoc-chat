@@ -84,4 +84,54 @@ public class  RouteRequest extends Request
      {
           this.sendTextRequest = sendTextRequest;
      }
+
+     public void setOriginAddress(byte originAddress)
+     {
+          this.originAddress = originAddress;
+     }
+
+     public byte getHopCount()
+     {
+          return hopCount;
+     }
+
+     public void setHopCount(byte hopCount)
+     {
+          this.hopCount = hopCount;
+     }
+
+     public void setDestinationAddress(byte destinationAddress)
+     {
+          this.destinationAddress = destinationAddress;
+     }
+
+     public byte getOriginSequenceNumber()
+     {
+          return originSequenceNumber;
+     }
+
+     public void setOriginSequenceNumber(byte originSequenceNumber)
+     {
+          this.originSequenceNumber = originSequenceNumber;
+     }
+
+     public byte getDestinationSequenceNumber()
+     {
+          return destinationSequenceNumber;
+     }
+
+     public void setDestinationSequenceNumber(byte destinationSequenceNumber)
+     {
+          this.destinationSequenceNumber = destinationSequenceNumber;
+     }
+
+     public byte getuFlag()
+     {
+          return uFlag;
+     }
+
+     public void setuFlag(byte uFlag)
+     {
+          this.uFlag = uFlag;
+     }
 }
