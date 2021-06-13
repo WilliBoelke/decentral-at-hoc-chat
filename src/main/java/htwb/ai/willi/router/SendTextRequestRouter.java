@@ -1,13 +1,13 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.SendService;
-import htwb.ai.willi.SendService.TransmissionCoordinator;
-import htwb.ai.willi.io.SerialOutput;
-import htwb.ai.willi.message.*;
+import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteRequest;
+import htwb.ai.willi.message.SendTextRequest;
+import htwb.ai.willi.message.SendTextRequestAck;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SendTextRequestRouter extends Router
@@ -18,15 +18,15 @@ public class SendTextRequestRouter extends Router
      public void route(Request request)
      {
           LOG.info("process request");
-          if(isRequestFromMe(request))
+          if (isRequestFromMe(request))
           {
                requestFromMe(request);
           }
-          else if(isRequestForMe(request))
+          else if (isRequestForMe(request))
           {
                requestForMe(request);
           }
-          else if(isRequestToForward(request))
+          else if (isRequestToForward(request))
           {
                requestToForward(request);
           }
@@ -42,7 +42,7 @@ public class SendTextRequestRouter extends Router
           SendTextRequest sendTextRequest = (SendTextRequest) request;
           LOG.info(sendTextRequest.getReadableMessage());
           //Sending ACK
-          SendTextRequestAck acknowledge = new SendTextRequestAck() ;
+          SendTextRequestAck acknowledge = new SendTextRequestAck();
           SendService.getInstance().send(acknowledge);
      }
 
@@ -66,7 +66,8 @@ public class SendTextRequestRouter extends Router
 
      public RouteRequest buildRequest(SendTextRequest sendTextRequest)
      {
-          RouteRequest routeRequest = new RouteRequest((byte) 0, sendTextRequest.getDestinationAddress(), SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+          RouteRequest routeRequest = new RouteRequest((byte) 0, sendTextRequest.getDestinationAddress(),
+                  SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
           //TODO dest qequence number?
           return routeRequest;
      }

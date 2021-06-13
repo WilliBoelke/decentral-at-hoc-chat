@@ -1,7 +1,6 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.message.Request;
-import htwb.ai.willi.router.Router;
 
 public class RouteErrorRouter extends Router
 {

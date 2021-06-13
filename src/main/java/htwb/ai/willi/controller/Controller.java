@@ -5,7 +5,9 @@ import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
-import htwb.ai.willi.message.*;
+import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RequestEncoderAndDecoder;
+import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.router.*;
 import purejavacomm.*;
 
@@ -42,7 +44,7 @@ public class Controller implements PropertyChangeListener
       */
      public void start(String address)
      {
-          Address.getInstance().setAddress( Byte.parseByte(address));
+          Address.getInstance().setAddress(Byte.parseByte(address));
           LOG.info("====================================================");
           configureSerialPort();
           configureLoraModule();
@@ -138,14 +140,14 @@ public class Controller implements PropertyChangeListener
           Object changedData = event.getNewValue();
 
           // if User Input
-          if (event.getSource() instanceof UserInput )
+          if (event.getSource() instanceof UserInput)
           {
-               if(changedData instanceof String)
+               if (changedData instanceof String)
                {
                     LOG.info("propertyChange: received user command" + changedData);
                     UserCommandProcessor.getInstance().processData((String) changedData);
                }
-               else if(changedData instanceof SendTextRequest)
+               else if (changedData instanceof SendTextRequest)
                {
                     LOG.info("propertyChange: received messae from user, sending to manager" + changedData);
                     SendTextRequestRouter sendTextRequestManager = new SendTextRequestRouter();
@@ -163,7 +165,7 @@ public class Controller implements PropertyChangeListener
                          RequestEncoderAndDecoder decoder = new RequestEncoderAndDecoder();
                          Request request = decoder.decode((String) changedData);
                          Router router;
-                         switch(request.getType())
+                         switch (request.getType())
                          {
                               case Request.ROUTE_REQUEST:
                                    router = new RouteRequestRouter();

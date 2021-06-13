@@ -2,7 +2,6 @@ package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.io.SerialOutput;
-import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.routing.RoutingTable;
@@ -17,7 +16,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      public static final Logger LOG = Logger.getLogger(TransmissionCoordinator.class.getName());
 
 
-     private Transmission transmission;
+     private final Transmission transmission;
 
      private boolean finished;
 
@@ -32,7 +31,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      @Override
      public void run()
      {
-          for (int i = 0; i < transmission.STD_RETRIES; i++)
+          for (int i = 0; i < Transmission.STD_RETRIES; i++)
           {
                if (finished)
                {
@@ -70,12 +69,12 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           if (transmission.getRequest() instanceof RouteRequest)
           {
                LOG.info("Received ACk for Route Request, your message will now be send ");
-               RouteRequest  routeRequest = (RouteRequest) transmission.getRequest();
+               RouteRequest routeRequest = (RouteRequest) transmission.getRequest();
                if (routeRequest.getSendTextRequest() != null)
                {
                     SendTextRequest sendTextRequest = routeRequest.getSendTextRequest();
                     //Setting the next hop
-                    sendTextRequest.setNextHopInRoute( RoutingTable.getInstance().getNextInRouteTo(sendTextRequest.getDestinationAddress()));
+                    sendTextRequest.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(sendTextRequest.getDestinationAddress()));
                     SendService.getInstance().sendAsynchronously(routeRequest.getSendTextRequest());
                }
           }
@@ -84,7 +83,8 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      private void onTransmissionFailed()
      {
-          LOG.info("The message was send unsuccessfully" + transmission.STD_RETRIES + " times. Consider a different destination address");
+          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " +
+                  "destination address");
           this.finished = false;
           this.failed = false;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());

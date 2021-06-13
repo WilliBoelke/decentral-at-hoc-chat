@@ -163,7 +163,7 @@ public class SerialOutput
      {
           String encodedRequest = request.encode();
 
-          instance.println("AT+DEST=" + Constants.BROADCAST_ADDRESS+ Constants.CARRIAGE_RETURN_LINE_FEED);
+          instance.println("AT+DEST=" + Constants.BROADCAST_ADDRESS + Constants.CARRIAGE_RETURN_LINE_FEED);
           instance.flush();
           instance.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
           instance.flush();

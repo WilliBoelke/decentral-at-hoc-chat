@@ -17,7 +17,7 @@ public class RequestEncoderAndDecoder
      public Request decode(String encodedRequest)
      {
           Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
-          Matcher headerMatcher = headerPattern.matcher((String) encodedRequest);
+          Matcher headerMatcher = headerPattern.matcher(encodedRequest);
           headerMatcher.find();
           String header = headerMatcher.group();
 
@@ -32,7 +32,7 @@ public class RequestEncoderAndDecoder
           switch (getEncodedMessageType(requestBody))
           {
                case Request.ROUTE_REQUEST:
-                    request =  RouteRequest.getInstanceFromEncodedString(requestBody);
+                    request = RouteRequest.getInstanceFromEncodedString(requestBody);
                case Request.ROUTE_REPLY:
                     request = RouteReply.getInstanceFromEncodedString(requestBody);
                case Request.ROUTE_ERROR:

@@ -18,7 +18,7 @@ public class Address
 
      public static Address getInstance()
      {
-          if(instance == null)
+          if (instance == null)
           {
                instance = new Address();
           }

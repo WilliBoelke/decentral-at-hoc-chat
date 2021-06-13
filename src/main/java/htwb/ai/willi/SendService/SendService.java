@@ -3,7 +3,6 @@ package htwb.ai.willi.SendService;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.Request;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.logging.Logger;
@@ -17,9 +16,9 @@ public class SendService
 
      public static final Logger LOG = Logger.getLogger(SendService.class.getName());
      private static SendService sendService;
-     private PropertyChangeSupport changes;
+     private final PropertyChangeSupport changes;
 
-     private long maxListeningTime = 5000;
+     private final long maxListeningTime = 5000;
 
      private SendService()
      {
@@ -34,7 +33,6 @@ public class SendService
           }
           return sendService;
      }
-
 
 
      public void sendAsynchronously(Request request)

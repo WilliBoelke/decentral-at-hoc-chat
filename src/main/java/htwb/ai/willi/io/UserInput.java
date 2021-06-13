@@ -82,9 +82,9 @@ public class UserInput implements Runnable
           while (inputScanner.hasNext())
           {
                String input = inputScanner.nextLine();
-               if(input.equals("msg"))
+               if (input.equals("msg"))
                {
-                   SendTextRequest request = UserCommandProcessor.getInstance().createSendTextRequest();
+                    SendTextRequest request = UserCommandProcessor.getInstance().createSendTextRequest();
                     changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", request));
                }
                changes.firePropertyChange(new PropertyChangeEvent(this, "userInput", "", input));

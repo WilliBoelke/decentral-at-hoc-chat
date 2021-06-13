@@ -1,10 +1,8 @@
 package htwb.ai.willi.routing;
 
-import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
-import htwb.ai.willi.message.SendTextRequest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,14 +42,16 @@ public class RoutingTable
 
      public void addRoute(Request request)
      {
-          if(request instanceof RouteReply)
+          if (request instanceof RouteReply)
           {
-               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), ((RouteReply) request).getHopCount(), (byte) -1);
+               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
+                       ((RouteReply) request).getHopCount(), (byte) -1);
                addRoute(route);
           }
-          else if(request instanceof RouteRequest)
+          else if (request instanceof RouteRequest)
           {
-               Route  route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), ((RouteRequest) request).getHopCount(), ((RouteRequest) request).getOriginSequenceNumber());
+               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
+                       ((RouteRequest) request).getHopCount(), ((RouteRequest) request).getOriginSequenceNumber());
                addRoute(route);
           }
      }
@@ -62,16 +62,16 @@ public class RoutingTable
       * route to destination address
       *
       * @param destinationAddress
+      *
       * @return
       */
      public byte getNextInRouteTo(byte destinationAddress)
      {
-          Optional<Route> routeOptional = routes.stream()
-                  .filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList())
-                  .stream().min(Comparator.comparing(Route::getHops));
+          Optional<Route> routeOptional =
+                  routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().min(Comparator.comparing(Route::getHops));
 
           Route route;
-          if(routeOptional.isPresent())
+          if (routeOptional.isPresent())
           {
                route = routeOptional.get();
                return route.getNextInRoute();
@@ -84,7 +84,7 @@ public class RoutingTable
      public String toString()
      {
           String table = "| destination       | hops     | next hop   |  destination sequence      | \n" +
-                                   "|-----------------|---------|------------|----------------------------| \n" ;
+                  "|-----------------|---------|------------|----------------------------| \n";
 
 
           return table;
@@ -94,10 +94,10 @@ public class RoutingTable
      {
           byte destination = request.getDestinationAddress();
           LOG.info("Searching route to" + destination);
-          for (Route r: routes)
+          for (Route r : routes)
           {
-               LOG.info("Comparing" + destination + " / " + r.getDestinationAddress() );
-               if(r.getDestinationAddress() == destination)
+               LOG.info("Comparing" + destination + " / " + r.getDestinationAddress());
+               if (r.getDestinationAddress() == destination)
                {
                     return true;
                }
@@ -138,7 +138,7 @@ public class RoutingTable
           /**
            * The last known destination sequence number
            */
-          private byte destinationSequenceNumber;
+          private final byte destinationSequenceNumber;
 
           /**
            * The address of the next node

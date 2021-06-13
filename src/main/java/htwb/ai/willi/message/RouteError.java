@@ -30,7 +30,6 @@ public class RouteError extends Request
      }
 
 
-
      private void setUpInstanceFromString(String encoded)
      {
           this.setType(ROUTE_ERROR);

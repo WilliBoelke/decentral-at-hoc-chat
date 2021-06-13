@@ -3,7 +3,6 @@ package htwb.ai.willi.dataProcessor;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
-import jdk.dynalink.beans.StaticClass;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -28,7 +27,7 @@ public class UserCommandProcessor
 
      public static UserCommandProcessor getInstance()
      {
-          if(instance == null)
+          if (instance == null)
           {
                instance = new UserCommandProcessor();
           }
@@ -40,7 +39,7 @@ public class UserCommandProcessor
      {
           switch (data)
           {
-               case"tab":
+               case "tab":
                     System.out.println(RoutingTable.getInstance().toString());
           }
      }
@@ -57,7 +56,7 @@ public class UserCommandProcessor
                System.out.println("Enter the Destination Address ");
                destinationAddress = scanner.nextLine();
           }
-          while ( (!isValidAddress(destinationAddress)));
+          while ((!isValidAddress(destinationAddress)));
 
           do
           {

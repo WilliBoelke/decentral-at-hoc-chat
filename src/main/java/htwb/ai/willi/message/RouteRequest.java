@@ -4,7 +4,7 @@ package htwb.ai.willi.message;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-public class  RouteRequest extends Request
+public class RouteRequest extends Request
 {
      private byte originAddress = 13;
      private byte hopCount;
@@ -32,7 +32,6 @@ public class  RouteRequest extends Request
      {
           return new SendTextRequest(encoded);
      }
-
 
 
      private void setUpInstanceFromString(String encoded)

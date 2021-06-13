@@ -1,8 +1,5 @@
 package htwb.ai.willi.message;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-
 public class HopAck extends Request
 {
 

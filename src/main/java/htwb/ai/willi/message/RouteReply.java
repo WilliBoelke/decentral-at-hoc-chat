@@ -56,7 +56,6 @@ public class RouteReply extends Request
      }
 
 
-
      public byte getOriginAddress()
      {
           return originAddress;

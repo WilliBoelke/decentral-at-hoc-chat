@@ -34,7 +34,6 @@ public class Constants
      public static final String CARRIAGE_RETURN_LINE_FEED = "\r\n";
 
 
-
      public static final int SEND_MESSAGE_TIMEOUT = 1000;
 
      public static final byte SDT_TTL = 5;

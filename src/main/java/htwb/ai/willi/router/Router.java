@@ -6,13 +6,11 @@ import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.routing.RoutingTable;
-import jdk.jshell.execution.Util;
 
 
 /**
  * A router instance takes a incoming or outgoing request
  * and decides what to do next wih it based on its parameters
- *
  */
 public abstract class Router
 {
@@ -23,13 +21,13 @@ public abstract class Router
      public abstract void requestFromMe(Request request);
 
 
-     public  void requestToForward(Request request)
+     public void requestToForward(Request request)
      {
           RoutingTable.getInstance().addRoute(request);
 
-          if(request instanceof SendTextRequest)
+          if (request instanceof SendTextRequest)
           {
-               if(RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress()) == -1)
+               if (RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress()) == -1)
                {
                     return;
                }
@@ -44,30 +42,19 @@ public abstract class Router
 
      protected boolean isRequestForMe(Request request)
      {
-          if (request.getDestinationAddress() == (byte)13)
-          {
-               return true;
-          }
-          return false;
+          return request.getDestinationAddress() == (byte) 13;
      }
 
      protected boolean isRequestFromMe(Request request)
      {
-          if (request.getOriginAddress() == (byte)13)
-          {
-               return true;
-          }
-          return false;
+          return request.getOriginAddress() == (byte) 13;
      }
 
      protected boolean isRequestToForward(Request request)
      {
-          if(request.getOriginAddress() !=(byte)13 )
+          if (request.getOriginAddress() != (byte) 13)
           {
-               if(request.getDestinationAddress() != (byte)13)
-               {
-                    return true;
-               }
+               return request.getDestinationAddress() != (byte) 13;
           }
           return false;
      }
@@ -76,7 +63,8 @@ public abstract class Router
      {
           byte nextHop = RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress());
 
-          if(request instanceof RouteReply) {
+          if (request instanceof RouteReply)
+          {
                RouteReply preparedRequest = (RouteReply) request;
                byte hopCount = ((RouteReply) request).getHopCount();
                hopCount++;
@@ -89,7 +77,7 @@ public abstract class Router
                return preparedRequest;
           }
 
-          if(request instanceof SendTextRequest)
+          if (request instanceof SendTextRequest)
           {
                SendTextRequest preparedRequest = (SendTextRequest) request;
                if (nextHop != -1)
@@ -100,7 +88,7 @@ public abstract class Router
                return preparedRequest;
           }
 
-          if(request instanceof RouteRequest)
+          if (request instanceof RouteRequest)
           {
                RouteRequest preparedRequest = (RouteRequest) request;
                byte hopCount = ((RouteRequest) request).getHopCount();
