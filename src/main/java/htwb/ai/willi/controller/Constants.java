@@ -35,6 +35,6 @@ public class Constants
 
 
 
-     public static final byte SEND_MESSAGE_TIMEOUT = 100;
+     public static final int SEND_MESSAGE_TIMEOUT = 1000;
 
 }

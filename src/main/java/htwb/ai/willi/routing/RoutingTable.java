@@ -1,16 +1,18 @@
 package htwb.ai.willi.routing;
 
+import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Request;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class RoutingTable
 {
-
+     public static final Logger LOG = Logger.getLogger(RoutingTable.class.getName());
      private static RoutingTable instance;
 
      private final ArrayList<Route> routes;
@@ -73,14 +75,17 @@ public class RoutingTable
      public boolean hasFittingRoute(Request request)
      {
           byte destination = request.getDestinationAddress();
+          LOG.info("Searching route to" + destination);
           for (Route r: routes)
           {
+               LOG.info("Comparing" + destination + " / " + r.getDestinationAddress() );
                if(r.getDestinationAddress() == destination)
                {
+
                     return true;
                }
           }
-          return true;
+          return false;
      }
 
      public void removeRoute(byte destinationAddress)

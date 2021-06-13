@@ -51,10 +51,10 @@ public class SendTextRequestRouter extends Router
           {
                LOG.info("Found Route");
                SendService.getInstance().sendAsynchronously(request);
-               return;
           }
           else
           {
+               LOG.info("No matching route found");
                RouteRequest routeRequest = new RouteRequest((byte) 0, request.getDestinationAddress(), SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
                SendService.getInstance().sendAsynchronously(routeRequest);
           }
