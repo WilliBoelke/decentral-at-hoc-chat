@@ -6,20 +6,56 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteRequest extends Request
 {
-     private byte originAddress = 13;
-     private byte hopCount;
+     //-------------instance variables--------------//
+     /**
+      * The address of the origin node
+      */
+     private byte originAddress;
+     /**
+      * The address of the destination Address
+      */
      private byte destinationAddress;
+     /**
+      * Counts the hops which will be needed for this
+      * Route
+      * = 0 if sent from here
+      * if its forwarded it will be incremented by 1
+      */
+     private byte hopCount;
+     /**
+      * The Sequence number of the origin node
+      */
      private byte originSequenceNumber;
+     /**
+      * the sequence number of the destination node
+      */
      private byte destinationSequenceNumber;
+     /*
+     * 1 if the dest sequence number is unknown
+     * else 0
+      */
      private byte uFlag;
+
+     /**
+      * if a route for a SendTextRequest is unknown
+      * then we need to send a RouteRequest first, a
+      *
+      * in this case the SendTextRequest will be saved here
+      * so it can be sen from the TransmissionCoordinator
+      * after a matching RouteReply was received
+      */
      private SendTextRequest sendTextRequest;
 
-     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber)
+
+     //-------------constructors and init-------------//
+
+
+     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber, byte originAddress)
      {
+          this.originAddress = originAddress;
           this.hopCount = hopCount;
           this.destinationAddress = destinationAddress;
           this.originSequenceNumber = originSequenceNumber;
-          this.destinationSequenceNumber = destinationSequenceNumber;
      }
 
 
@@ -33,7 +69,6 @@ public class RouteRequest extends Request
           return new SendTextRequest(encoded);
      }
 
-
      private void setUpInstanceFromString(String encoded)
      {
           this.setType(ROUTE_REQUEST);
@@ -45,6 +80,9 @@ public class RouteRequest extends Request
           this.destinationAddress = bytes[5];
           this.destinationSequenceNumber = bytes[6];
      }
+
+     //----------------public methods-----------------//
+
 
      @Override
      public String encode()
@@ -61,6 +99,9 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.destinationSequenceNumber);
           return byteArrayOutputStream.toString();
      }
+
+
+     //---------------getter and setter---------------//
 
      @Override
      public byte getDestinationAddress()

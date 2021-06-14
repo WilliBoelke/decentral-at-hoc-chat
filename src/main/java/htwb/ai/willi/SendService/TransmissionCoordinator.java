@@ -1,8 +1,11 @@
 package htwb.ai.willi.SendService;
 
+import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.*;
+import htwb.ai.willi.message.Acks.HopAck;
+import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.routing.RoutingTable;
 
 import java.beans.PropertyChangeEvent;
@@ -38,11 +41,11 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                }
                if(transmission.getRequest() instanceof RouteRequest)
                {
-                    SerialOutput.getInstance().broadcast(transmission.getRequest());
+                    SerialOutput.getPrintWriter().broadcast(transmission.getRequest());
                }
                else
                {
-                    SerialOutput.getInstance().sendRequest(transmission.getRequest());
+                    SerialOutput.getPrintWriter().sendRequest(transmission.getRequest());
                }
                waitForAck(5);
           }
@@ -74,14 +77,14 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      {
           if (transmission.getRequest() instanceof RouteRequest)
           {
-               LOG.info("Received ACk for Route Request, your message will now be send ");
+               LOG.info("Received reply for Route Request, your message will now be send ");
                RouteRequest routeRequest = (RouteRequest) transmission.getRequest();
                if (routeRequest.getSendTextRequest() != null)
                {
                     SendTextRequest sendTextRequest = routeRequest.getSendTextRequest();
                     //Setting the next hop
                     sendTextRequest.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(sendTextRequest.getDestinationAddress()));
-                    SendService.getInstance().sendAsynchronously(routeRequest.getSendTextRequest());
+                    Dispatcher.getInstance().dispatchWithAck(routeRequest.getSendTextRequest());
                }
           }
      }
@@ -105,16 +108,31 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      public void propertyChange(PropertyChangeEvent event)
      {
           Request incomingReply = (Request) event.getNewValue();
-          if(incomingReply instanceof RouteReply && this.transmission.getRequest() instanceof RouteRequest)
+
+          // Outgoing SendTextRequest
+          if(this.transmission.getRequest() instanceof  SendTextRequest)
           {
-               if (incomingReply.getOriginAddress() == this.transmission.getRequest().getDestinationAddress())
+               //from me
+               if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
-                    this.finished = true;
+                    if(incomingReply instanceof SendTextRequestAck && ((SendTextRequestAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequestAck) transmission.getRequest()).getMessageSequenceNumber())
+                    {
+                         this.finished = true;
+                    }
+               }
+               // If forwarded
+               else if(this.transmission.getRequest().getOriginAddress() != Address.getInstance().getAddress())
+               {
+                    if(incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() ==  ((SendTextRequestAck) transmission.getRequest()).getMessageSequenceNumber())
+                    {
+                         finished = true;
+                    }
                }
           }
-          if(incomingReply instanceof HopAck)
+          // RouteRequest
+          else if(this.transmission.getRequest() instanceof RouteRequest && incomingReply instanceof  RouteReply)
           {
-               if (incomingReply.getOriginAddress() == this.transmission.getRequest().getNextHopInRoute())
+               if (incomingReply.getOriginAddress() == this.transmission.getRequest().getDestinationAddress())
                {
                     this.finished = true;
                }

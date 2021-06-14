@@ -1,22 +1,46 @@
 package htwb.ai.willi.message;
 
 
+import htwb.ai.willi.controller.Address;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This Request type is for when a user wants to send a message to another node
+ *
+ */
 public class SendTextRequest extends Request
 {
-     private byte originAddress = 13;
-     private byte destinationAddress;
-     private String message;
-     private byte sequenceNumber;
 
+     //--------------instance variables---------------//
+
+     /**
+      * the message to be send
+      */
+     private String message;
+     /**
+      * The Sequence number of the message
+      */
+     private byte messageSequenceNumber;
+     /**
+      * The Address of the origin node
+      */
+     private byte originAddress;
+     /**
+      * The Address of the destination node
+      */
+     private byte destinationAddress;
+
+
+     //-------------constructors and init-------------//
 
      public SendTextRequest(byte destinationAddress, byte sequenceNumber, String message)
      {
           this.setType(SEND_TEXT_REQUEST);
-          this.sequenceNumber = sequenceNumber;
+          this.originAddress = Address.getInstance().getAddress();
+          this.messageSequenceNumber = sequenceNumber;
           this.destinationAddress = destinationAddress;
           this.message = message;
      }
@@ -27,22 +51,26 @@ public class SendTextRequest extends Request
           this.setUpInstanceFromString(encodedMessage);
      }
 
+     private void setUpInstanceFromString(String encoded)
+     {
+          byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
+          this.originAddress = bytes[1];
+          this.destinationAddress = bytes[2];
+          this.messageSequenceNumber = bytes[3];
+          ByteArrayInputStream byteArrayInputStream =
+                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
+          byteArrayInputStream.skip(4);
+
+          this.message = new String(byteArrayInputStream.readAllBytes());
+     }
+
      public static SendTextRequest getInstanceFromEncodedString(String encoded)
      {
           return new SendTextRequest(encoded);
      }
 
 
-     public String getReadableMessage()
-     {
-          return ">>" + originAddress + "  said >> " + message;
-     }
-
-     public String getEncodedMessage()
-     {
-          return getEncodedMessage();
-     }
-
+     //----------------public methods-----------------//
 
      public String encode()
      {
@@ -52,24 +80,24 @@ public class SendTextRequest extends Request
           //origin address
           byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
-          byteArrayOutputStream.write(this.sequenceNumber);
+          byteArrayOutputStream.write(this.messageSequenceNumber);
           String encodedHeader = byteArrayOutputStream.toString();
           String encodedMessage = new String(message.getBytes(StandardCharsets.US_ASCII));
 
           return encodedHeader + encodedMessage;
      }
 
-     private void setUpInstanceFromString(String encoded)
-     {
-          byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          this.originAddress = bytes[1];
-          this.destinationAddress = bytes[2];
-          this.sequenceNumber = bytes[3];
-          ByteArrayInputStream byteArrayInputStream =
-                  new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
-          byteArrayInputStream.skip(4);
 
-          this.message = new String(byteArrayInputStream.readAllBytes());
+     //---------------getter and setter---------------//
+
+     public String getReadableMessage()
+     {
+          return ">>" + originAddress + "  said >> " + message;
+     }
+
+     public String getEncodedMessage()
+     {
+          return getEncodedMessage();
      }
 
      @Override
@@ -103,13 +131,13 @@ public class SendTextRequest extends Request
           this.message = message;
      }
 
-     public byte getSequenceNumber()
+     public byte getMessageSequenceNumber()
      {
-          return sequenceNumber;
+          return messageSequenceNumber;
      }
 
-     public void setSequenceNumber(byte sequenceNumber)
+     public void setMessageSequenceNumber(byte destinationSequenceNumber)
      {
-          this.sequenceNumber = sequenceNumber;
+          this.messageSequenceNumber = destinationSequenceNumber;
      }
 }

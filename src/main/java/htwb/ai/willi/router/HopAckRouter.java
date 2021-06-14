@@ -1,6 +1,6 @@
 package htwb.ai.willi.router;
 
-import htwb.ai.willi.SendService.SendService;
+import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.message.Request;
 
 public class HopAckRouter extends Router
@@ -17,7 +17,7 @@ public class HopAckRouter extends Router
      @Override
      public void requestFromMe(Request request)
      {
-          SendService.getInstance().gotReply(request);
+          Dispatcher.getInstance().gotReply(request);
      }
 
      @Override

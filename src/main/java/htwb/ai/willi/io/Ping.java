@@ -24,7 +24,7 @@ public class Ping implements Runnable
      {
           while (true)
           {
-               SerialOutput.getInstance().sendString(message);
+               SerialOutput.getPrintWriter().sendString(message);
                try
                {
                     Thread.sleep(interval);

@@ -2,7 +2,7 @@ package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.Request;
-import htwb.ai.willi.message.RouteAck;
+import htwb.ai.willi.message.Acks.RouteAck;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,31 +13,40 @@ import java.util.logging.Logger;
  * The SendService manages the sending of messages and waits for
  * matching responses
  */
-public class SendService
+public class Dispatcher
 {
 
-     public static final Logger LOG = Logger.getLogger(SendService.class.getName());
-     private static SendService sendService;
+     public static final Logger LOG = Logger.getLogger(Dispatcher.class.getName());
+     private static Dispatcher sendService;
      private final PropertyChangeSupport changes;
 
      private final long maxListeningTime = 5000;
 
-     private SendService()
+     private Dispatcher()
      {
           changes = new PropertyChangeSupport(this);
      }
 
-     public static SendService getInstance()
+     public static Dispatcher getInstance()
      {
           if (sendService == null)
           {
-               sendService = new SendService();
+               sendService = new Dispatcher();
           }
           return sendService;
      }
 
 
-     public void sendAsynchronously(Request request)
+     /**
+      * For RouteRequests (from this node), SendTextRequests and RouteReplies
+      * ----------------------------------------------------------------------
+      * Will be send using the TransmissionCoordinator, which ill try
+      * to send the Requests multiple times, till he gets a requests or the max retries are
+      * reached
+      * ----------------------------------------------------------------------
+      * @param request
+      */
+     public void dispatchWithAck(Request request)
      {
           Transmission transmission = new Transmission(request);
           TransmissionCoordinator coordinator = new TransmissionCoordinator(transmission);
@@ -46,9 +55,27 @@ public class SendService
      }
 
 
-     public void send(Request request)
+     /**
+      * For forwarded RouteRequests
+      * @param request
+      */
+     public void dispatchBroadcast(Request request)
      {
-          SerialOutput.getInstance().sendRequest(request);
+          SerialOutput.getPrintWriter().broadcast(request);
+     }
+
+
+     /**
+      * For sending ACKs
+      * ----------------------------------------------------------------------
+      * Will only be send once, without waiting for a reply or ack of
+      * any kind
+      *
+      * @param request
+      */
+     public void dispatch(Request request)
+     {
+          SerialOutput.getPrintWriter().sendRequest(request);
      }
 
 

@@ -1,8 +1,33 @@
-package htwb.ai.willi.message;
+package htwb.ai.willi.message.Acks;
+
+import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteReply;
 
 public class SendTextRequestAck extends Request
 {
+     private byte originAddress;
+     private byte destinationAddress;
+     private byte messageSequenceNumber;
 
+     public void setOriginAddress(byte originAddress)
+     {
+          this.originAddress = originAddress;
+     }
+
+     public void setDestinationAddress(byte destinationAddress)
+     {
+          this.destinationAddress = destinationAddress;
+     }
+
+     public byte getMessageSequenceNumber()
+     {
+          return messageSequenceNumber;
+     }
+
+     public void setMessageSequenceNumber(byte messageSequenceNumber)
+     {
+          this.messageSequenceNumber = messageSequenceNumber;
+     }
 
      public SendTextRequestAck()
      {

@@ -39,7 +39,7 @@ public class UserInput implements Runnable
      private final PropertyChangeSupport changes;
 
 
-     //--------------constructors and init--------------//
+     //-------------constructors and init-------------//
 
      /**
       * private constructor , following the singleton pattern

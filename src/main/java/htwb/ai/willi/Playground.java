@@ -21,7 +21,7 @@ public class Playground
 
           System.out.println(result.getClass().getSimpleName());
           System.out.println(result.getOriginAddress());
-          System.out.println(result.getSequenceNumber());
+          System.out.println(result.getDestinationSequenceNumber());
           System.out.println(result.getReadableMessage());
      }
 

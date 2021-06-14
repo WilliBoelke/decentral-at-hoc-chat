@@ -67,6 +67,16 @@ public class RoutingTable
       */
      public byte getNextInRouteTo(byte destinationAddress)
      {
+          Route routeToDestination = getRouteTo(destinationAddress);
+          if(routeToDestination != null)
+          {
+               return routeToDestination.getNextInRoute();
+          }
+          return -1;
+     }
+
+     public Route getRouteTo(byte destinationAddress)
+     {
           Optional<Route> routeOptional =
                   routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().min(Comparator.comparing(Route::getHops));
 
@@ -74,9 +84,9 @@ public class RoutingTable
           if (routeOptional.isPresent())
           {
                route = routeOptional.get();
-               return route.getNextInRoute();
+               return route;
           }
-          return -1;
+          return null;
      }
 
 

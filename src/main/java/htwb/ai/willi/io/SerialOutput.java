@@ -17,12 +17,12 @@ public class SerialOutput
 
      //--------------static variable--------------//
 
-     private static SerialOutput SerialOutput;
+     private static SerialOutput instance;
 
      /**
       * PrintWriter which has a reference to the serial output
       */
-     private static PrintWriter instance;
+     private static PrintWriter printWriter;
 
 
      //--------------instance variable--------------//
@@ -52,13 +52,13 @@ public class SerialOutput
       *
       * @return the SerialOutput
       */
-     public static SerialOutput getInstance()
+     public static SerialOutput getPrintWriter()
      {
-          if (SerialOutput == null)
+          if (instance == null)
           {
-               SerialOutput = new SerialOutput();
+               instance = new SerialOutput();
           }
-          return SerialOutput;
+          return instance;
      }
 
 
@@ -72,8 +72,8 @@ public class SerialOutput
       */
      public void setPrintWriter(PrintWriter printWriter)
      {
-          instance = printWriter;
-          instance.flush();
+          htwb.ai.willi.io.SerialOutput.printWriter = printWriter;
+          htwb.ai.willi.io.SerialOutput.printWriter.flush();
      }
 
 
@@ -108,10 +108,10 @@ public class SerialOutput
                e.printStackTrace();
           }
           // Writing the String with AT command and carriage return
-          instance.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
-          instance.println(message + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
+          printWriter.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
+          printWriter.println(message + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
      }
 
 
@@ -129,9 +129,9 @@ public class SerialOutput
           LOG.info("sendConfiguration: " + config);
           try
           {
-               instance.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
-               instance.flush();
-               Thread.sleep(2000);
+               printWriter.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
+               printWriter.flush();
+               Thread.sleep(1000);
           }
           catch (InterruptedException e)
           {
@@ -144,30 +144,30 @@ public class SerialOutput
       */
      public void close()
      {
-          instance.close();
+          printWriter.close();
      }
 
      public void sendRequest(Request request)
      {
           String encodedRequest = request.encode();
 
-          instance.println("AT+DEST=" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
-          instance.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
-          instance.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
+          printWriter.println("AT+DEST=" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
+          printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
+          printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
      }
 
      public void broadcast(Request request)
      {
           String encodedRequest = request.encode();
 
-          instance.println("AT+DEST=" + Constants.BROADCAST_ADDRESS + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
-          instance.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
-          instance.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
-          instance.flush();
+          printWriter.println("AT+DEST=" + Constants.BROADCAST_ADDRESS + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
+          printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
+          printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.flush();
      }
 }

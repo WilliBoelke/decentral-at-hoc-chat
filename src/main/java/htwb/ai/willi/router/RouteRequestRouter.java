@@ -1,6 +1,6 @@
 package htwb.ai.willi.router;
 
-import htwb.ai.willi.SendService.SendService;
+import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
@@ -9,7 +9,7 @@ import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
 /**
- * Gets every single RouteRequest, and will Add a rout eto the Routing Table
+ * Gets every single RouteRequest, and will Add a route to the Routing Table
  * iFi the Request has a different destination address then this node , it will be forwarded
  * to the next hops address (from the routing table )
  */
@@ -18,8 +18,7 @@ public class RouteRequestRouter extends Router
      @Override
      public void route(Request request)
      {
-          RoutingTable.getInstance().addRoute(request);
-
+          //RoutingTable.getInstance().addRoute(request);
           if (isRequestForMe(request))
           {
                requestForMe(request);
@@ -38,7 +37,7 @@ public class RouteRequestRouter extends Router
                   ((RouteRequest) request).getOriginSequenceNumber(),
                   SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
           reply.setRemainingLifeTime(Constants.SDT_TTL);
-          SendService.getInstance().send(reply);
+          Dispatcher.getInstance().dispatch(reply);
      }
 
 

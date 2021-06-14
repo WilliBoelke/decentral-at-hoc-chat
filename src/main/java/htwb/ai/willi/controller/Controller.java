@@ -32,7 +32,6 @@ public class Controller implements PropertyChangeListener
      {
      }
 
-
      /**
       * Starts the initialization and an endless loop to listen for new events
       *
@@ -64,17 +63,16 @@ public class Controller implements PropertyChangeListener
      private void configureLoraModule()
      {
 
-
           LOG.info("configureLoraModule: start configuration");
           LOG.info("configureLoraModule: reset module");
-          SerialOutput.getInstance().sendConfiguration("AT+RST");
+          SerialOutput.getPrintWriter().sendConfiguration("AT+RST");
           LOG.info("configureLoraModule: send config string");
-          SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
+          SerialOutput.getPrintWriter().sendConfiguration(Constants.CONFIG);
           LOG.info("configureLoraModule: rx");
-          SerialOutput.getInstance().sendConfiguration("AT+RX");
+          SerialOutput.getPrintWriter().sendConfiguration("AT+RX");
           LOG.info("configureLoraModule: send address");
-          SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
-          SerialOutput.getInstance().sendConfiguration("AT+SAVE");
+          SerialOutput.getPrintWriter().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
+          SerialOutput.getPrintWriter().sendConfiguration("AT+SAVE");
           //SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
      }
 
@@ -85,8 +83,7 @@ public class Controller implements PropertyChangeListener
 
           try
           {
-               SerialPort ser =
-                       ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
+               SerialPort ser = ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
                ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
                ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
                ser.disableReceiveTimeout();
@@ -96,7 +93,7 @@ public class Controller implements PropertyChangeListener
                LOG.info("configureSerialPort: serial port name: " + ser.getName());
                LOG.info("configureSerialPort: setup serial in- and output");
                SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
-               SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
+               SerialOutput.getPrintWriter().setPrintWriter(new PrintWriter(ser.getOutputStream()));
                new Thread(SerialInput.getInstance()).start();
                //That doesnt belong here
                SerialInput.getInstance().registerPropertyChangeListener(this);
@@ -162,6 +159,7 @@ public class Controller implements PropertyChangeListener
                     {
                          RequestEncoderAndDecoder decoder = new RequestEncoderAndDecoder();
                          Request request = decoder.decode((String) changedData);
+
                          Router router;
                          switch (request.getType())
                          {
@@ -198,6 +196,10 @@ public class Controller implements PropertyChangeListener
                     catch (IllegalStateException e)
                     {
                          LOG.info("No address for " + changedData + " found");
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+                         LOG.info("Received an invalid message type");
                     }
                }
           }

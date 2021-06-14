@@ -1,8 +1,12 @@
-package htwb.ai.willi.message;
+package htwb.ai.willi.message.Acks;
+
+import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteReply;
 
 public class HopAck extends Request
 {
 
+     public byte messageSequenceNumber;
 
      public HopAck()
      {
@@ -13,7 +17,6 @@ public class HopAck extends Request
      public HopAck(String encoded)
      {
           this.setType(HOP_ACK);
-
           this.setUpInstanceFromString(encoded);
      }
 
@@ -44,5 +47,15 @@ public class HopAck extends Request
      public byte getOriginAddress()
      {
           return -1;
+     }
+
+     public byte getMessageSequenceNumber()
+     {
+          return messageSequenceNumber;
+     }
+
+     public void setMessageSequenceNumber(byte messageSequenceNumber)
+     {
+          this.messageSequenceNumber = messageSequenceNumber;
      }
 }

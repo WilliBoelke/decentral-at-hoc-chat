@@ -1,6 +1,10 @@
 package htwb.ai.willi.router;
 
-import htwb.ai.willi.SendService.SendService;
+import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.controller.Address;
+import htwb.ai.willi.message.Acks.HopAck;
+import htwb.ai.willi.message.Acks.RouteAck;
+import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
@@ -23,7 +27,7 @@ public abstract class Router
 
      public void requestToForward(Request request)
      {
-          RoutingTable.getInstance().addRoute(request);
+        //  RoutingTable.getInstance().addRoute(request);
 
           if (request instanceof SendTextRequest)
           {
@@ -31,9 +35,14 @@ public abstract class Router
                {
                     return;
                }
-               SendService.getInstance().send(prepareForwardRequest(request));
+               Dispatcher.getInstance().dispatchWithAck(prepareForwardRequest(request));
+          }
+          if(request instanceof RouteRequest)
+          {
+               Dispatcher.getInstance().dispatchBroadcast(prepareForwardRequest(request));
           }
      }
+
 
      void requestForMe(Request request)
      {
@@ -42,19 +51,19 @@ public abstract class Router
 
      protected boolean isRequestForMe(Request request)
      {
-          return request.getDestinationAddress() == (byte) 13;
+          return request.getDestinationAddress() == Address.getInstance().getAddress();
      }
 
      protected boolean isRequestFromMe(Request request)
      {
-          return request.getOriginAddress() == (byte) 13;
+          return request.getOriginAddress() == Address.getInstance().getAddress();
      }
 
      protected boolean isRequestToForward(Request request)
      {
-          if (request.getOriginAddress() != (byte) 13)
+          if (request.getOriginAddress() != Address.getInstance().getAddress())
           {
-               return request.getDestinationAddress() != (byte) 13;
+               return true;
           }
           return false;
      }
@@ -73,7 +82,6 @@ public abstract class Router
                {
                     (preparedRequest).setNextHopInRoute(nextHop);
                }
-
                return preparedRequest;
           }
 
@@ -94,9 +102,38 @@ public abstract class Router
                byte hopCount = ((RouteRequest) request).getHopCount();
                hopCount++;
                preparedRequest.setHopCount(hopCount);
+               if (nextHop != -1)
+               {
+                    preparedRequest.setNextHopInRoute(nextHop);
+               }
                return preparedRequest;
           }
 
           return null;
+     }
+
+     protected void dispatchHopAck(SendTextRequest requestToAck)
+     {
+          HopAck ack = new HopAck();
+          ack.setNextHopInRoute(requestToAck.getLastHopInRoute());
+          ack.setMessageSequenceNumber(requestToAck.getMessageSequenceNumber());
+          Dispatcher.getInstance().dispatch(ack);
+     }
+
+     protected void dispatchRouteReplyAc(byte destination)
+     {
+          RouteAck ack = new RouteAck();
+          ack.setNextHopInRoute(destination);
+          Dispatcher.getInstance().dispatch(ack);
+     }
+
+     protected void  dispatchSendTextAck(SendTextRequest requestToAck)
+     {
+          SendTextRequestAck ack = new SendTextRequestAck();
+          ack.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(requestToAck.getOriginAddress()));
+          ack.setOriginAddress(Address.getInstance().getAddress());
+          ack.setDestinationAddress(requestToAck.getDestinationAddress());
+          ack.setMessageSequenceNumber(requestToAck.getMessageSequenceNumber());
+          Dispatcher.getInstance().dispatch(ack);
      }
 }

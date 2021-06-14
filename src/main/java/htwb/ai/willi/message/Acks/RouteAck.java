@@ -1,7 +1,11 @@
-package htwb.ai.willi.message;
+package htwb.ai.willi.message.Acks;
+
+import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteReply;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+
 
 public class RouteAck extends Request
 {
@@ -11,6 +15,7 @@ public class RouteAck extends Request
 
      public RouteAck()
      {
+          this.setType(ROUTE_ACK);
      }
 
      public RouteAck(String encoded)

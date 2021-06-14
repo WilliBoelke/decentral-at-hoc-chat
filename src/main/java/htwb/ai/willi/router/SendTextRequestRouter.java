@@ -1,10 +1,10 @@
 package htwb.ai.willi.router;
 
-import htwb.ai.willi.SendService.SendService;
+import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
-import htwb.ai.willi.message.SendTextRequestAck;
+import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
@@ -17,6 +17,7 @@ public class SendTextRequestRouter extends Router
      @Override
      public void route(Request request)
      {
+          dispatchHopAck((SendTextRequest) request);
           LOG.info("process request");
           if (isRequestFromMe(request))
           {
@@ -24,6 +25,7 @@ public class SendTextRequestRouter extends Router
           }
           else if (isRequestForMe(request))
           {
+               dispatchSendTextAck((SendTextRequest) request);
                requestForMe(request);
           }
           else if (isRequestToForward(request))
@@ -43,7 +45,7 @@ public class SendTextRequestRouter extends Router
           LOG.info(sendTextRequest.getReadableMessage());
           //Sending ACK
           SendTextRequestAck acknowledge = new SendTextRequestAck();
-          SendService.getInstance().send(acknowledge);
+          Dispatcher.getInstance().dispatch(acknowledge);
      }
 
      @Override
@@ -53,13 +55,13 @@ public class SendTextRequestRouter extends Router
           if (RoutingTable.getInstance().hasFittingRoute(request))
           {
                LOG.info("Found Route");
-               SendService.getInstance().sendAsynchronously(request);
+               Dispatcher.getInstance().dispatchWithAck(request);
           }
           else
           {
                LOG.info("No matching route found");
                RouteRequest routeRequest = buildRequest((SendTextRequest) request);
-               SendService.getInstance().sendAsynchronously(routeRequest);
+               Dispatcher.getInstance().dispatchWithAck(routeRequest);
           }
      }
 
@@ -67,7 +69,7 @@ public class SendTextRequestRouter extends Router
      public RouteRequest buildRequest(SendTextRequest sendTextRequest)
      {
           RouteRequest routeRequest = new RouteRequest((byte) 0, sendTextRequest.getDestinationAddress(),
-                  SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+                  SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement(), sendTextRequest.getOriginAddress());
           //TODO dest qequence number?
           return routeRequest;
      }

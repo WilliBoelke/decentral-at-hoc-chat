@@ -1,6 +1,6 @@
 package htwb.ai.willi.router;
 
-import htwb.ai.willi.SendService.SendService;
+import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.routing.RoutingTable;
 
@@ -17,7 +17,7 @@ public class RouteReplyRouter extends Router
      public void route(Request request)
      {
           RoutingTable.getInstance().addRoute(request);
-
+          dispatchRouteReplyAc(request.getLastHopInRoute());
           if (isRequestForMe(request))
           {
                requestForMe(request);
@@ -39,6 +39,6 @@ public class RouteReplyRouter extends Router
      void requestForMe(Request request)
      {
           super.requestForMe(request);
-          SendService.getInstance().gotReply(request);
+          Dispatcher.getInstance().gotReply(request);
      }
 }
