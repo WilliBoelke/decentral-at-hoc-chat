@@ -2,7 +2,9 @@ package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteAck;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.logging.Logger;
@@ -61,8 +63,15 @@ public class SendService
 
      }
 
+     /**
+      * Called by the Routers if a Ack or Route repl arrived
+      * Notifies the Coordinators that a new replay arrived
+      * The will check if it matches their request and stop the retries
+      * @param request
+      */
      public void gotReply(Request request)
      {
-
+          PropertyChangeEvent event = new PropertyChangeEvent(this, "incomingReply", new RouteAck(), request); // The oldValue is not of interest, therefore i just use a random request
+          changes.firePropertyChange(event);
      }
 }

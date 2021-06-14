@@ -28,8 +28,6 @@ public class Controller implements PropertyChangeListener
 {
      public static final Logger LOG = Logger.getLogger(Controller.class.getName());
 
-     private String address;
-
      public Controller()
      {
      }
@@ -75,7 +73,7 @@ public class Controller implements PropertyChangeListener
           LOG.info("configureLoraModule: rx");
           SerialOutput.getInstance().sendConfiguration("AT+RX");
           LOG.info("configureLoraModule: send address");
-          SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + address);
+          SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
           SerialOutput.getInstance().sendConfiguration("AT+SAVE");
           //SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
      }

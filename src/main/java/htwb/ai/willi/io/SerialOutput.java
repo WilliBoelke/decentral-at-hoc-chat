@@ -122,7 +122,7 @@ public class SerialOutput
       * and thus to the Lora module
       *
       * @param config
-      *         the configuration Strinf
+      *         the configuration String
       */
      public void sendConfiguration(String config)
      {

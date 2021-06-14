@@ -20,10 +20,6 @@ public abstract class Request implements Routable
 
      private byte lastHopInRoute;
 
-     private byte originAddress;
-
-     private byte destinationAddress;
-
      public byte getType()
      {
           return type;

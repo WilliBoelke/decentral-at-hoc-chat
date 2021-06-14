@@ -2,8 +2,7 @@ package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.io.SerialOutput;
-import htwb.ai.willi.message.RouteRequest;
-import htwb.ai.willi.message.SendTextRequest;
+import htwb.ai.willi.message.*;
 import htwb.ai.willi.routing.RoutingTable;
 
 import java.beans.PropertyChangeEvent;
@@ -37,7 +36,14 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                {
                     return;
                }
-               SerialOutput.getInstance().sendRequest(transmission.getRequest());
+               if(transmission.getRequest() instanceof RouteRequest)
+               {
+                    SerialOutput.getInstance().broadcast(transmission.getRequest());
+               }
+               else
+               {
+                    SerialOutput.getInstance().sendRequest(transmission.getRequest());
+               }
                waitForAck(5);
           }
 
@@ -96,8 +102,22 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      }
 
      @Override
-     public void propertyChange(PropertyChangeEvent evt)
+     public void propertyChange(PropertyChangeEvent event)
      {
-
+          Request incomingReply = (Request) event.getNewValue();
+          if(incomingReply instanceof RouteReply && this.transmission.getRequest() instanceof RouteRequest)
+          {
+               if (incomingReply.getOriginAddress() == this.transmission.getRequest().getDestinationAddress())
+               {
+                    this.finished = true;
+               }
+          }
+          if(incomingReply instanceof HopAck)
+          {
+               if (incomingReply.getOriginAddress() == this.transmission.getRequest().getNextHopInRoute())
+               {
+                    this.finished = true;
+               }
+          }
      }
 }

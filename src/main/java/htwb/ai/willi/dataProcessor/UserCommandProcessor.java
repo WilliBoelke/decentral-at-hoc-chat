@@ -6,6 +6,8 @@ import htwb.ai.willi.routing.SequenceNumberManager;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.logging.Logger;
+
 
 /**
  * Processes a user input
@@ -17,14 +19,27 @@ import java.util.Scanner;
  */
 public class UserCommandProcessor
 {
+     public static final Logger LOG = Logger.getLogger(UserCommandProcessor.class.getName());
 
      private static UserCommandProcessor instance;
 
+
+
+     //--------------constructors and init--------------//
+
+     /**
+      * Private constructor, singleton
+      */
      private UserCommandProcessor()
      {
-
      }
 
+     /**
+      * Singleton getInstance method.
+      * returns the saved instance or inits a new one
+      * @return
+      * A Comma
+      */
      public static UserCommandProcessor getInstance()
      {
           if (instance == null)
@@ -41,8 +56,17 @@ public class UserCommandProcessor
           {
                case "tab":
                     System.out.println(RoutingTable.getInstance().toString());
+                    break;
+               case "debug -on":
+                    break;
+               case "debug -off":
+                    break;
+               default:
+                    System.out.println("unknown user command");
           }
      }
+
+     //--------------public methods--------------//
 
 
      public SendTextRequest createSendTextRequest()
@@ -70,6 +94,8 @@ public class UserCommandProcessor
                   SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement(), message);
      }
 
+
+     //----------------check input----------------//
 
      private boolean isValidAddress(String givenAddress)
      {
