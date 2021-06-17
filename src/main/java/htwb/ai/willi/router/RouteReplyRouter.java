@@ -1,7 +1,9 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Request;
+import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.routing.RoutingTable;
 
 
@@ -13,32 +15,47 @@ import htwb.ai.willi.routing.RoutingTable;
  */
 public class RouteReplyRouter extends Router
 {
+
+
      @Override
-     public void route(Request request)
+     protected void anyCase(Request request)
      {
+          this.dispatchAck(request);
           RoutingTable.getInstance().addRoute(request);
-          dispatchRouteReplyAc(request.getLastHopInRoute());
-          if (isRequestForMe(request))
+     }
+
+     @Override
+     protected void requestFromMe(Request request)
+     {
+     }
+
+     @Override
+     protected void requestToForward(Request request)
+     {
+          RouteReply preparedToForward = (RouteReply) request;
+          if(RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()) != null)
           {
-               requestForMe(request);
+               preparedToForward.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(preparedToForward.getDestinationAddress()));
+               Dispatcher.getInstance().dispatchWithAck(preparedToForward);
           }
-          else if (isRequestToForward(request))
+          else
           {
-               requestToForward(request);
+               // TODO send error
           }
      }
 
      @Override
-     public void requestFromMe(Request request)
+     protected void requestForMe(Request request)
      {
-
-     }
-
-
-     @Override
-     void requestForMe(Request request)
-     {
-          super.requestForMe(request);
           Dispatcher.getInstance().gotReply(request);
+     }
+
+
+     @Override
+     protected void dispatchAck(Request request)
+     {
+          RouteReplyAck ack = new RouteReplyAck();
+          ack.setDestinationAddress(request.getLastHopInRoute());
+          Dispatcher.getInstance().dispatch(ack);
      }
 }

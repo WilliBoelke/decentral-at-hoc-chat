@@ -2,7 +2,7 @@ package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.Request;
-import htwb.ai.willi.message.Acks.RouteAck;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -98,7 +98,7 @@ public class Dispatcher
       */
      public void gotReply(Request request)
      {
-          PropertyChangeEvent event = new PropertyChangeEvent(this, "incomingReply", new RouteAck(), request); // The oldValue is not of interest, therefore i just use a random request
+          PropertyChangeEvent event = new PropertyChangeEvent(this, "incomingReply", new RouteReplyAck(), request); // The oldValue is not of interest, therefore i just use a random request
           changes.firePropertyChange(event);
      }
 }

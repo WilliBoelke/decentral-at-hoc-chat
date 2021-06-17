@@ -5,23 +5,35 @@ import htwb.ai.willi.message.Request;
 
 public class HopAckRouter extends Router
 {
+
+
      @Override
-     public void route(Request request)
+     protected void anyCase(Request request)
      {
-          if (isRequestForMe(request))
-          {
-               requestForMe(request);
-          }
+
      }
 
      @Override
      public void requestFromMe(Request request)
      {
-          Dispatcher.getInstance().gotReply(request);
+
      }
 
      @Override
      public void requestToForward(Request request)
      {
+     }
+
+     @Override
+     protected void requestForMe(Request request)
+     {
+          Dispatcher.getInstance().gotReply(request);
+     }
+
+
+     @Override
+     protected void dispatchAck(Request request)
+     {
+
      }
 }

@@ -89,9 +89,11 @@ public class UserCommandProcessor
           }
           while (!isValidAddress(destinationAddress));
 
+          SendTextRequest request = new SendTextRequest();
+          request.setDestinationAddress(Byte.parseByte(destinationAddress));
+          request.setMessage(message);
 
-          return new SendTextRequest(Byte.parseByte(destinationAddress),
-                  SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement(), message);
+          return request;
      }
 
 

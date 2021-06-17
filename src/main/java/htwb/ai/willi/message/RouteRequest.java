@@ -50,12 +50,22 @@ public class RouteRequest extends Request
      //-------------constructors and init-------------//
 
 
-     public RouteRequest(byte hopCount, byte destinationAddress, byte originSequenceNumber, byte originAddress)
+     public RouteRequest(byte originAddress, byte destinationAddress, byte hopCount, byte originSequenceNumber,
+                         byte destinationSequenceNumber, byte uFlag, SendTextRequest sendTextRequest)
      {
+          this.setType(ROUTE_REQUEST);
           this.originAddress = originAddress;
-          this.hopCount = hopCount;
           this.destinationAddress = destinationAddress;
+          this.hopCount = hopCount;
           this.originSequenceNumber = originSequenceNumber;
+          this.destinationSequenceNumber = destinationSequenceNumber;
+          this.uFlag = uFlag;
+          this.sendTextRequest = sendTextRequest;
+     }
+
+     public RouteRequest()
+     {
+          this.setType(ROUTE_REQUEST);
      }
 
 
@@ -174,4 +184,6 @@ public class RouteRequest extends Request
      {
           this.uFlag = uFlag;
      }
+
+
 }

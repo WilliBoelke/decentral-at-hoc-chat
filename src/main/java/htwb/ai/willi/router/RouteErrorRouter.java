@@ -4,20 +4,35 @@ import htwb.ai.willi.message.Request;
 
 public class RouteErrorRouter extends Router
 {
+
      @Override
-     public void route(Request request)
+     protected void anyCase(Request request)
      {
 
      }
 
      @Override
-     public void requestFromMe(Request request)
+     protected void requestFromMe(Request request)
      {
 
      }
 
      @Override
-     public void requestToForward(Request request)
+     protected void requestToForward(Request request)
+     {
+
+     }
+
+     @Override
+     protected void requestForMe(Request request)
+     {
+
+     }
+
+
+
+     @Override
+     protected void dispatchAck(Request request)
      {
 
      }

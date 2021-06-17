@@ -36,13 +36,19 @@ public class SendTextRequest extends Request
 
      //-------------constructors and init-------------//
 
-     public SendTextRequest(byte destinationAddress, byte sequenceNumber, String message)
+
+     public SendTextRequest(String message, byte messageSequenceNumber, byte originAddress, byte destinationAddress)
      {
           this.setType(SEND_TEXT_REQUEST);
-          this.originAddress = Address.getInstance().getAddress();
-          this.messageSequenceNumber = sequenceNumber;
-          this.destinationAddress = destinationAddress;
           this.message = message;
+          this.messageSequenceNumber = messageSequenceNumber;
+          this.originAddress = originAddress;
+          this.destinationAddress = destinationAddress;
+     }
+
+     public SendTextRequest()
+     {
+          this.setType(SEND_TEXT_REQUEST);
      }
 
      public SendTextRequest(String encodedMessage)

@@ -5,17 +5,29 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteReply extends Request
 {
-     private byte originAddress = 13;
+     private byte originAddress;
      private byte hopCount;
      private byte destinationAddress;
+     private byte originSequenceNumber;
      private byte destinationSequenceNumber;
      private byte remainingLifeTime;
 
 
-     public RouteReply(byte hopCount, byte destinationAddress, byte originSequenceNumber,
-                       byte destinationSequenceNumber)
+     public RouteReply(byte originAddress, byte hopCount, byte destinationAddress, byte originSequenceNumber,
+                       byte destinationSequenceNumber, byte remainingLifeTime)
      {
+          this.setType(ROUTE_REPLY);
+          this.originAddress = originAddress;
+          this.hopCount = hopCount;
+          this.destinationAddress = destinationAddress;
+          this.originSequenceNumber = originSequenceNumber;
+          this.destinationSequenceNumber = destinationSequenceNumber;
+          this.remainingLifeTime = remainingLifeTime;
+     }
 
+     public RouteReply()
+     {
+          this.setType(ROUTE_REQUEST);
      }
 
 
@@ -45,12 +57,11 @@ public class RouteReply extends Request
      public String encode()
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-          //Message type
           byteArrayOutputStream.write(this.getType());
-          //origin address
           byteArrayOutputStream.write(this.hopCount);
           byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
+          byteArrayOutputStream.write(this.destinationSequenceNumber);
           byteArrayOutputStream.write(this.remainingLifeTime);
           return byteArrayOutputStream.toString();
      }
@@ -104,5 +115,15 @@ public class RouteReply extends Request
      public void setRemainingLifeTime(byte remainingLifeTime)
      {
           this.remainingLifeTime = remainingLifeTime;
+     }
+
+     public byte getOriginSequenceNumber()
+     {
+          return originSequenceNumber;
+     }
+
+     public void setOriginSequenceNumber(byte originSequenceNumber)
+     {
+          this.originSequenceNumber = originSequenceNumber;
      }
 }

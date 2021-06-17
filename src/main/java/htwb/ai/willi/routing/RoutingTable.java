@@ -119,6 +119,11 @@ public class RoutingTable
      {
      }
 
+     public byte getNewesKnownSequenceNumberFromNode(byte originAddress)
+     {
+          return -1;
+     }
+
      /**
       * The Route class
       * <p>

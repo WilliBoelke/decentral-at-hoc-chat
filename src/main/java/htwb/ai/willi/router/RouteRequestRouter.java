@@ -1,6 +1,7 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
@@ -15,30 +16,46 @@ import htwb.ai.willi.routing.SequenceNumberManager;
  */
 public class RouteRequestRouter extends Router
 {
+
+
      @Override
-     public void route(Request request)
+     protected void anyCase(Request request)
      {
-          //RoutingTable.getInstance().addRoute(request);
-          if (isRequestForMe(request))
-          {
-               requestForMe(request);
-          }
-          else if (isRequestToForward(request))
-          {
-               requestToForward(request);
-          }
+          RoutingTable.getInstance().addRoute(request);
      }
 
      @Override
-     public void requestFromMe(Request request)
+     protected void requestFromMe(Request request)
+     {
+
+     }
+
+     @Override
+     protected void requestToForward(Request request)
+     {
+          RouteRequest routeRequest = (RouteRequest) request;
+          routeRequest.setHopCount((byte) (routeRequest.getHopCount() +1));
+          Dispatcher.getInstance().dispatchBroadcast(routeRequest);
+     }
+
+     @Override
+     protected void requestForMe(Request request)
      {
           //If the request is for this node , we need to send a reply :
-          RouteReply reply = new RouteReply(((RouteRequest) request).getHopCount(), request.getOriginAddress(),
-                  ((RouteRequest) request).getOriginSequenceNumber(),
-                  SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+          RouteReply reply = new RouteReply();
+
+          reply.setHopCount(((RouteRequest) request).getHopCount());
+          reply.setOriginAddress(Address.getInstance().getAddress());
+          reply.setDestinationAddress(request.getOriginAddress());
+          reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());
+          reply.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
           reply.setRemainingLifeTime(Constants.SDT_TTL);
-          Dispatcher.getInstance().dispatch(reply);
+          Dispatcher.getInstance().dispatchWithAck(reply);
      }
 
+     @Override
+     protected void dispatchAck(Request request)
+     {
 
+     }
 }

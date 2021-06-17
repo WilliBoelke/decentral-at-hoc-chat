@@ -12,12 +12,10 @@ public class Transmission
       */
      private Request request;
 
-
      public Transmission(Request request)
      {
           this.request = request;
      }
-
 
      public static byte getStdRetries()
      {

@@ -7,18 +7,18 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
 
-public class RouteAck extends Request
+public class RouteReplyAck extends Request
 {
 
      private byte destinationAddress;
 
 
-     public RouteAck()
+     public RouteReplyAck()
      {
           this.setType(ROUTE_ACK);
      }
 
-     public RouteAck(String encoded)
+     public RouteReplyAck(String encoded)
      {
           this.setUpInstanceFromString(encoded);
      }

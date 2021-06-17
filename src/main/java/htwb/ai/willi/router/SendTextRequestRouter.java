@@ -1,6 +1,8 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.controller.Address;
+import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
@@ -14,47 +16,32 @@ public class SendTextRequestRouter extends Router
 {
      public static final Logger LOG = Logger.getLogger(SendTextRequestRouter.class.getName());
 
+
      @Override
-     public void route(Request request)
+     protected void dispatchAck(Request request)
      {
-          dispatchHopAck((SendTextRequest) request);
-          LOG.info("process request");
-          if (isRequestFromMe(request))
-          {
-               requestFromMe(request);
-          }
-          else if (isRequestForMe(request))
-          {
-               dispatchSendTextAck((SendTextRequest) request);
-               requestForMe(request);
-          }
-          else if (isRequestToForward(request))
-          {
-               requestToForward(request);
-          }
+          HopAck ack = new HopAck();
+          ack.setMessageSequenceNumber(((SendTextRequest)request).getMessageSequenceNumber());
+          Dispatcher.getInstance().dispatch(ack);
      }
 
 
      @Override
-     void requestForMe(Request request)
+     protected void anyCase(Request request)
      {
-          //Adding a new Route
-          RoutingTable.getInstance().addRoute(request);
-          // Output message
-          SendTextRequest sendTextRequest = (SendTextRequest) request;
-          LOG.info(sendTextRequest.getReadableMessage());
-          //Sending ACK
-          SendTextRequestAck acknowledge = new SendTextRequestAck();
-          Dispatcher.getInstance().dispatch(acknowledge);
      }
 
      @Override
-     public void requestFromMe(Request request)
+     protected void requestFromMe(Request request)
      {
           LOG.info("Sending request");
           if (RoutingTable.getInstance().hasFittingRoute(request))
           {
                LOG.info("Found Route");
+               RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
+               request.setNextHopInRoute(route.getNextInRoute());
+               ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
+               ((SendTextRequest) request).setMessageSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
                Dispatcher.getInstance().dispatchWithAck(request);
           }
           else
@@ -65,12 +52,53 @@ public class SendTextRequestRouter extends Router
           }
      }
 
-
-     public RouteRequest buildRequest(SendTextRequest sendTextRequest)
+     @Override
+     protected void requestToForward(Request request)
      {
-          RouteRequest routeRequest = new RouteRequest((byte) 0, sendTextRequest.getDestinationAddress(),
-                  SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement(), sendTextRequest.getOriginAddress());
-          //TODO dest qequence number?
+          dispatchAck(request);
+          if(RoutingTable.getInstance().hasFittingRoute(request))
+          {
+               RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
+               request.setNextHopInRoute(route.getNextInRoute());
+               Dispatcher.getInstance().dispatchWithAck(request);
+          }
+          else
+          {
+               // Todo send Error
+          }
+     }
+
+     @Override
+     protected void requestForMe(Request request)
+     {
+          dispatchAck(request);
+          // Output message
+          SendTextRequest sendTextRequest = (SendTextRequest) request;
+          LOG.info(sendTextRequest.getReadableMessage());
+     }
+
+
+     private RouteRequest buildRequest(SendTextRequest sendTextRequest)
+     {
+          RouteRequest routeRequest = new RouteRequest();
+
+          Byte sequenceNum = RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(sendTextRequest.getOriginAddress());
+          if (RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(sendTextRequest.getDestinationAddress()) == -1)
+          {
+               routeRequest.setuFlag((byte) 1);
+               routeRequest.setDestinationSequenceNumber((byte) 0);
+          }
+          else
+          {
+               routeRequest.setuFlag((byte) 1);
+               routeRequest.setDestinationSequenceNumber(sequenceNum);
+          }
+          routeRequest.setOriginAddress(Address.getInstance().getAddress());
+          routeRequest.setDestinationAddress(sendTextRequest.getDestinationAddress());
+          routeRequest.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+          routeRequest.setHopCount((byte) 0);
+          sendTextRequest.setMessageSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+          routeRequest.setSendTextRequest(sendTextRequest);
           return routeRequest;
      }
 }

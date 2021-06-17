@@ -1,7 +1,7 @@
 package htwb.ai.willi.message;
 
 import htwb.ai.willi.message.Acks.HopAck;
-import htwb.ai.willi.message.Acks.RouteAck;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
 
 import java.nio.charset.StandardCharsets;
@@ -53,7 +53,7 @@ public class RequestEncoderAndDecoder
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.ROUTE_ACK:
-                    request = RouteAck.getInstanceFromEncodedString(requestBody);
+                    request = RouteReplyAck.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.SEND_TEXT_REQUEST:

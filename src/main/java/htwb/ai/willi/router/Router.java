@@ -3,7 +3,7 @@ package htwb.ai.willi.router;
 import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.message.Acks.HopAck;
-import htwb.ai.willi.message.Acks.RouteAck;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
@@ -19,13 +19,31 @@ import htwb.ai.willi.routing.RoutingTable;
 public abstract class Router
 {
 
+     public void route(Request request)
+     {
+          anyCase(request);
+          if (isRequestFromMe(request))
+          {
+               requestFromMe(request);
+          }
+          else if (isRequestForMe(request))
+          {
+               requestForMe(request);
+          }
+          else if (isRequestToForward(request))
+          {
+               requestToForward(request);
+          }
+     }
 
-     public abstract void route(Request request);
 
-     public abstract void requestFromMe(Request request);
+     protected abstract void anyCase(Request request);
+
+     protected abstract void requestFromMe(Request request);
 
 
-     public void requestToForward(Request request)
+     protected abstract void requestToForward(Request request);
+     /**
      {
         //  RoutingTable.getInstance().addRoute(request);
 
@@ -41,13 +59,10 @@ public abstract class Router
           {
                Dispatcher.getInstance().dispatchBroadcast(prepareForwardRequest(request));
           }
-     }
+     }*/
 
+     protected  abstract void requestForMe(Request request);
 
-     void requestForMe(Request request)
-     {
-
-     }
 
      protected boolean isRequestForMe(Request request)
      {
@@ -68,72 +83,7 @@ public abstract class Router
           return false;
      }
 
-     public static Request prepareForwardRequest(Request request)
-     {
-          byte nextHop = RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress());
 
-          if (request instanceof RouteReply)
-          {
-               RouteReply preparedRequest = (RouteReply) request;
-               byte hopCount = ((RouteReply) request).getHopCount();
-               hopCount++;
-               preparedRequest.setHopCount(hopCount);
-               if (nextHop != -1)
-               {
-                    (preparedRequest).setNextHopInRoute(nextHop);
-               }
-               return preparedRequest;
-          }
 
-          if (request instanceof SendTextRequest)
-          {
-               SendTextRequest preparedRequest = (SendTextRequest) request;
-               if (nextHop != -1)
-               {
-                    preparedRequest.setNextHopInRoute(nextHop);
-               }
-
-               return preparedRequest;
-          }
-
-          if (request instanceof RouteRequest)
-          {
-               RouteRequest preparedRequest = (RouteRequest) request;
-               byte hopCount = ((RouteRequest) request).getHopCount();
-               hopCount++;
-               preparedRequest.setHopCount(hopCount);
-               if (nextHop != -1)
-               {
-                    preparedRequest.setNextHopInRoute(nextHop);
-               }
-               return preparedRequest;
-          }
-
-          return null;
-     }
-
-     protected void dispatchHopAck(SendTextRequest requestToAck)
-     {
-          HopAck ack = new HopAck();
-          ack.setNextHopInRoute(requestToAck.getLastHopInRoute());
-          ack.setMessageSequenceNumber(requestToAck.getMessageSequenceNumber());
-          Dispatcher.getInstance().dispatch(ack);
-     }
-
-     protected void dispatchRouteReplyAc(byte destination)
-     {
-          RouteAck ack = new RouteAck();
-          ack.setNextHopInRoute(destination);
-          Dispatcher.getInstance().dispatch(ack);
-     }
-
-     protected void  dispatchSendTextAck(SendTextRequest requestToAck)
-     {
-          SendTextRequestAck ack = new SendTextRequestAck();
-          ack.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(requestToAck.getOriginAddress()));
-          ack.setOriginAddress(Address.getInstance().getAddress());
-          ack.setDestinationAddress(requestToAck.getDestinationAddress());
-          ack.setMessageSequenceNumber(requestToAck.getMessageSequenceNumber());
-          Dispatcher.getInstance().dispatch(ack);
-     }
+     protected abstract void dispatchAck(Request request);
 }
