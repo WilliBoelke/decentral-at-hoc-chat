@@ -96,6 +96,7 @@ public class UserCommandProcessor
 
           SendTextRequest request = new SendTextRequest();
           request.setDestinationAddress(Byte.parseByte(destinationAddress));
+          request.setOriginAddress(Address.getInstance().getAddress());
           request.setMessage(message);
 
           return request;
