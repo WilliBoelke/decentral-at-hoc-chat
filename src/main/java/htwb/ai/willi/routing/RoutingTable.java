@@ -7,24 +7,51 @@ import htwb.ai.willi.message.RouteRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class RoutingTable
 {
+
+     //--------------static variables--------------//
+
+     /*
+      * Logger for the Routing table
+      */
      public static final Logger LOG = Logger.getLogger(RoutingTable.class.getName());
+     /**
+      * The instance following the singleton pattern
+      */
      private static RoutingTable instance;
 
+
+     //--------------instance variables--------------//
+
+     /**
+      * A list of {@link Route}
+      */
      private final ArrayList<Route> routes;
 
 
+     //--------------constructors and init--------------//
+
+
+     /**
+      * Private constructor (Singleton)
+      */
      private RoutingTable()
      {
           routes = new ArrayList<>();
      }
 
 
+     /**
+      * getter for the instance (Singleton)
+      *
+      * @return A instance of the Routing table
+      */
      public static RoutingTable getInstance()
      {
           if (instance == null)
@@ -35,17 +62,32 @@ public class RoutingTable
           return instance;
      }
 
+
+     //--------------public methods--------------//
+
+     /*
+      * Adds a new route to the RouteList3
+      */
      public void addRoute(Route route)
      {
           routes.add(route);
      }
 
+     /**
+      * Generates a new Route based on a incoming {@link RouteReply}
+      * or {@link RouteRequest} and adds it to the route list
+      *
+      * @param request
+      *         A route Reply or RouteRequest
+      */
      public void addRoute(Request request)
      {
+          removeOldRouts();
+
           if (request instanceof RouteReply)
           {
                Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
-                       ((RouteReply) request).getHopCount(), (byte) -1);
+                       ((RouteReply) request).getHopCount(), ((RouteReply) request).getOriginSequenceNumber());
                addRoute(route);
           }
           else if (request instanceof RouteRequest)
@@ -55,7 +97,6 @@ public class RoutingTable
                addRoute(route);
           }
      }
-
 
      /**
       * Returns the next hop / next nodes Address on the shortest (Hop Count)
@@ -67,18 +108,25 @@ public class RoutingTable
       */
      public byte getNextInRouteTo(byte destinationAddress)
      {
+          removeOldRouts();
+
           Route routeToDestination = getRouteTo(destinationAddress);
-          if(routeToDestination != null)
+          if (routeToDestination != null)
           {
                return routeToDestination.getNextInRoute();
           }
           return -1;
      }
 
+     /*
+      * Returns the Route with the newest Sequence number an the smalled
+      * hop count
+      */
      public Route getRouteTo(byte destinationAddress)
      {
+          removeOldRouts();
           Optional<Route> routeOptional =
-                  routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().min(Comparator.comparing(Route::getHops));
+                  routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().max(Comparator.comparing(Route::getDestinationSequenceNumber)).stream().min(Comparator.comparing(Route::getHops));
 
           Route route;
           if (routeOptional.isPresent())
@@ -89,12 +137,18 @@ public class RoutingTable
           return null;
      }
 
-
      @Override
      public String toString()
      {
+          removeOldRouts();
+
           String table = "| destination       | hops     | next hop   |  destination sequence      | \n" +
                   "|-----------------|---------|------------|----------------------------| \n";
+
+          for (Route r : routes)
+          {
+               table.concat(r.toString());
+          }
 
 
           return table;
@@ -115,13 +169,43 @@ public class RoutingTable
           return false;
      }
 
+     /**
+      * Removes all routes with the given destination address
+      * * @param destinationAddress
+      */
      public void removeRoute(byte destinationAddress)
      {
+          routes.removeIf(r -> r.getDestinationAddress() == (destinationAddress));
      }
 
-     public byte getNewesKnownSequenceNumberFromNode(byte originAddress)
+     /**
+      * Returns the newest known (highest) Sequence number of the
+      * destination node, if no sequence number / route
+      * is found returns -1
+      *
+      * @param destinationAddress
+      *
+      * @return
+      */
+     public byte getNewesKnownSequenceNumberFromNode(byte destinationAddress)
      {
+          Optional<Route> routeOptional =
+                  routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().max(Comparator.comparing(Route::getDestinationSequenceNumber));
+
+          if (routeOptional.isPresent())
+          {
+               return routeOptional.get().getDestinationSequenceNumber();
+          }
           return -1;
+     }
+
+     /**
+      * Removes all routes withe a remaining lifetime of
+      * less then and equal to zero
+      */
+     private void removeOldRouts()
+     {
+          routes.removeIf(r -> r.getRemainingLifeTime() <= (0));
      }
 
      /**
@@ -139,7 +223,7 @@ public class RoutingTable
           /**
            * The lifetime in seconds
            */
-          public static final int LIFETIME = 180;
+          public static final long LIFETIME = 180;
 
 
           //--------------instance variables--------------//
@@ -169,6 +253,10 @@ public class RoutingTable
            */
           private byte hops;
 
+          /**
+           * Timestamp of the routs creation
+           */
+          private long timeStamp;
 
           //--------------constructors and init--------------//
 
@@ -178,6 +266,7 @@ public class RoutingTable
                this.destinationAddress = destinationAddress;
                this.nextInRoute = nextInRoute;
                this.hops = hops;
+               this.timeStamp = System.currentTimeMillis();
           }
 
 
@@ -212,6 +301,28 @@ public class RoutingTable
           public void setHops(byte hops)
           {
                this.hops = hops;
+          }
+
+          public int getRemainingLifeTime()
+          {
+               long elapsedSeconds = ((System.currentTimeMillis() - timeStamp) + 1000);
+
+               return (int) (LIFETIME - elapsedSeconds);
+          }
+
+          public byte getDestinationSequenceNumber()
+          {
+               return destinationSequenceNumber;
+          }
+
+          @Override
+          public String toString()
+          {
+               StringBuilder sbuf = new StringBuilder();
+               Formatter fmt = new Formatter(sbuf);
+               fmt.format("|%17d|%9d|%12d|%28d| \n", this.destinationAddress, this.hops, this.nextInRoute,
+                       this.destinationSequenceNumber);
+               return sbuf.toString();
           }
      }
 
