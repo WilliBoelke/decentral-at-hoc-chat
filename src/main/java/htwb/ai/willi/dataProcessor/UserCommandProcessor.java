@@ -85,7 +85,7 @@ public class UserCommandProcessor
                System.out.println("Enter the Destination Address ");
                destinationAddress = scanner.nextLine();
           }
-          while ((!isValidAddress(destinationAddress)));
+          while (!isValidAddress(destinationAddress));
 
           do
           {

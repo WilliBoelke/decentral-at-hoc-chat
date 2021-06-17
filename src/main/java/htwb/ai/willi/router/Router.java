@@ -1,15 +1,10 @@
 package htwb.ai.willi.router;
 
-import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.controller.Address;
-import htwb.ai.willi.message.Acks.HopAck;
-import htwb.ai.willi.message.Acks.RouteReplyAck;
-import htwb.ai.willi.message.Acks.SendTextRequestAck;
+import htwb.ai.willi.dataProcessor.UserCommandProcessor;
 import htwb.ai.willi.message.Request;
-import htwb.ai.willi.message.RouteReply;
-import htwb.ai.willi.message.RouteRequest;
-import htwb.ai.willi.message.SendTextRequest;
-import htwb.ai.willi.routing.RoutingTable;
+
+import java.util.logging.Logger;
 
 
 /**
@@ -18,20 +13,24 @@ import htwb.ai.willi.routing.RoutingTable;
  */
 public abstract class Router
 {
+     public static final Logger LOG = Logger.getLogger(UserCommandProcessor.class.getName());
 
      public void route(Request request)
      {
           anyCase(request);
           if (isRequestFromMe(request))
           {
+               LOG.info("request from me ");
                requestFromMe(request);
           }
           else if (isRequestForMe(request))
           {
+               LOG.info("request for me ");
                requestForMe(request);
           }
           else if (isRequestToForward(request))
           {
+               LOG.info("request to forward ");
                requestToForward(request);
           }
      }
