@@ -92,7 +92,7 @@ public class UserCommandProcessor
                System.out.println("Enter a message: ");
                message = scanner.nextLine();
           }
-          while (!isValidAddress(destinationAddress));
+          while (!isValidMessage(message));
 
           SendTextRequest request = new SendTextRequest();
           request.setDestinationAddress(Byte.parseByte(destinationAddress));
