@@ -1,5 +1,6 @@
 package htwb.ai.willi.dataProcessor;
 
+import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
@@ -57,9 +58,13 @@ public class UserCommandProcessor
                case "tab":
                     System.out.println(RoutingTable.getInstance().toString());
                     break;
-               case "debug -on":
+               case "deb":
                     break;
-               case "debug -off":
+               case "adr":
+                    System.out.println("This nodes Address is : " + Address.getInstance().getAddress());
+                    break;
+               case "seq":
+                    System.out.println("The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
                     break;
                default:
                     System.out.println("unknown user command");
