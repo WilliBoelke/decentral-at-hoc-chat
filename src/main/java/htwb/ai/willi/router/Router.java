@@ -17,6 +17,7 @@ public abstract class Router
 
      public void route(Request request)
      {
+          LOG.info("Routing Request : " + request.encode());
           anyCase(request);
           if (isRequestFromMe(request))
           {
@@ -65,11 +66,13 @@ public abstract class Router
 
      protected boolean isRequestForMe(Request request)
      {
+          LOG.info("Routing Request : Dest Address: " + request.getDestinationAddress());
           return request.getDestinationAddress() == Address.getInstance().getAddress();
      }
 
      protected boolean isRequestFromMe(Request request)
      {
+          LOG.info("Routing Request : Origin Address: " + request.getOriginAddress());
           return request.getOriginAddress() == Address.getInstance().getAddress();
      }
 
