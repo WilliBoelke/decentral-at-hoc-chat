@@ -164,30 +164,37 @@ public class Controller implements PropertyChangeListener
                          switch (request.getType())
                          {
                               case Request.ROUTE_REQUEST:
+                                   LOG.info("Received: Route Request");
                                    router = new RouteRequestRouter();
                                    router.route(request);
                                    break;
                               case Request.ROUTE_REPLY:
+                                   LOG.info("Received: Route Reply");
                                    router = new RouteReplyRouter();
                                    router.route(request);
                                    break;
                               case Request.ROUTE_ERROR:
+                                   LOG.info("Received: Route Error");
                                    router = new RouteErrorRouter();
                                    router.route(request);
                                    break;
                               case Request.ROUTE_ACK:
+                                   LOG.info("Received: Route Reply Ack");
                                    router = new RouteAckRouter();
                                    router.route(request);
                                    break;
                               case Request.SEND_TEXT_REQUEST:
+                                   LOG.info("Received: Send Text Request");
                                    router = new SendTextRequestRouter();
                                    router.route(request);
                                    break;
                               case Request.HOP_ACK:
+                                   LOG.info("Received: Hop Ack");
                                    router = new HopAckRouter();
                                    router.route(request);
                                    break;
                               case Request.SEND_TEXT_REQUEST_ACK:
+                                   LOG.info("Received: Send text Ack");
                                    router = new SendTextRequestAckRouter();
                                    router.route(request);
                                    break;

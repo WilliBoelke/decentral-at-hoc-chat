@@ -17,7 +17,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 {
      public static final Logger LOG = Logger.getLogger(TransmissionCoordinator.class.getName());
 
-
      private final Transmission transmission;
 
      private boolean finished;
@@ -39,12 +38,9 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                {
                     return;
                }
-               if(transmission.getRequest() instanceof RouteRequest)
-               {
-                    SerialOutput.getPrintWriter().broadcast(transmission.getRequest());
-               }
                else
                {
+                    LOG.info("Trying to send, trie  : " + 1);
                     SerialOutput.getPrintWriter().sendRequest(transmission.getRequest());
                }
                waitForAck(5);
@@ -52,6 +48,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
           if (!finished)
           {
+               LOG.info("Transmission failed, out of retries");
                onTransmissionFailed();
           }
      }
@@ -59,6 +56,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      public void waitForAck(Integer times)
      {
+          LOG.info("Waiting for answer");
           for (int i = 0; i < times; i++)
           {
                try
@@ -70,6 +68,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     e.printStackTrace();
                }
           }
+          LOG.info("Finished waiting");
      }
 
 
@@ -92,8 +91,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      private void onTransmissionFailed()
      {
-          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " +
-                  "destination address");
+          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different destination address");
           this.finished = false;
           this.failed = false;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
@@ -107,11 +105,15 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      @Override
      public void propertyChange(PropertyChangeEvent event)
      {
+
+
           Request incomingReply = (Request) event.getNewValue();
+          LOG.info("Received a Reply : " + incomingReply.encode());
 
           // Outgoing SendTextRequest
           if(this.transmission.getRequest() instanceof  SendTextRequest)
           {
+               LOG.info("This a SendTextRequest waiting for a SendTextAck or a HopAck , got a  reply of type " + incomingReply.getType());
                //from me
                if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
@@ -135,7 +137,12 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                if (incomingReply.getOriginAddress() == this.transmission.getRequest().getDestinationAddress())
                {
                     this.finished = true;
+                    onRouteRequestSuccess();
                }
+          }
+          else
+          {
+               LOG.info("Reply not for this request");
           }
      }
 }

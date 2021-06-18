@@ -48,6 +48,7 @@ public class Dispatcher
       */
      public void dispatchWithAck(Request request)
      {
+          LOG.info("dispatching and waiting for ACK");
           Transmission transmission = new Transmission(request);
           TransmissionCoordinator coordinator = new TransmissionCoordinator(transmission);
           registerPropertyChangeListener(coordinator);
