@@ -34,13 +34,14 @@ public class RequestEncoderAndDecoder
           Matcher headerMatcher = headerPattern.matcher(encodedRequest);
           headerMatcher.find();
           String header = headerMatcher.group();
-
+          LOG.info("header = " + header);
           Pattern addressPattern = Pattern.compile("[0-9]{4}");
           Matcher addressMatcher = addressPattern.matcher(header);
           addressMatcher.find();
           String address = addressMatcher.group();
+          LOG.info("header = " + address);
           String requestBody = encodedRequest.replace(header, "");
-
+          LOG.info("requestBody = " + requestBody);
           Request request = null;
 
           switch (getEncodedMessageType(requestBody))
