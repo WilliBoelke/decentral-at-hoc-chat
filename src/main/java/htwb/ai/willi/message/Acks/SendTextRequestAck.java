@@ -50,6 +50,12 @@ public class SendTextRequestAck extends Request
      private void setUpInstanceFromString(String encoded)
      {
      }
+     @Override
+     public String getAsReadable()
+     {
+          return  "" + this.getType() ;
+     }
+
 
      @Override
      public String encode()

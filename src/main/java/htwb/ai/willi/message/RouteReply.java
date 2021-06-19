@@ -54,6 +54,13 @@ public class RouteReply extends Request
      }
 
      @Override
+     public String getAsReadable()
+     {
+          return this.getType() + ", " + hopCount  + ", " + originAddress  + ", " +
+                  destinationAddress  + ", " + destinationSequenceNumber  + ", " + remainingLifeTime;
+     }
+
+     @Override
      public String encode()
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

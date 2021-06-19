@@ -70,7 +70,7 @@ public abstract class Request implements Routable
           this.nextHopInRoute = nextHopInRoute;
      }
 
-
+     public abstract String getAsReadable();
 }
 
 

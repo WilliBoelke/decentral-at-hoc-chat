@@ -36,6 +36,12 @@ public class HopAck extends Request
           return null;
      }
 
+     @Override
+     public String getAsReadable()
+     {
+          return  "" + this.getType() ;
+     }
+
 
      @Override
      public byte getDestinationAddress()
@@ -53,6 +59,7 @@ public class HopAck extends Request
      {
           return messageSequenceNumber;
      }
+
 
      public void setMessageSequenceNumber(byte messageSequenceNumber)
      {

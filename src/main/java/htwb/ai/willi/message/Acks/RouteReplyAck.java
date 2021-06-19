@@ -46,6 +46,11 @@ public class RouteReplyAck extends Request
           return byteArrayOutputStream.toString();
      }
 
+     @Override
+     public String getAsReadable()
+     {
+          return  "" + this.getType() ;
+     }
 
      public byte getDestinationAddress()
      {

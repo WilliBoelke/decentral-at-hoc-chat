@@ -67,6 +67,13 @@ public class RouteError extends Request
           return byteArrayOutputStream.toString();
      }
 
+     @Override
+     public String getAsReadable()
+     {
+          return this.getType() + ", " + destinationCount  + ", " + unreachableDestinationAddress  + ", " +
+                  unreachableDestinationSequenceNumber  + ", " + additionalAddress  + ", " + additionalSequenceNumber;
+     }
+
 
      @Override
      public byte getDestinationAddress()

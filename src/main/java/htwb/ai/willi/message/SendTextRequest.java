@@ -96,6 +96,14 @@ public class SendTextRequest extends Request
 
      //---------------getter and setter---------------//
 
+     @Override
+     public String getAsReadable()
+     {
+          return this.getType() + ", " + originAddress  + ", " + destinationAddress  + ", " +
+                  messageSequenceNumber  + ", " + message ;
+     }
+
+
      public String getReadableMessage()
      {
           return ">>" + originAddress + "  said >> " + message;

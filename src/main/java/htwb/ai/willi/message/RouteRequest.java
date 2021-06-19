@@ -91,6 +91,14 @@ public class RouteRequest extends Request
           this.destinationSequenceNumber = bytes[6];
      }
 
+     @Override
+     public String getAsReadable()
+     {
+          return this.getType() + ", " + uFlag  + ", " + hopCount  + ", " +
+                  originAddress  + ", " + originSequenceNumber  + ", " + destinationAddress  + ", " + destinationSequenceNumber;
+     }
+
+
      //----------------public methods-----------------//
 
 
