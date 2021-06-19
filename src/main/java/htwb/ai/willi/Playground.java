@@ -3,8 +3,6 @@ package htwb.ai.willi;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RequestEncoderAndDecoder;
 import htwb.ai.willi.message.RouteRequest;
-import htwb.ai.willi.message.SendTextRequest;
-import htwb.ai.willi.routing.SequenceNumberManager;
 
 public class Playground
 {
@@ -26,7 +24,7 @@ public class Playground
 
           RequestEncoderAndDecoder decoder = new RequestEncoderAndDecoder();
 
-          Request req = decoder.decode(send);
+          Request req = decoder.decode("LR,0012,04,"+send);
 
           System.out.println(req.getAsReadable());
 
