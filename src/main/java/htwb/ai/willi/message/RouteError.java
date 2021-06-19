@@ -35,9 +35,9 @@ public class RouteError extends Request
           this.setUpInstanceFromString(encoded);
      }
 
-     public static RouteReply getInstanceFromEncodedString(String encoded)
+     public static RouteError getInstanceFromEncodedString(String encoded)
      {
-          return new RouteReply(encoded);
+          return new RouteError(encoded);
      }
 
 

@@ -74,9 +74,9 @@ public class RouteRequest extends Request
           this.setUpInstanceFromString(encoded);
      }
 
-     public static SendTextRequest getInstanceFromEncodedString(String encoded)
+     public static RouteRequest getInstanceFromEncodedString(String encoded)
      {
-          return new SendTextRequest(encoded);
+          return new RouteRequest(encoded);
      }
 
      private void setUpInstanceFromString(String encoded)

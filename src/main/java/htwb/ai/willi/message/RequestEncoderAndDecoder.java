@@ -1,10 +1,12 @@
 package htwb.ai.willi.message;
 
+import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
 
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,8 @@ import java.util.regex.Pattern;
  */
 public class RequestEncoderAndDecoder
 {
+
+     public static final Logger LOG = Logger.getLogger(RequestEncoderAndDecoder.class.getName());
 
      //---------------public methods--------------//
 
@@ -25,22 +29,16 @@ public class RequestEncoderAndDecoder
 
      public Request decode(String encodedRequest) throws IllegalArgumentException
      {
-          Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
-          Matcher headerMatcher = headerPattern.matcher(encodedRequest);
-          headerMatcher.find();
-          String header = headerMatcher.group();
 
-          Pattern addressPattern = Pattern.compile("[0-9]{4}");
-          Matcher addressMatcher = addressPattern.matcher(header);
-          addressMatcher.find();
-          String address = addressMatcher.group();
-          String requestBody = encodedRequest.replace(header, "");
+          String address = "12";
+          String requestBody = encodedRequest;
 
           Request request = null;
 
           switch (getEncodedMessageType(requestBody))
           {
                case Request.ROUTE_REQUEST:
+                    LOG.info("Decoding Route Request");
                     request = RouteRequest.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
@@ -76,6 +74,7 @@ public class RequestEncoderAndDecoder
      private byte getEncodedMessageType(String encoded)
      {
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
+          LOG.info("decodeding message type = " + bytes[0]);
           return bytes[0];
      }
 
