@@ -110,7 +110,7 @@ public class UserCommandProcessor
           try
           {
                Byte.parseByte(givenAddress);
-               if (Byte.parseByte(givenAddress) != (byte) 13) // not own address
+               if (Byte.parseByte(givenAddress) != Address.getInstance().getAddress()) // not own address
                {
                     return true;
                }

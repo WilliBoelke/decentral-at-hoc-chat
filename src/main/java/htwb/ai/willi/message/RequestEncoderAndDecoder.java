@@ -30,8 +30,16 @@ public class RequestEncoderAndDecoder
      public Request decode(String encodedRequest) throws IllegalArgumentException
      {
 
-          String address = "12";
-          String requestBody = encodedRequest;
+          Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,");
+          Matcher headerMatcher = headerPattern.matcher(encodedRequest);
+          headerMatcher.find();
+          String header = headerMatcher.group();
+
+          Pattern addressPattern = Pattern.compile("[0-9]{4}");
+          Matcher addressMatcher = addressPattern.matcher(header);
+          addressMatcher.find();
+          String address = addressMatcher.group();
+          String requestBody = encodedRequest.replace(header, "");
 
           Request request = null;
 
