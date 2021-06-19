@@ -75,6 +75,14 @@ public class SerialInput implements SerialPortEventListener, Runnable
           {
                if (inputScanner.hasNext())
                {
+                    try
+                    {
+                         wait(500);
+                    }
+                    catch (InterruptedException e)
+                    {
+                         e.printStackTrace();
+                    }
                     String msg = inputScanner.nextLine();
                     if (!isSystemMessage(msg))
                     {
