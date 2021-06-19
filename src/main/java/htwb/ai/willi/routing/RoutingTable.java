@@ -126,7 +126,11 @@ public class RoutingTable
      {
           removeOldRouts();
           Optional<Route> routeOptional =
-                  routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().max(Comparator.comparing(Route::getDestinationSequenceNumber)).stream().min(Comparator.comparing(Route::getHops));
+                  routes.stream()
+                          .filter(r -> r.getDestinationAddress() == (destinationAddress))
+                          .collect(Collectors.toList()).stream()
+                          .max(Comparator.comparing(Route::getDestinationSequenceNumber)).stream()
+                          .min(Comparator.comparing(Route::getHops));
 
           Route route;
           if (routeOptional.isPresent())
@@ -305,7 +309,7 @@ public class RoutingTable
 
           public int getRemainingLifeTime()
           {
-               long elapsedSeconds = ((System.currentTimeMillis() - timeStamp) + 1000);
+               long elapsedSeconds = ((System.currentTimeMillis() - timeStamp) / 1000);
 
                return (int) (LIFETIME - elapsedSeconds);
           }

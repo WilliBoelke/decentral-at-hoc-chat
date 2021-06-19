@@ -166,7 +166,16 @@ public class SerialOutput
           LOG.info("Broadcasting Request = " + request.getAsReadable());
           LOG.info("Broadcasting Request len = " + encodedRequest.length());
           printWriter.println("AT+DEST=" + Constants.BROADCAST_ADDRESS + Constants.CARRIAGE_RETURN_LINE_FEED);
+
           printWriter.flush();
+          try
+          {
+               Thread.sleep(250);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
           printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
