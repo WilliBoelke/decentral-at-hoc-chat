@@ -151,7 +151,7 @@ public class SerialOutput
      {
           String encodedRequest = request.encode();
 
-          printWriter.println("AT+DEST=" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
+          printWriter.println("AT+DEST=" + "00"+request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
           printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
