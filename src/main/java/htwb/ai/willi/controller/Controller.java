@@ -209,6 +209,10 @@ public class Controller implements PropertyChangeListener
                     {
                          LOG.info("Received an invalid message type");
                     }
+                    catch (NullPointerException e)
+                    {
+                         LOG.info("A request was received incompletely and thus cant be decoded");
+                    }
                }
           }
      }
