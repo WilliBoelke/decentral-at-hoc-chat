@@ -40,7 +40,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                }
                else
                {
-                    LOG.info("Trying to send, trie  : " + 1);
+                    LOG.info("Trying to send, tr  : " + i);
                     SerialOutput.getPrintWriter().sendRequest(transmission.getRequest());
                }
                waitForAck(5);
