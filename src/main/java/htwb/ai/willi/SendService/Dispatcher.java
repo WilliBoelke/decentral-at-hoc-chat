@@ -62,7 +62,7 @@ public class Dispatcher
       */
      public void dispatchBroadcast(Request request)
      {
-          SerialOutput.getPrintWriter().broadcast(request);
+          SerialOutput.getInstance().broadcast(request);
      }
 
 
@@ -76,7 +76,7 @@ public class Dispatcher
       */
      public void dispatch(Request request)
      {
-          SerialOutput.getPrintWriter().sendRequest(request);
+          SerialOutput.getInstance().sendRequest(request);
      }
 
 

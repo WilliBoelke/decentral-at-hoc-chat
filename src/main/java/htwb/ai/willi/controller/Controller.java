@@ -65,14 +65,14 @@ public class Controller implements PropertyChangeListener
 
           LOG.info("configureLoraModule: start configuration");
           LOG.info("configureLoraModule: reset module");
-          SerialOutput.getPrintWriter().sendConfiguration("AT+RST");
+          SerialOutput.getInstance().sendConfiguration("AT+RST");
           LOG.info("configureLoraModule: send config string");
-          SerialOutput.getPrintWriter().sendConfiguration(Constants.CONFIG);
+          SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
           LOG.info("configureLoraModule: rx");
-          SerialOutput.getPrintWriter().sendConfiguration("AT+RX");
+          SerialOutput.getInstance().sendConfiguration("AT+RX");
           LOG.info("configureLoraModule: send address");
-          SerialOutput.getPrintWriter().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
-          SerialOutput.getPrintWriter().sendConfiguration("AT+SAVE");
+          SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
+          SerialOutput.getInstance().sendConfiguration("AT+SAVE");
           //SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
      }
 
@@ -93,7 +93,7 @@ public class Controller implements PropertyChangeListener
                LOG.info("configureSerialPort: serial port name: " + ser.getName());
                LOG.info("configureSerialPort: setup serial in- and output");
                SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
-               SerialOutput.getPrintWriter().setPrintWriter(new PrintWriter(ser.getOutputStream()));
+               SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
                new Thread(SerialInput.getInstance()).start();
                //That doesnt belong here
                SerialInput.getInstance().registerPropertyChangeListener(this);

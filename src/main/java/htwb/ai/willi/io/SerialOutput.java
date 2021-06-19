@@ -52,7 +52,7 @@ public class SerialOutput
       *
       * @return the SerialOutput
       */
-     public static SerialOutput getPrintWriter()
+     public static SerialOutput getInstance()
      {
           if (instance == null)
           {
