@@ -123,6 +123,7 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.destinationSequenceNumber);
           LOG.info("Encoded as : " + byteArrayOutputStream.toString());
+          LOG.info("Encoded len : " + byteArrayOutputStream.toString().length());
           return byteArrayOutputStream.toString();
      }
 
