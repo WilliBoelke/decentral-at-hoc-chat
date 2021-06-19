@@ -5,19 +5,30 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteError extends Request
 {
-     private byte originAddress = 13;
      private byte destinationCount;
      private byte unreachableDestinationAddress;
      private byte unreachableDestinationSequenceNumber;
-     private byte originSequenceNumber;
+
+     private byte additionalAddress;
+     private byte additionalSequenceNumber;
 
 
-     public RouteError(byte hopCount, byte destinationAddress, byte originSequenceNumber,
-                       byte destinationSequenceNumber)
+     public RouteError(byte additionalAddress, byte destinationCount, byte unreachableDestinationAddress,
+                       byte unreachableDestinationSequenceNumber, byte additionalSequenceNumber)
      {
-
+          this.setType(ROUTE_ERROR);
+          this.additionalAddress = additionalAddress;
+          this.additionalSequenceNumber = additionalSequenceNumber;
+          this.destinationCount = destinationCount;
+          this.unreachableDestinationAddress = unreachableDestinationAddress;
+          this.unreachableDestinationSequenceNumber = unreachableDestinationSequenceNumber;
      }
 
+     public RouteError()
+     {
+
+
+     }
 
      public RouteError(String encoded)
      {
@@ -37,8 +48,8 @@ public class RouteError extends Request
           this.destinationCount = bytes[2];
           this.unreachableDestinationAddress = bytes[3];
           this.unreachableDestinationSequenceNumber = bytes[4];
-          this.originAddress = bytes[5];
-          this.originSequenceNumber = bytes[6];
+          this.additionalAddress = bytes[5];
+          this.additionalSequenceNumber = bytes[6];
      }
 
      @Override
@@ -51,8 +62,8 @@ public class RouteError extends Request
           byteArrayOutputStream.write(this.destinationCount);
           byteArrayOutputStream.write(this.unreachableDestinationAddress);
           byteArrayOutputStream.write(this.unreachableDestinationSequenceNumber);
-          byteArrayOutputStream.write(this.originAddress);
-          byteArrayOutputStream.write(this.originSequenceNumber);
+          byteArrayOutputStream.write(this.additionalAddress);
+          byteArrayOutputStream.write(this.additionalSequenceNumber);
           return byteArrayOutputStream.toString();
      }
 
@@ -63,15 +74,12 @@ public class RouteError extends Request
           return -1;
      }
 
+     @Override
      public byte getOriginAddress()
      {
-          return originAddress;
+          return -1;
      }
 
-     public void setOriginAddress(byte originAddress)
-     {
-          this.originAddress = originAddress;
-     }
 
      public byte getDestinationCount()
      {
@@ -103,13 +111,23 @@ public class RouteError extends Request
           this.unreachableDestinationSequenceNumber = unreachableDestinationSequenceNumber;
      }
 
-     public byte getOriginSequenceNumber()
+     public byte getAdditionalAddress()
      {
-          return originSequenceNumber;
+          return additionalAddress;
      }
 
-     public void setOriginSequenceNumber(byte originSequenceNumber)
+     public void setAdditionalAddress(byte additionalAddress)
      {
-          this.originSequenceNumber = originSequenceNumber;
+          this.additionalAddress = additionalAddress;
+     }
+
+     public byte getAdditionalSequenceNumber()
+     {
+          return additionalSequenceNumber;
+     }
+
+     public void setAdditionalSequenceNumber(byte additionalSequenceNumber)
+     {
+          this.additionalSequenceNumber = additionalSequenceNumber;
      }
 }

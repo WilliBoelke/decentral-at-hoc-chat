@@ -93,19 +93,30 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      {
           LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different destination address");
           this.finished = false;
-          this.failed = false;
+          this.failed = true;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
           sendErrorRequest();
      }
 
+     /**
+      * Send a RouteError if the transmission wasn't successful
+      *
+      */
      private void sendErrorRequest()
      {
+          LOG.info("Send link break error to other nodes, unreachable : " + this.transmission.getRequest().getNextHopInRoute());
+          RouteError routeError = new RouteError();
+          routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
+          routeError.setUnreachableDestinationSequenceNumber(RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(transmission.getRequest().getNextHopInRoute()));
+          routeError.setDestinationCount((byte) 1);
+          routeError.setAdditionalAddress((byte) 0);
+          routeError.setAdditionalSequenceNumber((byte) 0);
+          Dispatcher.getInstance().dispatchBroadcast(routeError);
      }
 
      @Override
      public void propertyChange(PropertyChangeEvent event)
      {
-
 
           Request incomingReply = (Request) event.getNewValue();
           LOG.info("Received a Reply : " + incomingReply.encode());
@@ -113,7 +124,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           // Outgoing SendTextRequest
           if(this.transmission.getRequest() instanceof  SendTextRequest)
           {
-               LOG.info("This a SendTextRequest waiting for a SendTextAck or a HopAck , got a  reply of type " + incomingReply.getType());
+               LOG.info("This a SendTextRequest waiting for a SendTextAck or a HopAck , got a reply of type " + incomingReply.getType());
                //from me
                if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
