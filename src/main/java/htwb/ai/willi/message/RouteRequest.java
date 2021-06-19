@@ -1,11 +1,17 @@
 package htwb.ai.willi.message;
 
 
+import htwb.ai.willi.controller.Controller;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 public class RouteRequest extends Request
 {
+
+     public static final Logger LOG = Logger.getLogger(RouteRequest.class.getName());
+
      //-------------instance variables--------------//
      /**
       * The address of the origin node
@@ -83,6 +89,7 @@ public class RouteRequest extends Request
      {
           this.setType(ROUTE_REQUEST);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
+          LOG.info("Bytes length: " + bytes.length );
           this.uFlag = bytes[1];
           this.hopCount = bytes[2];
           this.originAddress = bytes[3];
@@ -115,6 +122,7 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.originSequenceNumber);
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.destinationSequenceNumber);
+          LOG.info("Encoded as : " + byteArrayOutputStream.toString());
           return byteArrayOutputStream.toString();
      }
 
