@@ -144,7 +144,7 @@ public class Controller implements PropertyChangeListener
                }
                else if (changedData instanceof SendTextRequest)
                {
-                    LOG.info("propertyChange: received messae from user, sending to manager" + changedData);
+                    LOG.info("propertyChange: received message from user, sending to manager" + changedData);
                     SendTextRequestRouter sendTextRequestManager = new SendTextRequestRouter();
                     sendTextRequestManager.route((SendTextRequest) changedData);
                }

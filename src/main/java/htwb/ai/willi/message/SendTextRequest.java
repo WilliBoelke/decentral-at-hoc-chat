@@ -106,7 +106,7 @@ public class SendTextRequest extends Request
 
      public String getReadableMessage()
      {
-          return ">>" + originAddress + "  said >> " + message;
+          return ">>>>" + originAddress + "  said >>>> " + message;
      }
 
      public String getEncodedMessage()

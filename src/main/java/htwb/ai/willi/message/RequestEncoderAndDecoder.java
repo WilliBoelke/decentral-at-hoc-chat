@@ -34,14 +34,11 @@ public class RequestEncoderAndDecoder
           Matcher headerMatcher = headerPattern.matcher(encodedRequest);
           headerMatcher.find();
           String header = headerMatcher.group();
-          LOG.info("header = " + header);
           Pattern addressPattern = Pattern.compile("[0-9]{4}");
           Matcher addressMatcher = addressPattern.matcher(header);
           addressMatcher.find();
           String address = addressMatcher.group();
-          LOG.info("header = " + address);
           String requestBody = encodedRequest.replace(header, "");
-          LOG.info("requestBody = " + requestBody);
           Request request = null;
 
           switch (getEncodedMessageType(requestBody))
@@ -52,26 +49,32 @@ public class RequestEncoderAndDecoder
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.ROUTE_REPLY:
+                    LOG.info("Decoding Route Reply");
                     request = RouteReply.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.ROUTE_ERROR:
+                    LOG.info("Decoding Route Error");
                     request = RouteError.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.ROUTE_ACK:
+                    LOG.info("Decoding Route Error");
                     request = RouteReplyAck.getInstanceFromEncodedString(requestBody, address);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.SEND_TEXT_REQUEST:
+                    LOG.info("Decoding Send Text Requets");
                     request = SendTextRequest.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.HOP_ACK:
+                    LOG.info("Decoding Hop Ack");
                     request = HopAck.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.SEND_TEXT_REQUEST_ACK:
+                    LOG.info("Decoding Text Ack");
                     request = SendTextRequestAck.getInstanceFromEncodedString(requestBody);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
