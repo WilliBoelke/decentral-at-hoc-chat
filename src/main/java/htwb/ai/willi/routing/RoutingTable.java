@@ -68,7 +68,7 @@ public class RoutingTable
       */
      public void addRoute(Route route)
      {
-
+          LOG.info(route.getDestinationAddress() + " | "+ Address.getInstance().getAddress());
           if (route.getDestinationAddress() == Address.getInstance().getAddress())
           {
                LOG.info("Route to this node..return.");
@@ -174,7 +174,7 @@ public class RoutingTable
           removeOldRouts();
 
           String table =
-                          "|\n\n----ROUTE REQUEST----------------------------------------------------|\n"+
+                          "\n\n|----ROUTING TABLE----------------------------------------------------|\n"+
                           "| destination     | hops    | next hop   |  destination sequence      | \n" +
                            "|-----------------|---------|------------|----------------------------| \n\n";
 
@@ -396,8 +396,4 @@ public class RoutingTable
           {
                this.nextInRoute = route.nextInRoute;
                this.destinationSequenceNumber = route.destinationSequenceNumber;
-               this.hops= route.hops;
-               this.timeStamp =  System.currentTimeMillis();
-          }
-     }
-}
+               this.hops= route
