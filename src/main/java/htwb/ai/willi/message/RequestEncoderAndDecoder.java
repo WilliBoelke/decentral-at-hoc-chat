@@ -40,46 +40,46 @@ public class RequestEncoderAndDecoder
           String requestBody = encodedRequest.replace(header, "");
           Request request = null;
 
-          switch (getEncodedMessageType(requestBody))
-          {
-               case Request.ROUTE_REQUEST:
-                    LOG.info("Decoding Route Request");
-                    request = RouteRequest.getInstanceFromEncodedString(requestBody);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               case Request.ROUTE_REPLY:
-                    LOG.info("Decoding Route Reply");
-                    request = RouteReply.getInstanceFromEncodedString(requestBody);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               case Request.ROUTE_ERROR:
-                    LOG.info("Decoding Route Error");
-                    request = RouteError.getInstanceFromEncodedString(requestBody);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               case Request.ROUTE_ACK:
-                    LOG.info("Decoding Route Error");
-                    request = RouteReplyAck.getInstanceFromEncodedString(requestBody, address);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               case Request.SEND_TEXT_REQUEST:
-                    LOG.info("Decoding Send Text Requets");
-                    request = SendTextRequest.getInstanceFromEncodedString(requestBody);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               case Request.HOP_ACK:
-                    LOG.info("Decoding Hop Ack");
-                    request = HopAck.getInstanceFromEncodedString(requestBody, address);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               case Request.SEND_TEXT_REQUEST_ACK:
-                    LOG.info("Decoding Text Ack");
-                    request = SendTextRequestAck.getInstanceFromEncodedString(requestBody);
-                    request.setLastHopInRoute(Byte.parseByte(address));
-                    return request;
-               default:
-                    throw new IllegalArgumentException();
-          }
+               switch (getEncodedMessageType(requestBody))
+               {
+                    case Request.ROUTE_REQUEST:
+                         LOG.info("Decoding Route Request");
+                         request = RouteRequest.getInstanceFromEncodedString(requestBody);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    case Request.ROUTE_REPLY:
+                         LOG.info("Decoding Route Reply");
+                         request = RouteReply.getInstanceFromEncodedString(requestBody);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    case Request.ROUTE_ERROR:
+                         LOG.info("Decoding Route Error");
+                         request = RouteError.getInstanceFromEncodedString(requestBody);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    case Request.ROUTE_ACK:
+                         LOG.info("Decoding Route Error");
+                         request = RouteReplyAck.getInstanceFromEncodedString(requestBody, address);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    case Request.SEND_TEXT_REQUEST:
+                         LOG.info("Decoding Send Text Requets");
+                         request = SendTextRequest.getInstanceFromEncodedString(requestBody);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    case Request.HOP_ACK:
+                         LOG.info("Decoding Hop Ack");
+                         request = HopAck.getInstanceFromEncodedString(requestBody, address);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    case Request.SEND_TEXT_REQUEST_ACK:
+                         LOG.info("Decoding Text Ack");
+                         request = SendTextRequestAck.getInstanceFromEncodedString(requestBody);
+                         request.setLastHopInRoute(Byte.parseByte(address));
+                         return request;
+                    default:
+                         throw new IllegalArgumentException();
+               }
      }
 
      private byte getEncodedMessageType(String encoded)

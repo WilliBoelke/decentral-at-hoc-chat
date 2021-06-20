@@ -6,10 +6,7 @@ import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Formatter;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -71,10 +68,37 @@ public class RoutingTable
       */
      public void addRoute(Route route)
      {
+
           if (route.getDestinationAddress() != Address.getInstance().getAddress())
           {
-               routes.add(route);
+               return;
           }
+          for (Route r: routes)
+          {
+               if (r.equals(route))
+               {
+                    if(r.getDestinationSequenceNumber() > route.getDestinationSequenceNumber())
+                    {
+                         r.updateRoute(route);
+                    }
+                    else if(r.getDestinationSequenceNumber() == route.getDestinationSequenceNumber() && route.getHops() +1 < r.getHops())
+                    {
+                         r.updateRoute(route);
+                    }
+                    if(r.getDestinationSequenceNumber() == -1)
+                    {
+                         r.updateRoute(route);
+                    }
+                    if(r.getHops() == route.getHops() && r.getDestinationSequenceNumber() == r.getDestinationSequenceNumber() && r.getNextInRoute() == route.getNextInRoute())
+                    {
+                         // TTL reset
+                         r.updateRoute(route);
+                    }
+                    return;
+               }
+          }
+          addRoute(route);
+          removeOldRouts();
      }
 
      /**
@@ -147,8 +171,10 @@ public class RoutingTable
      {
           removeOldRouts();
 
-          String table = "| destination     | hops    | next hop   |  destination sequence      | \n" +
-                  "|-----------------|---------|------------|----------------------------| \n";
+          String table =
+                         "|----ROUTE REQUEST----------------------------------------------|\n"+
+                          "| destination     | hops    | next hop   |  destination sequence      | \n" +
+                           "|-----------------|---------|------------|----------------------------| \n";
 
           for (Route r : routes)
           {
@@ -223,6 +249,7 @@ public class RoutingTable
      public class Route implements Serializable
      {
 
+
           //--------------static variables--------------//
 
           /**
@@ -233,7 +260,6 @@ public class RoutingTable
 
           //--------------instance variables--------------//
 
-
           /**
            * address of the destination node
            */
@@ -242,7 +268,7 @@ public class RoutingTable
           /**
            * The last known destination sequence number
            */
-          private final byte destinationSequenceNumber;
+          private byte destinationSequenceNumber;
 
           /**
            * The address of the next node
@@ -261,7 +287,13 @@ public class RoutingTable
           /**
            * Timestamp of the routs creation
            */
-          private final long timeStamp;
+          private long timeStamp;
+
+          /**
+           * List of Nodes which have send to this destination
+           */
+          private ArrayList<Byte> precursors;
+
 
           //--------------constructors and init--------------//
 
@@ -276,7 +308,6 @@ public class RoutingTable
 
 
           //--------------getter and setter--------------//
-
 
           public byte getDestinationAddress()
           {
@@ -315,6 +346,14 @@ public class RoutingTable
                return (int) (LIFETIME - elapsedSeconds);
           }
 
+          public void updatePrecursorList(byte address)
+          {
+               if(!this.precursors.contains(address))
+               {
+                    precursors.add(address);
+               }
+          }
+
           public byte getDestinationSequenceNumber()
           {
                return destinationSequenceNumber;
@@ -329,47 +368,34 @@ public class RoutingTable
                        this.destinationSequenceNumber);
                return sbuf.toString();
           }
+
+          @Override
+          public boolean equals(Object o)
+          {
+               if (this == o)
+               {
+                    return true;
+               }
+               if (o == null || getClass() != o.getClass())
+               {
+                    return false;
+               }
+               Route route = (Route) o;
+               return destinationAddress == route.destinationAddress;
+          }
+
+          @Override
+          public int hashCode()
+          {
+               return Objects.hash(destinationAddress, destinationSequenceNumber, nextInRoute, hops, timeStamp, precursors);
+          }
+
+          public void updateRoute(Route route)
+          {
+               this.nextInRoute = route.nextInRoute;
+               this.destinationSequenceNumber = route.destinationSequenceNumber;
+               this.hops= route.hops;
+               this.timeStamp =  System.currentTimeMillis();
+          }
      }
-
-
-     /**
-      *
-
-      // TODO to be deleted
-      private ArrayList<String> knownDevices;
-
-      private static RoutingTable instance;
-
-      private RoutingTable()
-      {
-      knownDevices = new ArrayList<>();
-      }
-
-      public static RoutingTable getInstance()
-      {
-      if(instance == null)
-      {
-      instance = new RoutingTable();
-      }
-      return instance;
-      }
-
-
-      public ArrayList<String> getKnownDevices()
-      {
-      return knownDevices;
-      }
-
-      public boolean addAddress(String address)
-      {
-      if(!knownDevices.contains(address))
-      {
-      knownDevices.add(address);
-      return true;
-      }
-      return false;
-      }
-      */
-
-
 }
