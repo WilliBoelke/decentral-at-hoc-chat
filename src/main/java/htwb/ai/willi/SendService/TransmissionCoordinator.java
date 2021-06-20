@@ -132,7 +132,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      {
 
           Request incomingReply = (Request) event.getNewValue();
-          LOG.info("Received a Reply : " + incomingReply.encode());
+          LOG.info("Received a Reply of type: " + incomingReply.getType());
 
           // Outgoing SendTextRequest
           if(this.transmission.getRequest() instanceof  SendTextRequest)

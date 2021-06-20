@@ -71,7 +71,11 @@ public class SendTextRequestRouter extends Router
      @Override
      protected void requestForMe(Request request)
      {
-          dispatchAck(request);
+          SendTextRequestAck sendTextRequestAck = new SendTextRequestAck();
+          sendTextRequestAck.setMessageSequenceNumber(((SendTextRequest)request).getMessageSequenceNumber());
+          sendTextRequestAck.setDestinationAddress(request.getOriginAddress());
+          sendTextRequestAck.setOriginAddress(Address.getInstance().getAddress());
+          Dispatcher.getInstance().dispatch(sendTextRequestAck);
           // Output message
           SendTextRequest sendTextRequest = (SendTextRequest) request;
           LOG.info(sendTextRequest.getReadableMessage());
