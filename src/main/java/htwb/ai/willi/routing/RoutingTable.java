@@ -396,4 +396,7 @@ public class RoutingTable
           {
                this.nextInRoute = route.nextInRoute;
                this.destinationSequenceNumber = route.destinationSequenceNumber;
-               this.hops= route
+               this.hops = route.getHops();
+          }
+     }
+}
