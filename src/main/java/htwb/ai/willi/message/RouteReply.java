@@ -46,11 +46,11 @@ public class RouteReply extends Request
      {
           this.setType(ROUTE_REPLY);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          this.hopCount = bytes[2];
-          this.originAddress = bytes[3];
-          this.destinationAddress = bytes[4];
-          this.destinationSequenceNumber = bytes[5];
-          this.remainingLifeTime = bytes[6];
+          this.hopCount = bytes[1];
+          this.originAddress = bytes[2];
+          this.destinationAddress = bytes[3];
+          this.destinationSequenceNumber = bytes[4];
+          this.remainingLifeTime = bytes[5];
      }
 
      @Override
