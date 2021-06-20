@@ -34,9 +34,6 @@ public class RouteReplyAck extends Request
      private void setUpInstanceFromString(String encoded)
      {
           this.setType(ROUTE_ACK);
-          byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          this.destinationAddress = bytes[2];
-
      }
 
      @Override
