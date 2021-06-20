@@ -92,6 +92,7 @@ public class RoutingTable
           }
           else if (request instanceof RouteRequest)
           {
+               LOG.info("Add Route from RouteRequest " + request.getDestinationAddress());
                Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
                        ((RouteRequest) request).getHopCount(), ((RouteRequest) request).getOriginSequenceNumber());
                addRoute(route);

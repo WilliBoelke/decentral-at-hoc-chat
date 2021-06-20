@@ -44,7 +44,7 @@ public class RouteRequestRouter extends Router
           LOG.info("Route Request for me, sending Route Reply");
           //If the request is for this node , we need to send a reply :
           RouteReply reply = new RouteReply();
-
+          reply.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(request.getOriginAddress()));
           reply.setHopCount((byte) (((RouteRequest) request).getHopCount()+1));
           reply.setOriginAddress(Address.getInstance().getAddress());
           reply.setDestinationAddress(request.getOriginAddress());
