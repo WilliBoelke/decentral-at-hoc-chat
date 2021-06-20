@@ -41,10 +41,11 @@ public class RouteRequestRouter extends Router
      @Override
      protected void requestForMe(Request request)
      {
+          LOG.info("Route Request for me, sending Route Reply");
           //If the request is for this node , we need to send a reply :
           RouteReply reply = new RouteReply();
 
-          reply.setHopCount(((RouteRequest) request).getHopCount());
+          reply.setHopCount((byte) (((RouteRequest) request).getHopCount()+1));
           reply.setOriginAddress(Address.getInstance().getAddress());
           reply.setDestinationAddress(request.getOriginAddress());
           reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());

@@ -34,7 +34,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      {
           if(transmission.getRequest() instanceof  RouteRequest)
           {
-               SerialOutput.getInstance().broadcast(transmission.getRequest());
+
                waitForAck(30);
           }
           else
@@ -49,7 +49,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     {
 
                          LOG.info("Trying to send, tr  : " + i);
-
+                         SerialOutput.getInstance().sendRequest(transmission.getRequest());
                     }
                     waitForAck(5);
                }
