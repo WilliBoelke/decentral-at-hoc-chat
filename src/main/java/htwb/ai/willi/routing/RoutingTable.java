@@ -147,7 +147,7 @@ public class RoutingTable
      {
           removeOldRouts();
 
-          String table = "| destination      | hops    | next hop   |  destination sequence      | \n" +
+          String table = "| destination     | hops    | next hop   |  destination sequence      | \n" +
                                    "|-----------------|---------|------------|----------------------------| \n";
 
           for (Route r : routes)
