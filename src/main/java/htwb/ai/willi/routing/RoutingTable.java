@@ -1,5 +1,6 @@
 package htwb.ai.willi.routing;
 
+import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
@@ -70,7 +71,10 @@ public class RoutingTable
       */
      public void addRoute(Route route)
      {
-          routes.add(route);
+          if(route.getDestinationAddress() != Address.getInstance().getAddress())
+          {
+               routes.add(route);
+          }
      }
 
      /**

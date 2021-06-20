@@ -44,6 +44,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                {
                     if (finished)
                     {
+                         LOG.info("=== Finished Transmission");
                          return;
                     }
                     else
@@ -137,7 +138,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           // Outgoing SendTextRequest
           if(this.transmission.getRequest() instanceof  SendTextRequest)
           {
-               LOG.info("This a SendTextRequest waiting for a SendTextAck or a HopAck , got a reply of type " + incomingReply.getType());
+               LOG.info("== This a SendTextRequest waiting for a SendTextAck or a HopAck , got a reply of type " + incomingReply.getType());
                //from me
                if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
