@@ -55,6 +55,7 @@ public class RouteReplyRouter extends Router
      protected void dispatchAck(Request request)
      {
           RouteReplyAck ack = new RouteReplyAck();
+          ack.setNextHopInRoute(request.getLastHopInRoute());
           ack.setDestinationAddress(request.getLastHopInRoute());
           Dispatcher.getInstance().dispatch(ack);
      }

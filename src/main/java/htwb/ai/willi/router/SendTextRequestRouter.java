@@ -21,6 +21,7 @@ public class SendTextRequestRouter extends Router
      protected void dispatchAck(Request request)
      {
           HopAck ack = new HopAck();
+          ack.setNextHopInRoute(request.getLastHopInRoute());
           ack.setMessageSequenceNumber(((SendTextRequest)request).getMessageSequenceNumber());
           Dispatcher.getInstance().dispatch(ack);
      }

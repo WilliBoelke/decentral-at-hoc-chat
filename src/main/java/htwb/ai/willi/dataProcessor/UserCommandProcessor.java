@@ -6,6 +6,7 @@ import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -53,7 +54,7 @@ public class UserCommandProcessor
 
      public void processData(String data)
      {
-          switch (data)
+          switch (data.trim().toLowerCase())
           {
                case "tab":
                     System.out.println(RoutingTable.getInstance().toString());
