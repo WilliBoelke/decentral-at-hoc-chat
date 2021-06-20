@@ -4,7 +4,6 @@ import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.dataProcessor.UserCommandProcessor;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
-import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.Request;
 
 import java.util.logging.Logger;
@@ -22,7 +21,7 @@ public abstract class Router
      {
           LOG.info("Routing Request of type : " + request.getType());
           anyCase(request);
-          if( false == request instanceof HopAck || request instanceof RouteReplyAck == false)
+          if (false == request instanceof HopAck || request instanceof RouteReplyAck == false)
           {
                if (isRequestFromMe(request))
                {
@@ -49,25 +48,27 @@ public abstract class Router
 
 
      protected abstract void requestToForward(Request request);
+
      /**
-     {
-        //  RoutingTable.getInstance().addRoute(request);
+      * {
+      * //  RoutingTable.getInstance().addRoute(request);
+      * <p>
+      * if (request instanceof SendTextRequest)
+      * {
+      * if (RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress()) == -1)
+      * {
+      * return;
+      * }
+      * Dispatcher.getInstance().dispatchWithAck(prepareForwardRequest(request));
+      * }
+      * if(request instanceof RouteRequest)
+      * {
+      * Dispatcher.getInstance().dispatchBroadcast(prepareForwardRequest(request));
+      * }
+      * }
+      */
 
-          if (request instanceof SendTextRequest)
-          {
-               if (RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress()) == -1)
-               {
-                    return;
-               }
-               Dispatcher.getInstance().dispatchWithAck(prepareForwardRequest(request));
-          }
-          if(request instanceof RouteRequest)
-          {
-               Dispatcher.getInstance().dispatchBroadcast(prepareForwardRequest(request));
-          }
-     }*/
-
-     protected  abstract void requestForMe(Request request);
+     protected abstract void requestForMe(Request request);
 
 
      protected boolean isRequestForMe(Request request)
@@ -84,13 +85,8 @@ public abstract class Router
 
      protected boolean isRequestToForward(Request request)
      {
-          if (request.getOriginAddress() != Address.getInstance().getAddress())
-          {
-               return true;
-          }
-          return false;
+          return request.getOriginAddress() != Address.getInstance().getAddress();
      }
-
 
 
      protected abstract void dispatchAck(Request request);

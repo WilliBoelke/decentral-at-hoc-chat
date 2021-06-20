@@ -3,10 +3,10 @@ package htwb.ai.willi.router;
 import htwb.ai.willi.SendService.Dispatcher;
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.message.Acks.HopAck;
+import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
-import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
@@ -22,7 +22,7 @@ public class SendTextRequestRouter extends Router
      {
           HopAck ack = new HopAck();
           ack.setNextHopInRoute(request.getLastHopInRoute());
-          ack.setMessageSequenceNumber(((SendTextRequest)request).getMessageSequenceNumber());
+          ack.setMessageSequenceNumber(((SendTextRequest) request).getMessageSequenceNumber());
           Dispatcher.getInstance().dispatch(ack);
      }
 
@@ -57,7 +57,7 @@ public class SendTextRequestRouter extends Router
      protected void requestToForward(Request request)
      {
           dispatchAck(request);
-          if(RoutingTable.getInstance().hasFittingRoute(request))
+          if (RoutingTable.getInstance().hasFittingRoute(request))
           {
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
                request.setNextHopInRoute(route.getNextInRoute());
@@ -73,7 +73,7 @@ public class SendTextRequestRouter extends Router
      protected void requestForMe(Request request)
      {
           SendTextRequestAck sendTextRequestAck = new SendTextRequestAck();
-          sendTextRequestAck.setMessageSequenceNumber(((SendTextRequest)request).getMessageSequenceNumber());
+          sendTextRequestAck.setMessageSequenceNumber(((SendTextRequest) request).getMessageSequenceNumber());
           sendTextRequestAck.setDestinationAddress(request.getOriginAddress());
           sendTextRequestAck.setOriginAddress(Address.getInstance().getAddress());
           sendTextRequestAck.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(request.getOriginAddress()));
@@ -88,7 +88,8 @@ public class SendTextRequestRouter extends Router
      {
           RouteRequest routeRequest = new RouteRequest();
 
-          Byte sequenceNum = RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(sendTextRequest.getOriginAddress());
+          Byte sequenceNum =
+                  RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(sendTextRequest.getOriginAddress());
           if (RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(sendTextRequest.getDestinationAddress()) == -1)
           {
                routeRequest.setuFlag((byte) 1);

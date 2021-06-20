@@ -24,7 +24,7 @@ public class Playground
 
           RequestEncoderAndDecoder decoder = new RequestEncoderAndDecoder();
 
-          Request req = decoder.decode("LR,0012,04,"+send);
+          Request req = decoder.decode("LR,0012,04," + send);
 
           System.out.println(req.getAsReadable());
 

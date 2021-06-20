@@ -1,6 +1,5 @@
 package htwb.ai.willi.message;
 
-import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;

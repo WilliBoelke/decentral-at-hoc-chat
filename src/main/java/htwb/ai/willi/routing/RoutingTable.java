@@ -71,7 +71,7 @@ public class RoutingTable
       */
      public void addRoute(Route route)
      {
-          if(route.getDestinationAddress() != Address.getInstance().getAddress())
+          if (route.getDestinationAddress() != Address.getInstance().getAddress())
           {
                routes.add(route);
           }
@@ -131,11 +131,7 @@ public class RoutingTable
      {
           removeOldRouts();
           Optional<Route> routeOptional =
-                  routes.stream()
-                          .filter(r -> r.getDestinationAddress() == (destinationAddress))
-                          .collect(Collectors.toList()).stream()
-                          .max(Comparator.comparing(Route::getDestinationSequenceNumber)).stream()
-                          .min(Comparator.comparing(Route::getHops));
+                  routes.stream().filter(r -> r.getDestinationAddress() == (destinationAddress)).collect(Collectors.toList()).stream().max(Comparator.comparing(Route::getDestinationSequenceNumber)).stream().min(Comparator.comparing(Route::getHops));
 
           Route route;
           if (routeOptional.isPresent())
@@ -152,7 +148,7 @@ public class RoutingTable
           removeOldRouts();
 
           String table = "| destination     | hops    | next hop   |  destination sequence      | \n" +
-                                   "|-----------------|---------|------------|----------------------------| \n";
+                  "|-----------------|---------|------------|----------------------------| \n";
 
           for (Route r : routes)
           {
@@ -265,7 +261,7 @@ public class RoutingTable
           /**
            * Timestamp of the routs creation
            */
-          private long timeStamp;
+          private final long timeStamp;
 
           //--------------constructors and init--------------//
 

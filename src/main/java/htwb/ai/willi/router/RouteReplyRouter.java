@@ -33,7 +33,7 @@ public class RouteReplyRouter extends Router
      protected void requestToForward(Request request)
      {
           RouteReply preparedToForward = (RouteReply) request;
-          if(RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()) != null)
+          if (RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()) != null)
           {
                preparedToForward.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(preparedToForward.getDestinationAddress()));
                Dispatcher.getInstance().dispatchWithAck(preparedToForward);

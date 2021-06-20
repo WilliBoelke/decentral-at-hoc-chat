@@ -83,7 +83,8 @@ public class Controller implements PropertyChangeListener
 
           try
           {
-               SerialPort ser = ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
+               SerialPort ser =
+                       ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
                ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
                ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
                ser.disableReceiveTimeout();

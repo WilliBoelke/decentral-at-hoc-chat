@@ -1,8 +1,8 @@
 package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.io.SerialOutput;
-import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
+import htwb.ai.willi.message.Request;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -44,6 +44,7 @@ public class Dispatcher
       * to send the Requests multiple times, till he gets a requests or the max retries are
       * reached
       * ----------------------------------------------------------------------
+      *
       * @param request
       */
      public void dispatchWithAck(Request request)
@@ -58,6 +59,7 @@ public class Dispatcher
 
      /**
       * For forwarded RouteRequests
+      *
       * @param request
       */
      public void dispatchBroadcast(Request request)
@@ -95,11 +97,13 @@ public class Dispatcher
       * Called by the Routers if a Ack or Route repl arrived
       * Notifies the Coordinators that a new replay arrived
       * The will check if it matches their request and stop the retries
+      *
       * @param request
       */
      public void gotReply(Request request)
      {
-          PropertyChangeEvent event = new PropertyChangeEvent(this, "incomingReply", new RouteReplyAck(), request); // The oldValue is not of interest, therefore i just use a random request
+          PropertyChangeEvent event = new PropertyChangeEvent(this, "incomingReply", new RouteReplyAck(), request);
+          // The oldValue is not of interest, therefore i just use a random request
           changes.firePropertyChange(event);
      }
 }

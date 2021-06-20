@@ -1,7 +1,6 @@
 package htwb.ai.willi.message.Acks;
 
 import htwb.ai.willi.message.Request;
-import htwb.ai.willi.message.RouteReply;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
@@ -24,7 +23,7 @@ public class HopAck extends Request
      public static HopAck getInstanceFromEncodedString(String encoded, String address)
      {
           byte addressAsByte = Byte.parseByte(address.substring(2));
-          LOG.info("HOP ADDRESS ====== " +addressAsByte);
+          LOG.info("HOP ADDRESS ====== " + addressAsByte);
           HopAck reply = new HopAck();
           reply.setLastHopInRoute(addressAsByte);
           return reply;
@@ -43,7 +42,7 @@ public class HopAck extends Request
      @Override
      public String getAsReadable()
      {
-          return  "" + this.getType() ;
+          return "" + this.getType();
      }
 
 

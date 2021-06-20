@@ -77,7 +77,7 @@ public class SerialOutput
      }
 
 
-     //--------------getter and setter--------------//
+     //--------------public methods--------------//
 
      /**
       * Writes a normal String to the serial output
@@ -114,8 +114,6 @@ public class SerialOutput
           printWriter.flush();
      }
 
-
-     //--------------public methods--------------//
 
      /**
       * Writes an AT commands /  configuration string  to the Serial port

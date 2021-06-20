@@ -6,7 +6,6 @@ import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -26,7 +25,6 @@ public class UserCommandProcessor
      private static UserCommandProcessor instance;
 
 
-
      //--------------constructors and init--------------//
 
      /**
@@ -39,8 +37,8 @@ public class UserCommandProcessor
      /**
       * Singleton getInstance method.
       * returns the saved instance or inits a new one
-      * @return
-      * A Comma
+      *
+      * @return A Comma
       */
      public static UserCommandProcessor getInstance()
      {

@@ -1,7 +1,6 @@
 package htwb.ai.willi.message.Acks;
 
 import htwb.ai.willi.message.Request;
-import htwb.ai.willi.message.RouteReply;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
@@ -62,8 +61,7 @@ public class SendTextRequestAck extends Request
      @Override
      public String getAsReadable()
      {
-          return  this.getType() + ", " + originAddress  + ", " + destinationAddress  + ", " +
-                  messageSequenceNumber ;
+          return this.getType() + ", " + originAddress + ", " + destinationAddress + ", " + messageSequenceNumber;
      }
 
 

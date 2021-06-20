@@ -34,7 +34,7 @@ public class RouteRequestRouter extends Router
      protected void requestToForward(Request request)
      {
           RouteRequest routeRequest = (RouteRequest) request;
-          routeRequest.setHopCount((byte) (routeRequest.getHopCount() +1));
+          routeRequest.setHopCount((byte) (routeRequest.getHopCount() + 1));
           Dispatcher.getInstance().dispatchBroadcast(routeRequest);
      }
 
@@ -45,7 +45,7 @@ public class RouteRequestRouter extends Router
           //If the request is for this node , we need to send a reply :
           RouteReply reply = new RouteReply();
           reply.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(request.getOriginAddress()));
-          reply.setHopCount((byte) (((RouteRequest) request).getHopCount()+1));
+          reply.setHopCount((byte) (((RouteRequest) request).getHopCount() + 1));
           reply.setOriginAddress(Address.getInstance().getAddress());
           reply.setDestinationAddress(request.getOriginAddress());
           reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());

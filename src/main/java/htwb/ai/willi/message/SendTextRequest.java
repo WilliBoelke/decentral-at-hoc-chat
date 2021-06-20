@@ -1,15 +1,12 @@
 package htwb.ai.willi.message;
 
 
-import htwb.ai.willi.controller.Address;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
  * This Request type is for when a user wants to send a message to another node
- *
  */
 public class SendTextRequest extends Request
 {
@@ -99,8 +96,8 @@ public class SendTextRequest extends Request
      @Override
      public String getAsReadable()
      {
-          return this.getType() + ", " + originAddress  + ", " + destinationAddress  + ", " +
-                  messageSequenceNumber  + ", " + message ;
+          return this.getType() + ", " + originAddress + ", " + destinationAddress + ", " + messageSequenceNumber +
+                  ", " + message;
      }
 
 

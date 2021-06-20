@@ -1,8 +1,6 @@
 package htwb.ai.willi.message;
 
 
-import htwb.ai.willi.controller.Controller;
-
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
@@ -39,15 +37,15 @@ public class RouteRequest extends Request
 
      private byte broadcastID;
      /*
-     * 1 if the dest sequence number is unknown
-     * else 0
+      * 1 if the dest sequence number is unknown
+      * else 0
       */
      private byte uFlag;
 
      /**
       * if a route for a SendTextRequest is unknown
       * then we need to send a RouteRequest first, a
-      *
+      * <p>
       * in this case the SendTextRequest will be saved here
       * so it can be sen from the TransmissionCoordinator
       * after a matching RouteReply was received
@@ -58,8 +56,9 @@ public class RouteRequest extends Request
      //-------------constructors and init-------------//
 
 
-     public RouteRequest(byte originAddress, byte destinationAddress, byte hopCount, byte broadcastID, byte originSequenceNumber,
-                         byte destinationSequenceNumber, byte uFlag, SendTextRequest sendTextRequest)
+     public RouteRequest(byte originAddress, byte destinationAddress, byte hopCount, byte broadcastID,
+                         byte originSequenceNumber, byte destinationSequenceNumber, byte uFlag,
+                         SendTextRequest sendTextRequest)
      {
           this.setType(ROUTE_REQUEST);
           this.originAddress = originAddress;
@@ -92,7 +91,7 @@ public class RouteRequest extends Request
      {
           this.setType(ROUTE_REQUEST);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          LOG.info("Bytes length: " + bytes.length );
+          LOG.info("Bytes length: " + bytes.length);
           this.uFlag = bytes[1];
           this.hopCount = bytes[2];
           this.broadcastID = bytes[3];
@@ -105,8 +104,7 @@ public class RouteRequest extends Request
      @Override
      public String getAsReadable()
      {
-          return this.getType() + ", " + uFlag  + ", " + hopCount  + ", " + broadcastID + ", " +
-                  originAddress  + ", " + originSequenceNumber  + ", " + destinationAddress  + ", " + destinationSequenceNumber;
+          return this.getType() + ", " + uFlag + ", " + hopCount + ", " + broadcastID + ", " + originAddress + ", " + originSequenceNumber + ", " + destinationAddress + ", " + destinationSequenceNumber;
      }
 
 
@@ -127,7 +125,7 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.originSequenceNumber);
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.destinationSequenceNumber);
-          LOG.info("Encoded as : " + byteArrayOutputStream.toString());
+          LOG.info("Encoded as : " + byteArrayOutputStream);
           LOG.info("Encoded len : " + byteArrayOutputStream.toString().length());
           return byteArrayOutputStream.toString();
      }

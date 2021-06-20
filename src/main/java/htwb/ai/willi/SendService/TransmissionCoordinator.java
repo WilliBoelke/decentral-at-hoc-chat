@@ -3,10 +3,10 @@ package htwb.ai.willi.SendService;
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.io.SerialOutput;
-import htwb.ai.willi.message.*;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
+import htwb.ai.willi.message.*;
 import htwb.ai.willi.routing.RoutingTable;
 
 import java.beans.PropertyChangeEvent;
@@ -33,7 +33,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      @Override
      public void run()
      {
-          if(transmission.getRequest() instanceof  RouteRequest)
+          if (transmission.getRequest() instanceof RouteRequest)
           {
                SerialOutput.getInstance().broadcast(transmission.getRequest());
                waitForAck(30);
@@ -49,7 +49,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     }
                     else
                     {
-                         if(transmission.getRequest() instanceof RouteReply)
+                         if (transmission.getRequest() instanceof RouteReply)
                          {
                               LOG.info("Sending RouteReply");
                          }
@@ -105,7 +105,8 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      private void onTransmissionFailed()
      {
-          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different destination address");
+          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " +
+                  "destination address");
           this.finished = false;
           this.failed = true;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
@@ -114,7 +115,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      /**
       * Send a RouteError if the transmission wasn't successful
-      *
       */
      private void sendErrorRequest()
      {
@@ -136,28 +136,28 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           LOG.info("Received a Reply of type: " + incomingReply.getType());
 
           // Outgoing SendTextRequest
-          if(this.transmission.getRequest() instanceof  SendTextRequest)
+          if (this.transmission.getRequest() instanceof SendTextRequest)
           {
                LOG.info("== This a SendTextRequest waiting for a SendTextAck or a HopAck , got a reply of type " + incomingReply.getType());
                //from me
                if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
-                    if(incomingReply instanceof SendTextRequestAck && ((SendTextRequestAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
+                    if (incomingReply instanceof SendTextRequestAck && ((SendTextRequestAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
                     {
                          this.finished = true;
                     }
                }
                // If forwarded
-               else if(this.transmission.getRequest().getOriginAddress() != Address.getInstance().getAddress())
+               else if (this.transmission.getRequest().getOriginAddress() != Address.getInstance().getAddress())
                {
-                    if(incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() ==  ((SendTextRequestAck) transmission.getRequest()).getMessageSequenceNumber())
+                    if (incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequestAck) transmission.getRequest()).getMessageSequenceNumber())
                     {
                          finished = true;
                     }
                }
           }
           // RouteRequest
-          else if(this.transmission.getRequest() instanceof RouteRequest && incomingReply instanceof  RouteReply)
+          else if (this.transmission.getRequest() instanceof RouteRequest && incomingReply instanceof RouteReply)
           {
                if (incomingReply.getOriginAddress() == this.transmission.getRequest().getDestinationAddress())
                {
@@ -165,10 +165,10 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     onRouteRequestSuccess();
                }
           }
-          else if(this.transmission.getRequest() instanceof RouteReply && incomingReply instanceof RouteReplyAck)
+          else if (this.transmission.getRequest() instanceof RouteReply && incomingReply instanceof RouteReplyAck)
           {
                LOG.info("=== This a RouteReply waiting receiving a RouteReply");
-               if(this.transmission.getRequest().getNextHopInRoute() == incomingReply.getLastHopInRoute())
+               if (this.transmission.getRequest().getNextHopInRoute() == incomingReply.getLastHopInRoute())
                {
                     LOG.info("=== Got an ACk for the RouteReply");
                     this.finished = true;

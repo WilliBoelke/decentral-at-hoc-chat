@@ -5,12 +5,38 @@ import java.nio.charset.StandardCharsets;
 
 public class RouteReply extends Request
 {
+
+     //--------------instance variable--------------//
+
+     /**
+      * The origin Node of this request
+      */
      private byte originAddress;
+     /**
+      *  The Hop count of already visited nodes
+      *  incremented by one when forwarded
+      */
      private byte hopCount;
+     /**
+      * The Destination Nodes address
+      */
      private byte destinationAddress;
+     /**
+      * The Sequence number of the origin node
+      */
      private byte originSequenceNumber;
+     /**
+      * The last know sequence number of the
+      * destination node
+      */
      private byte destinationSequenceNumber;
+     /**
+      * the reining TTL
+      */
      private byte remainingLifeTime;
+
+
+     //--------------constructors and init--------------//
 
 
      public RouteReply(byte originAddress, byte hopCount, byte destinationAddress, byte originSequenceNumber,
@@ -30,7 +56,6 @@ public class RouteReply extends Request
           this.setType(ROUTE_REPLY);
      }
 
-
      public RouteReply(String encoded)
      {
           this.setUpInstanceFromString(encoded);
@@ -40,7 +65,6 @@ public class RouteReply extends Request
      {
           return new RouteReply(encoded);
      }
-
 
      private void setUpInstanceFromString(String encoded)
      {
@@ -53,11 +77,14 @@ public class RouteReply extends Request
           this.remainingLifeTime = bytes[5];
      }
 
+
+     //--------------getter and setter--------------//
+
+
      @Override
      public String getAsReadable()
      {
-          return this.getType() + ", " + hopCount  + ", " + originAddress  + ", " +
-                  destinationAddress  + ", " + destinationSequenceNumber  + ", " + remainingLifeTime;
+          return this.getType() + ", " + hopCount + ", " + originAddress + ", " + destinationAddress + ", " + destinationSequenceNumber + ", " + remainingLifeTime;
      }
 
      @Override
