@@ -3,6 +3,9 @@ package htwb.ai.willi.message.Acks;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+
 public class SendTextRequestAck extends Request
 {
      private byte originAddress;
@@ -41,38 +44,52 @@ public class SendTextRequestAck extends Request
           this.setUpInstanceFromString(encoded);
      }
 
-     public static RouteReply getInstanceFromEncodedString(String encoded)
+     public static SendTextRequestAck getInstanceFromEncodedString(String encoded)
      {
-          return new RouteReply(encoded);
+          return new SendTextRequestAck(encoded);
      }
 
 
      private void setUpInstanceFromString(String encoded)
      {
+          this.setType(SEND_TEXT_REQUEST_ACK);
+          byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
+          this.originAddress = bytes[1];
+          this.destinationAddress = bytes[2];
+          this.messageSequenceNumber = bytes[3];
      }
+
      @Override
      public String getAsReadable()
      {
-          return  "" + this.getType() ;
+          return  this.getType() + ", " + originAddress  + ", " + destinationAddress  + ", " +
+                  messageSequenceNumber ;
      }
 
 
      @Override
      public String encode()
      {
-          return null;
+          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+          //Message type
+          byteArrayOutputStream.write(this.getType());
+          //origin address
+          byteArrayOutputStream.write(this.originAddress);
+          byteArrayOutputStream.write(this.destinationAddress);
+          byteArrayOutputStream.write(this.messageSequenceNumber);
+          return byteArrayOutputStream.toString();
      }
 
 
      @Override
      public byte getDestinationAddress()
      {
-          return -1;
+          return this.destinationAddress;
      }
 
      @Override
      public byte getOriginAddress()
      {
-          return -1;
+          return originAddress;
      }
 }
