@@ -8,7 +8,6 @@ public class RouteError extends Request
      private byte destinationCount;
      private byte unreachableDestinationAddress;
      private byte unreachableDestinationSequenceNumber;
-
      private byte additionalAddress;
      private byte additionalSequenceNumber;
 
@@ -26,7 +25,6 @@ public class RouteError extends Request
 
      public RouteError()
      {
-
 
      }
 

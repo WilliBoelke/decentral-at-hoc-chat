@@ -19,7 +19,6 @@ public class HopAck extends Request
           this.setType(HOP_ACK);
      }
 
-
      public static HopAck getInstanceFromEncodedString(String encoded, String address)
      {
           byte addressAsByte = Byte.parseByte(address.substring(2));
@@ -28,7 +27,6 @@ public class HopAck extends Request
           reply.setLastHopInRoute(addressAsByte);
           return reply;
      }
-
 
      @Override
      public String encode()
@@ -44,7 +42,6 @@ public class HopAck extends Request
      {
           return "" + this.getType();
      }
-
 
      @Override
      public byte getDestinationAddress()
