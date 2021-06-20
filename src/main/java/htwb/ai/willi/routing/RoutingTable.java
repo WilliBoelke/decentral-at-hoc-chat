@@ -69,14 +69,16 @@ public class RoutingTable
      public void addRoute(Route route)
      {
 
-          if (route.getDestinationAddress() != Address.getInstance().getAddress())
+          if (route.getDestinationAddress() == Address.getInstance().getAddress())
           {
+               LOG.info("Route to this node..return.");
                return;
           }
           for (Route r: routes)
           {
                if (r.equals(route))
                {
+                    LOG.info("Route Already exists, updating route ..,.");
                     if(r.getDestinationSequenceNumber() > route.getDestinationSequenceNumber())
                     {
                          r.updateRoute(route);
@@ -172,9 +174,9 @@ public class RoutingTable
           removeOldRouts();
 
           String table =
-                         "|----ROUTE REQUEST----------------------------------------------|\n"+
+                          "|\n\n----ROUTE REQUEST----------------------------------------------------|\n"+
                           "| destination     | hops    | next hop   |  destination sequence      | \n" +
-                           "|-----------------|---------|------------|----------------------------| \n";
+                           "|-----------------|---------|------------|----------------------------| \n\n";
 
           for (Route r : routes)
           {
