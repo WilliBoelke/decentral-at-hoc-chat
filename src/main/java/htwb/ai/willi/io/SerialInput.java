@@ -1,5 +1,6 @@
 package htwb.ai.willi.io;
 
+import htwb.ai.willi.controller.Constants;
 import purejavacomm.SerialPortEvent;
 import purejavacomm.SerialPortEventListener;
 
@@ -71,6 +72,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
      @Override
      public void run()
      {
+          inputScanner.useDelimiter(Constants.CARRIAGE_RETURN_LINE_FEED);
           while (true)
           {
                if (inputScanner.hasNext())
