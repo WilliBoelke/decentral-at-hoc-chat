@@ -3,8 +3,12 @@ package htwb.ai.willi.message.Acks;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
 
+import java.util.logging.Logger;
+
 public class HopAck extends Request
 {
+
+     public static final Logger LOG = Logger.getLogger(HopAck.class.getName());
 
      public byte messageSequenceNumber;
 
@@ -14,21 +18,17 @@ public class HopAck extends Request
      }
 
 
-     public HopAck(String encoded)
+     public static HopAck getInstanceFromEncodedString(String encoded, String address)
      {
-          this.setType(HOP_ACK);
-          this.setUpInstanceFromString(encoded);
-     }
-
-     public static RouteReply getInstanceFromEncodedString(String encoded)
-     {
-          return new RouteReply(encoded);
+          byte addressAsByte = Byte.parseByte(address.substring(2));
+          LOG.info("HOP ADDRESS ====== " +addressAsByte);
+          HopAck reply = new HopAck();
+          reply.setLastHopInRoute(addressAsByte);
+          return reply;
      }
 
 
-     private void setUpInstanceFromString(String encoded)
-     {
-     }
+
 
      @Override
      public String encode()

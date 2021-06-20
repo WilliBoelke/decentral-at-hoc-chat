@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class RouteReplyAck extends Request
 {
 
-     public static final Logger LOG = Logger.getLogger(Controller.class.getName());
+     public static final Logger LOG = Logger.getLogger(RouteReplyAck.class.getName());
 
      public RouteReplyAck()
      {
