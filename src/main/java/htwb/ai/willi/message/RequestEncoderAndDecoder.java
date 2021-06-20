@@ -60,7 +60,7 @@ public class RequestEncoderAndDecoder
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.ROUTE_ACK:
-                    request = RouteReplyAck.getInstanceFromEncodedString(requestBody);
+                    request = RouteReplyAck.getInstanceFromEncodedString(requestBody, address);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.SEND_TEXT_REQUEST:

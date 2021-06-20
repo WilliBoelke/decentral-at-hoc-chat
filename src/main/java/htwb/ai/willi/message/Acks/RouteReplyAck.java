@@ -23,16 +23,20 @@ public class RouteReplyAck extends Request
           this.setUpInstanceFromString(encoded);
      }
 
-     public static RouteReply getInstanceFromEncodedString(String encoded)
+     public static RouteReply getInstanceFromEncodedString(String encoded, String address)
      {
+          byte addressAsByte = Byte.parseByte(address.substring(2));
+          RouteReply reply = new RouteReply(encoded);
+          reply.setOriginAddress(addressAsByte);
           return new RouteReply(encoded);
      }
 
      private void setUpInstanceFromString(String encoded)
      {
+          this.setType(ROUTE_ACK);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.destinationAddress = bytes[2];
-          this.setType(ROUTE_ACK);
+
      }
 
      @Override
@@ -41,8 +45,6 @@ public class RouteReplyAck extends Request
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
           byteArrayOutputStream.write(this.getType());
-          //destination address
-          byteArrayOutputStream.write(this.destinationAddress);
           return byteArrayOutputStream.toString();
      }
 
