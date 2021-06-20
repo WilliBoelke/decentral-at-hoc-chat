@@ -77,7 +77,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
                {
                     try
                     {
-                         this.wait(250);
+                         Thread.sleep(250);
                     }
                     catch (InterruptedException e)
                     {
