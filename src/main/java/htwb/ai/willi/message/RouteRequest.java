@@ -36,6 +36,8 @@ public class RouteRequest extends Request
       * the sequence number of the destination node
       */
      private byte destinationSequenceNumber;
+
+     private byte broadcastID;
      /*
      * 1 if the dest sequence number is unknown
      * else 0
@@ -56,13 +58,14 @@ public class RouteRequest extends Request
      //-------------constructors and init-------------//
 
 
-     public RouteRequest(byte originAddress, byte destinationAddress, byte hopCount, byte originSequenceNumber,
+     public RouteRequest(byte originAddress, byte destinationAddress, byte hopCount, byte broadcastID, byte originSequenceNumber,
                          byte destinationSequenceNumber, byte uFlag, SendTextRequest sendTextRequest)
      {
           this.setType(ROUTE_REQUEST);
           this.originAddress = originAddress;
           this.destinationAddress = destinationAddress;
           this.hopCount = hopCount;
+          this.broadcastID = broadcastID;
           this.originSequenceNumber = originSequenceNumber;
           this.destinationSequenceNumber = destinationSequenceNumber;
           this.uFlag = uFlag;
@@ -92,6 +95,7 @@ public class RouteRequest extends Request
           LOG.info("Bytes length: " + bytes.length );
           this.uFlag = bytes[1];
           this.hopCount = bytes[2];
+          this.broadcastID = bytes[2];
           this.originAddress = bytes[3];
           this.originSequenceNumber = bytes[4];
           this.destinationAddress = bytes[5];
@@ -101,7 +105,7 @@ public class RouteRequest extends Request
      @Override
      public String getAsReadable()
      {
-          return this.getType() + ", " + uFlag  + ", " + hopCount  + ", " +
+          return this.getType() + ", " + uFlag  + ", " + hopCount  + ", " + broadcastID + ", " +
                   originAddress  + ", " + originSequenceNumber  + ", " + destinationAddress  + ", " + destinationSequenceNumber;
      }
 
@@ -118,6 +122,7 @@ public class RouteRequest extends Request
           //origin address
           byteArrayOutputStream.write(this.uFlag);
           byteArrayOutputStream.write(this.hopCount);
+          byteArrayOutputStream.write(this.broadcastID);
           byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.originSequenceNumber);
           byteArrayOutputStream.write(this.destinationAddress);
@@ -203,4 +208,13 @@ public class RouteRequest extends Request
      }
 
 
+     public byte getBroadcastID()
+     {
+          return broadcastID;
+     }
+
+     public void setBroadcastID(byte broadcastID)
+     {
+          this.broadcastID = broadcastID;
+     }
 }
