@@ -152,6 +152,7 @@ public class SerialOutput
           String encodedRequest = request.encode();
           LOG.info("Sending Request = " + request.getAsReadable());
           LOG.info("Sending Request len = " + encodedRequest.length());
+          LOG.info("Sending Request to node = " + request.getNextHopInRoute());
           printWriter.println("AT+DEST=" + "00"+request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
           printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);

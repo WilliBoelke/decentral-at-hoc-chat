@@ -27,7 +27,7 @@ public class RouteReply extends Request
 
      public RouteReply()
      {
-          this.setType(ROUTE_REQUEST);
+          this.setType(ROUTE_REPLY);
      }
 
 

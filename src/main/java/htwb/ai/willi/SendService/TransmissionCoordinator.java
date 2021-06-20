@@ -47,7 +47,10 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     }
                     else
                     {
-
+                         if(transmission.getRequest() instanceof RouteReply)
+                         {
+                              LOG.info("Sending RouteReply");
+                         }
                          LOG.info("Trying to send, tr  : " + i);
                          SerialOutput.getInstance().sendRequest(transmission.getRequest());
                     }
