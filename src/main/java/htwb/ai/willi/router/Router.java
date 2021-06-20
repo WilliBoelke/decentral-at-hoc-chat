@@ -2,6 +2,9 @@ package htwb.ai.willi.router;
 
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.dataProcessor.UserCommandProcessor;
+import htwb.ai.willi.message.Acks.HopAck;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
+import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.Request;
 
 import java.util.logging.Logger;
@@ -17,22 +20,25 @@ public abstract class Router
 
      public void route(Request request)
      {
-          LOG.info("Routing Request : " + request.encode());
+          LOG.info("Routing Request of type : " + request.getType());
           anyCase(request);
-          if (isRequestFromMe(request))
+          if( false == request instanceof HopAck || request instanceof RouteReplyAck == false)
           {
-               LOG.info("request from me ");
-               requestFromMe(request);
-          }
-          else if (isRequestForMe(request))
-          {
-               LOG.info("request for me ");
-               requestForMe(request);
-          }
-          else if (isRequestToForward(request))
-          {
-               LOG.info("request to forward ");
-               requestToForward(request);
+               if (isRequestFromMe(request))
+               {
+                    LOG.info("request from me ");
+                    requestFromMe(request);
+               }
+               else if (isRequestForMe(request))
+               {
+                    LOG.info("request for me ");
+                    requestForMe(request);
+               }
+               else if (isRequestToForward(request))
+               {
+                    LOG.info("request to forward ");
+                    requestToForward(request);
+               }
           }
      }
 
