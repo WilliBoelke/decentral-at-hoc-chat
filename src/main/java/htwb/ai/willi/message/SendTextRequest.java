@@ -96,8 +96,10 @@ public class SendTextRequest extends Request
      @Override
      public String getAsReadable()
      {
-          return this.getType() + ", " + originAddress + ", " + destinationAddress + ", " + messageSequenceNumber +
-                  ", " + message;
+          return "\n----SEND DTEXT REQUEST------------------------------------------------------------------------------------- \n" +
+                    this.getType() + " | " + originAddress + " | " + destinationAddress + " |" + messageSequenceNumber + " | " + message+"\n"+
+                      "----------------------------------------------------------------------------------------------------------------- \n";
+
      }
 
 

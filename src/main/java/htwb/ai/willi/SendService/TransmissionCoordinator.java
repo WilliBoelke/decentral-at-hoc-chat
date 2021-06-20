@@ -44,7 +44,8 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                {
                     if (finished)
                     {
-                         LOG.info("=== Finished Transmission");
+                         LOG.info("Finished Transmission Successfully");
+                         Dispatcher.getInstance().unregisterPropertyChangeListener(this);
                          return;
                     }
                     else
@@ -86,6 +87,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      }
 
 
+
      private void onRouteRequestSuccess()
      {
           if (transmission.getRequest() instanceof RouteRequest)
@@ -105,11 +107,11 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      private void onTransmissionFailed()
      {
-          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " +
-                  "destination address");
+          LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " + "destination address");
           this.finished = false;
           this.failed = true;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
+          Dispatcher.getInstance().unregisterPropertyChangeListener(this);
           sendErrorRequest();
      }
 
@@ -128,6 +130,14 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           Dispatcher.getInstance().dispatchBroadcast(routeError);
      }
 
+
+     /**
+      * Incoming Replies will end here, here it will be decided if
+      * the reply is a reply to the Request send from this Thread.
+      * if thats the case, the finished boolean will be set to true and the
+      * Thread ends
+      * @param event
+      */
      @Override
      public void propertyChange(PropertyChangeEvent event)
      {
