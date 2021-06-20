@@ -11,6 +11,8 @@ public class HopAck extends Request
      public static final Logger LOG = Logger.getLogger(HopAck.class.getName());
 
      public byte messageSequenceNumber;
+     private byte originAddress;
+     private byte destinationAddress;
 
      public HopAck()
      {
@@ -46,13 +48,13 @@ public class HopAck extends Request
      @Override
      public byte getDestinationAddress()
      {
-          return -1;
+          return this.destinationAddress;
      }
 
      @Override
      public byte getOriginAddress()
      {
-          return -1;
+          return this.originAddress;
      }
 
      public byte getMessageSequenceNumber()

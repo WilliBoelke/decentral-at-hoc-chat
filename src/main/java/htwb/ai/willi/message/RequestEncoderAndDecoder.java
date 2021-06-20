@@ -70,7 +70,7 @@ public class RequestEncoderAndDecoder
                     return request;
                case Request.HOP_ACK:
                     LOG.info("Decoding Hop Ack");
-                    request = HopAck.getInstanceFromEncodedString(requestBody);
+                    request = HopAck.getInstanceFromEncodedString(requestBody, address);
                     request.setLastHopInRoute(Byte.parseByte(address));
                     return request;
                case Request.SEND_TEXT_REQUEST_ACK:
