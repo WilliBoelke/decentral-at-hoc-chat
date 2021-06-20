@@ -10,31 +10,20 @@ import java.nio.charset.StandardCharsets;
 public class RouteReplyAck extends Request
 {
 
-     private byte destinationAddress;
-
 
      public RouteReplyAck()
      {
           this.setType(ROUTE_ACK);
      }
 
-     public RouteReplyAck(String encoded)
-     {
-          this.setUpInstanceFromString(encoded);
-     }
-
-     public static RouteReply getInstanceFromEncodedString(String encoded, String address)
+     public static RouteReplyAck getInstanceFromEncodedString(String encoded, String address)
      {
           byte addressAsByte = Byte.parseByte(address.substring(2));
-          RouteReply reply = new RouteReply(encoded);
-          reply.setOriginAddress(addressAsByte);
-          return new RouteReply(encoded);
+          RouteReplyAck reply = new RouteReplyAck();
+          reply.setLastHopInRoute(addressAsByte);
+          return reply;
      }
 
-     private void setUpInstanceFromString(String encoded)
-     {
-          this.setType(ROUTE_ACK);
-     }
 
      @Override
      public String encode()
@@ -51,19 +40,15 @@ public class RouteReplyAck extends Request
           return  "" + this.getType() ;
      }
 
+     @Override
      public byte getDestinationAddress()
      {
-          return destinationAddress;
+          return 0;
      }
 
      @Override
      public byte getOriginAddress()
      {
-          return -1;
-     }
-
-     public void setDestinationAddress(byte destinationAddress)
-     {
-          this.destinationAddress = destinationAddress;
+          return 0;
      }
 }

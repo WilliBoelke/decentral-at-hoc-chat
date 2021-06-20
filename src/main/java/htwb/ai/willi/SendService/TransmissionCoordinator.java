@@ -5,6 +5,7 @@ import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.*;
 import htwb.ai.willi.message.Acks.HopAck;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.routing.RoutingTable;
 
@@ -161,6 +162,13 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                {
                     this.finished = true;
                     onRouteRequestSuccess();
+               }
+          }
+          else if(this.transmission.getRequest() instanceof RouteReply && incomingReply instanceof RouteReplyAck)
+          {
+               if(this.transmission.getRequest().getNextHopInRoute() == incomingReply.getLastHopInRoute())
+               {
+                    this.finished = true;
                }
           }
           else
