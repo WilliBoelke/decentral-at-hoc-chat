@@ -141,7 +141,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                //from me
                if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
-                    if(incomingReply instanceof SendTextRequestAck && ((SendTextRequestAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequestAck) transmission.getRequest()).getMessageSequenceNumber())
+                    if(incomingReply instanceof SendTextRequestAck && ((SendTextRequestAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
                     {
                          this.finished = true;
                     }
