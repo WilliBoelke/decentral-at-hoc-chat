@@ -3,6 +3,7 @@ package htwb.ai.willi.message.Acks;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
 
+import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
 
 public class HopAck extends Request
@@ -30,12 +31,13 @@ public class HopAck extends Request
      }
 
 
-
-
      @Override
      public String encode()
      {
-          return null;
+          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+          //Message type
+          byteArrayOutputStream.write(this.getType());
+          return byteArrayOutputStream.toString();
      }
 
      @Override
@@ -67,4 +69,6 @@ public class HopAck extends Request
      {
           this.messageSequenceNumber = messageSequenceNumber;
      }
+
+
 }
