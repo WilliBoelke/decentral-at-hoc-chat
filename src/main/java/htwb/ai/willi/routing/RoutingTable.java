@@ -176,15 +176,13 @@ public class RoutingTable
           String table =
                           "\n\n|----ROUTING TABLE----------------------------------------------------|\n"+
                           "| destination     | hops    | next hop   |  destination sequence      | \n" +
-                           "|-----------------|---------|------------|----------------------------| \n\n";
-
+                           "|-----------------|---------|------------|----------------------------| \n";
           for (Route r : routes)
           {
                table = table + r.toString();
           }
 
-
-          return table;
+          return table + "\n";
      }
 
      public boolean hasFittingRoute(Request request)

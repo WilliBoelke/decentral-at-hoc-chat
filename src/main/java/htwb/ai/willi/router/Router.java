@@ -19,7 +19,7 @@ public abstract class Router
 
      public void route(Request request)
      {
-          LOG.info("Routing Request of type : " + request.getType());
+          System.out.println("\n\n ====>RECEIVED" + request.getAsReadable() );
           anyCase(request);
           if (false == request instanceof HopAck || request instanceof RouteReplyAck == false)
           {
@@ -46,27 +46,7 @@ public abstract class Router
 
      protected abstract void requestFromMe(Request request);
 
-
      protected abstract void requestToForward(Request request);
-
-     /**
-      * {
-      * //  RoutingTable.getInstance().addRoute(request);
-      * <p>
-      * if (request instanceof SendTextRequest)
-      * {
-      * if (RoutingTable.getInstance().getNextInRouteTo(request.getDestinationAddress()) == -1)
-      * {
-      * return;
-      * }
-      * Dispatcher.getInstance().dispatchWithAck(prepareForwardRequest(request));
-      * }
-      * if(request instanceof RouteRequest)
-      * {
-      * Dispatcher.getInstance().dispatchBroadcast(prepareForwardRequest(request));
-      * }
-      * }
-      */
 
      protected abstract void requestForMe(Request request);
 

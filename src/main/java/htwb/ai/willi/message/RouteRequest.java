@@ -104,9 +104,9 @@ public class RouteRequest extends Request
      @Override
      public String getAsReadable()
      {
-           return   "\n----ROUTE REQUEST-------------------------------------------------\n" +
+           return   "\n\n|----ROUTE REQUEST--------------------------------------------------------|\n" +
                          this.getType() + " | " + uFlag + " | " + hopCount + " | " + broadcastID + " | " + originAddress + " | " + originSequenceNumber +  " | " + destinationAddress +  " | " + destinationSequenceNumber +"\n"+
-                         "-------------------------------------------------------------------------\n";
+                         "|-------------------------------------------------------------------------|\n";
 
      }
 

@@ -160,8 +160,6 @@ public class Controller implements PropertyChangeListener
                     {
                          RequestEncoderAndDecoder decoder = new RequestEncoderAndDecoder();
                          Request request = decoder.decode((String) changedData);
-                         LOG.info("Message type = " + request.getType());
-                         LOG.info("Message   = " + request.getAsReadable());
                          Router router;
                          switch (request.getType())
                          {
