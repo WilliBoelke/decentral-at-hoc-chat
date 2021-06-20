@@ -95,11 +95,11 @@ public class RouteRequest extends Request
           LOG.info("Bytes length: " + bytes.length );
           this.uFlag = bytes[1];
           this.hopCount = bytes[2];
-          this.broadcastID = bytes[2];
-          this.originAddress = bytes[3];
-          this.originSequenceNumber = bytes[4];
-          this.destinationAddress = bytes[5];
-          this.destinationSequenceNumber = bytes[6];
+          this.broadcastID = bytes[3];
+          this.originAddress = bytes[4];
+          this.originSequenceNumber = bytes[5];
+          this.destinationAddress = bytes[6];
+          this.destinationSequenceNumber = bytes[7];
      }
 
      @Override

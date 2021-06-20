@@ -99,6 +99,7 @@ public class SendTextRequestRouter extends Router
                routeRequest.setuFlag((byte) 1);
                routeRequest.setDestinationSequenceNumber(sequenceNum);
           }
+
           routeRequest.setBroadcastID((byte) 1);
           routeRequest.setOriginAddress(Address.getInstance().getAddress());
           routeRequest.setDestinationAddress(sendTextRequest.getDestinationAddress());
