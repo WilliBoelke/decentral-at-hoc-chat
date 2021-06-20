@@ -99,7 +99,7 @@ public class RoutingTable
                     return;
                }
           }
-          addRoute(route);
+          routes.add(route);
           removeOldRouts();
      }
 
