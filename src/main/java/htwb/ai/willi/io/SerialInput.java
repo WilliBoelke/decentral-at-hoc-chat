@@ -92,7 +92,6 @@ public class SerialInput implements SerialPortEventListener, Runnable
                     String msg = inputScanner.next();
                     if (!isSystemMessage(msg))
                     {
-                         LOG.info("Received msg len = " + msg.length());
                          changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
                     }
                }
