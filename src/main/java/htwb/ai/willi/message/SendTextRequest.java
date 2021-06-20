@@ -4,6 +4,7 @@ package htwb.ai.willi.message;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 /**
  * This Request type is for when a user wants to send a message to another node
@@ -102,10 +103,11 @@ public class SendTextRequest extends Request
 
      }
 
-
      public String getReadableMessage()
      {
-          return ">>>>" + originAddress + "  said >>>> " + message;
+          return "\n\n|----"+ getOriginAddress() +" WROTE YOU----------------------------------------------------|\n" +
+                    "| " + message.toUpperCase(Locale.ROOT)+" \n"+
+                  "|-------------------------------------------------------------------------|\n";
      }
 
      public String getEncodedMessage()

@@ -80,7 +80,7 @@ public class SendTextRequestRouter extends Router
           Dispatcher.getInstance().dispatch(sendTextRequestAck);
           // Output message
           SendTextRequest sendTextRequest = (SendTextRequest) request;
-          LOG.info(sendTextRequest.getReadableMessage());
+          System.out.println(sendTextRequest.getReadableMessage());
      }
 
 
