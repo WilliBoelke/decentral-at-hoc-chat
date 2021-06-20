@@ -83,6 +83,10 @@ public class SerialInput implements SerialPortEventListener, Runnable
                     {
                          e.printStackTrace();
                     }
+                    catch (IllegalMonitorStateException e)
+                    {
+                         e.printStackTrace();
+                    }
                     String msg = inputScanner.nextLine();
                     if (!isSystemMessage(msg))
                     {
