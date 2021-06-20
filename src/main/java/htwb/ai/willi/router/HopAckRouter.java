@@ -10,7 +10,7 @@ public class HopAckRouter extends Router
      @Override
      protected void anyCase(Request request)
      {
-
+          Dispatcher.getInstance().gotReply(request);
      }
 
      @Override
@@ -27,7 +27,7 @@ public class HopAckRouter extends Router
      @Override
      protected void requestForMe(Request request)
      {
-          Dispatcher.getInstance().gotReply(request);
+
      }
 
 

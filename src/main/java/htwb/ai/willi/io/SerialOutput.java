@@ -151,12 +151,19 @@ public class SerialOutput
      {
           String encodedRequest = request.encode();
           LOG.info("Sending Request = " + request.getAsReadable());
-          printWriter.println("AT+DEST=" + "00"+request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
-          printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
-          printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
+          try
+          {
+               printWriter.println("AT+DEST=" + "00" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
+               printWriter.flush();
+               printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
+               printWriter.flush();
+               printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
+               printWriter.flush();
+          }
+          catch (NullPointerException e)
+          {
+               LOG.info("next hop in route was null");
+          }
      }
 
      public void broadcast(Request request)

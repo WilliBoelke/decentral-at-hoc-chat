@@ -35,7 +35,6 @@ public class SendTextRequestRouter extends Router
      @Override
      protected void requestFromMe(Request request)
      {
-          LOG.info("Sending request");
           if (RoutingTable.getInstance().hasFittingRoute(request))
           {
                LOG.info("Found Route");
