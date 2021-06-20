@@ -87,7 +87,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
                     {
                          e.printStackTrace();
                     }
-                    String msg = inputScanner.nextLine();
+                    String msg = inputScanner.next();
                     if (!isSystemMessage(msg))
                     {
                          LOG.info("Received msg len = " + msg.length());
