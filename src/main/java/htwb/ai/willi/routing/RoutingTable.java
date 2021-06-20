@@ -83,7 +83,7 @@ public class RoutingTable
      public void addRoute(Request request)
      {
           removeOldRouts();
-
+          LOG.info("Add Route to " + request.getDestinationAddress());
           if (request instanceof RouteReply)
           {
                Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
