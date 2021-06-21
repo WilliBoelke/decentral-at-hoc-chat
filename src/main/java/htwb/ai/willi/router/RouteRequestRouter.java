@@ -56,7 +56,7 @@ public class RouteRequestRouter extends Router
                reply.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
                reply.setRemainingLifeTime(Constants.SDT_TTL);
                Transmission transmission = new Transmission(request);
-               transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getDestinationAddress()).getHops());
+               transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getOriginAddress()).getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
           catch (NullPointerException e)
