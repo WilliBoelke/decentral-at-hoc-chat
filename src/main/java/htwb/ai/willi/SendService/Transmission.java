@@ -5,7 +5,7 @@ import htwb.ai.willi.message.Request;
 public class Transmission
 {
 
-     public static final byte STD_RETRIES = 5;
+     public static final byte STD_RETRIES = 3;
 
      /**
       * The Request to be send
