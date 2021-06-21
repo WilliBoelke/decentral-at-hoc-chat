@@ -55,7 +55,7 @@ public class RouteRequestRouter extends Router
                reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());
                reply.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
                reply.setRemainingLifeTime(Constants.SDT_TTL);
-               Transmission transmission = new Transmission(request);
+               Transmission transmission = new Transmission(reply);
                transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getOriginAddress()).getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
