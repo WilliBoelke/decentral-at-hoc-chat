@@ -1,7 +1,6 @@
 package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.controller.Address;
-import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
@@ -33,7 +32,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      {
           for (int i = 0; i < Transmission.STD_RETRIES; i++)
           {
-               if(! finished)
+               if (!finished)
                {
                     LOG.info("Trying to send, try number : " + i);
                     if (transmission.getRequest() instanceof RouteRequest)
@@ -64,7 +63,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           {
                try
                {
-                    Thread.sleep(transmission.getRequest().getTimeout()*1000);
+                    Thread.sleep(transmission.getRequest().getTimeout() * 1000);
                }
                catch (InterruptedException e)
                {
@@ -73,7 +72,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           }
           LOG.info("Finished waiting");
      }
-
 
 
      private void onRouteRequestSuccess()
@@ -100,7 +98,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " + "destination address");
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
           Dispatcher.getInstance().unregisterPropertyChangeListener(this);
-          if(this.transmission.getRequest() instanceof SendTextRequest)
+          if (this.transmission.getRequest() instanceof SendTextRequest)
           {
                sendErrorRequest();
           }
@@ -115,7 +113,8 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           try
           {
                RouteError routeError = new RouteError();
-               RoutingTable.Route failedRoute = RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
+               RoutingTable.Route failedRoute =
+                       RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
                routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
                routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
                routeError.setDestinationCount((byte) 0);
@@ -123,9 +122,9 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                routeError.setAdditionalSequenceNumber((byte) 0);
                Dispatcher.getInstance().dispatchBroadcast(routeError);
           }
-          catch(NullPointerException e)
+          catch (NullPointerException e)
           {
-               LOG.info("Coulnt send error" );
+               LOG.info("Coulnt send error");
           }
      }
 
@@ -135,6 +134,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
       * the reply is a reply to the Request send from this Thread.
       * if thats the case, the finished boolean will be set to true and the
       * Thread ends
+      *
       * @param event
       */
      @Override

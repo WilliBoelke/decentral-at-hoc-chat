@@ -98,17 +98,14 @@ public class SendTextRequest extends Request
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----SEND TEXT REQUEST----------------------------------------------------|\n" +
-                    "|     " +this.getType() + "    |    " + originAddress + "    |    " + destinationAddress + "    |   " + messageSequenceNumber + "    |    " + message+" \n"+
-                      "|-------------------------------------------------------------------------|\n";
+          return "\n\n|----SEND TEXT REQUEST----------------------------------------------------|\n" + "|     " + this.getType() + "    |    " + originAddress + "    |    " + destinationAddress + "    |   " + messageSequenceNumber + "    |    " + message + " \n" + "|-------------------------------------------------------------------------|\n";
 
      }
 
      public String getReadableMessage()
      {
-          return "\n\n|----"+ getOriginAddress() +" WROTE YOU---------------------------------------------------------|\n" +
-                    "|     " + message.toUpperCase(Locale.ROOT)+" \n"+
-                  "|-------------------------------------------------------------------------|\n";
+          return "\n\n|----" + getOriginAddress() + " WROTE " +
+                  "YOU---------------------------------------------------------|\n" + "|     " + message.toUpperCase(Locale.ROOT) + " \n" + "|-------------------------------------------------------------------------|\n";
      }
 
      public String getEncodedMessage()

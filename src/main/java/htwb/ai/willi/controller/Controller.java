@@ -1,22 +1,16 @@
 package htwb.ai.willi.controller;
 
 import htwb.ai.willi.dataProcessor.UserCommandProcessor;
-import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
-import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
 import htwb.ai.willi.loraModule.ModuleManger.LoraModule;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RequestEncoderAndDecoder;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.router.*;
-import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 
@@ -83,7 +77,7 @@ public class Controller implements PropertyChangeListener
                     sendTextRequestManager.route((SendTextRequest) changedData);
                }
           }
-          else if (event.getSource() instanceof SerialInput && changedData instanceof String && event.getPropertyName()=="request")
+          else if (event.getSource() instanceof SerialInput && changedData instanceof String && event.getPropertyName() == "request")
           {
                //Message from another node
                if (((String) changedData).contains("LR,"))

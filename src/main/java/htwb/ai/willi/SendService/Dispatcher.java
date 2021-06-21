@@ -47,7 +47,7 @@ public class Dispatcher
       *
       * @param transmission
       */
-     public void dispatchWithAck(Transmission transmission )
+     public void dispatchWithAck(Transmission transmission)
      {
           LOG.info("dispatching and waiting for ACK");
           TransmissionCoordinator coordinator = new TransmissionCoordinator(transmission);

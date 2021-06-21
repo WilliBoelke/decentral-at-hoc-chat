@@ -93,9 +93,10 @@ public class SerialInput implements SerialPortEventListener, Runnable
                     String msg = inputScanner.next();
                     if (!isSystemMessage(msg))
                     {
-                         if(msg == "AERR:CPU_BUSY" ||  msg == "ERR:CPU_BUSY")
+                         if (msg == "AERR:CPU_BUSY" || msg == "ERR:CPU_BUSY")
                          {
-                              changes.firePropertyChange( new PropertyChangeEvent(this, LoraModule.CPU_BUSY_EVENT, "", msg));
+                              changes.firePropertyChange(new PropertyChangeEvent(this, LoraModule.CPU_BUSY_EVENT, "",
+                                      msg));
                          }
                          changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
                     }

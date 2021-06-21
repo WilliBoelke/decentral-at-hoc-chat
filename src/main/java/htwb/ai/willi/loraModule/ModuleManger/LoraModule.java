@@ -2,10 +2,8 @@ package htwb.ai.willi.loraModule.ModuleManger;
 
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.controller.Constants;
-import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
-import htwb.ai.willi.io.UserInput;
 import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
@@ -18,7 +16,7 @@ import java.util.logging.Logger;
 public class LoraModule implements PropertyChangeListener
 {
      public static final Logger LOG = Logger.getLogger(LoraModule.class.getName());
-     public static  final String CPU_BUSY_EVENT = "cpu_busy";
+     public static final String CPU_BUSY_EVENT = "cpu_busy";
 
      private static LoraModule instance;
      private String frequency;
@@ -47,7 +45,7 @@ public class LoraModule implements PropertyChangeListener
           this.implicitHeader = "0";
           this.singleReceive = "0";
           this.frequencyModulation = "0";
-          this.frequencyModulationPeriod= "0";
+          this.frequencyModulationPeriod = "0";
           this.receiveTimeLimit = "3000";
           this.payloadLimit = "8";
           this.preableLimit = "10";
@@ -55,7 +53,7 @@ public class LoraModule implements PropertyChangeListener
 
      public static LoraModule getInstance()
      {
-          if(instance == null)
+          if (instance == null)
           {
                instance = new LoraModule();
           }
@@ -65,7 +63,7 @@ public class LoraModule implements PropertyChangeListener
 
      private String buildConfigString()
      {
-          return    "AT+CFG="+frequency+","+power+","+bandwidth+","+spreadingFactor+","+errorCorrectionCode+","+crc+","+implicitHeader+","+singleReceive+","+frequencyModulation+","+frequencyModulationPeriod+","+receiveTimeLimit+","+payloadLimit+","+preableLimit;
+          return "AT+CFG=" + frequency + "," + power + "," + bandwidth + "," + spreadingFactor + "," + errorCorrectionCode + "," + crc + "," + implicitHeader + "," + singleReceive + "," + frequencyModulation + "," + frequencyModulationPeriod + "," + receiveTimeLimit + "," + payloadLimit + "," + preableLimit;
      }
 
      public void configureModule()
@@ -85,11 +83,7 @@ public class LoraModule implements PropertyChangeListener
 
      public void resetGPIOPins()
      {
-          String[] cmd = {
-                  "/bin/bash",
-                  "-c",
-                  "python reset.py"
-          };
+          String[] cmd = {"/bin/bash", "-c", "python reset.py"};
           try
           {
                Runtime.getRuntime().exec(cmd);
@@ -253,9 +247,9 @@ public class LoraModule implements PropertyChangeListener
      @Override
      public void propertyChange(PropertyChangeEvent event)
      {
-          if (event.getSource() instanceof SerialInput && event.getNewValue() instanceof  String)
+          if (event.getSource() instanceof SerialInput && event.getNewValue() instanceof String)
           {
-               if(event.getPropertyName() == CPU_BUSY_EVENT )
+               if (event.getPropertyName() == CPU_BUSY_EVENT)
                {
                     System.out.println("\n\n\n\nWARNING : RESETTING MODULE CPU_BUSY_ERROR\n\n\n\n");
                     this.resetGPIOPins();
@@ -265,42 +259,42 @@ public class LoraModule implements PropertyChangeListener
 
      public void configureSerialPort()
      {
-               LOG.info("configureSerialPort: start configuration");
+          LOG.info("configureSerialPort: start configuration");
 
-               try
-               {
-                    SerialPort ser =
-                            ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
-                    ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-                    ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
-                    ser.disableReceiveTimeout();
-                    ser.disableReceiveFraming();
-                    ser.disableReceiveThreshold();
+          try
+          {
+               SerialPort ser =
+                       ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
+               ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+               ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
+               ser.disableReceiveTimeout();
+               ser.disableReceiveFraming();
+               ser.disableReceiveThreshold();
 
-                    LOG.info("configureSerialPort: serial port name: " + ser.getName());
-                    LOG.info("configureSerialPort: setup serial in- and output");
-                    SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
-                    SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
-                    new Thread(SerialInput.getInstance()).start();
-                    SerialInput.getInstance().registerPropertyChangeListener(this);
+               LOG.info("configureSerialPort: serial port name: " + ser.getName());
+               LOG.info("configureSerialPort: setup serial in- and output");
+               SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
+               SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
+               new Thread(SerialInput.getInstance()).start();
+               SerialInput.getInstance().registerPropertyChangeListener(this);
 
-               }
-               catch (PortInUseException e)
-               {
-                    e.printStackTrace();
-               }
-               catch (NoSuchPortException e)
-               {
-                    e.printStackTrace();
-               }
-               catch (IOException e)
-               {
-                    e.printStackTrace();
-               }
-               catch (UnsupportedCommOperationException e)
-               {
-                    e.printStackTrace();
-               }
+          }
+          catch (PortInUseException e)
+          {
+               e.printStackTrace();
+          }
+          catch (NoSuchPortException e)
+          {
+               e.printStackTrace();
+          }
+          catch (IOException e)
+          {
+               e.printStackTrace();
+          }
+          catch (UnsupportedCommOperationException e)
+          {
+               e.printStackTrace();
+          }
 
      }
 }

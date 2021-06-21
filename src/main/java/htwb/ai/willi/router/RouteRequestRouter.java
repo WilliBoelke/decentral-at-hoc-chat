@@ -46,17 +46,24 @@ public class RouteRequestRouter extends Router
           LOG.info("Route Request for me, sending Route Reply");
           //If the request is for this node , we need to send a reply :
           RouteReply reply = new RouteReply();
-          reply.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(request.getOriginAddress()));
-          reply.setHopCount((byte) (((RouteRequest) request).getHopCount() + 1));
-          reply.setOriginAddress(Address.getInstance().getAddress());
-          reply.setDestinationAddress(request.getOriginAddress());
-          reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());
-          reply.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
-          reply.setRemainingLifeTime(Constants.SDT_TTL);
-          Transmission transmission =new Transmission(request);
-          transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getDestinationAddress()).getHops());
-          
-          Dispatcher.getInstance().dispatchWithAck(transmission);
+          try
+          {
+               reply.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(request.getOriginAddress()));
+               reply.setHopCount((byte) (((RouteRequest) request).getHopCount() + 1));
+               reply.setOriginAddress(Address.getInstance().getAddress());
+               reply.setDestinationAddress(request.getOriginAddress());
+               reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());
+               reply.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
+               reply.setRemainingLifeTime(Constants.SDT_TTL);
+               Transmission transmission = new Transmission(request);
+               transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getDestinationAddress()).getHops());
+               Dispatcher.getInstance().dispatchWithAck(transmission);
+          }
+          catch (NullPointerException e)
+          {
+               LOG.info("Something went wroong while building the route reply");
+          }
+
      }
 
      @Override

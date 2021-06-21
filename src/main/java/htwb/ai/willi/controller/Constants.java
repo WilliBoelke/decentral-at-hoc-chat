@@ -24,7 +24,7 @@ public class Constants
       * the chosen values
       */
      //public static final String CONFIG = "AT+CFG=433000000,20,9,12,4,1,0,0,0,0,3000,8,4";
-      public static final String CONFIG = "AT+CFG=433000000,20,9,10,4,1,0,0,0,0,3000,8,10";
+     public static final String CONFIG = "AT+CFG=433000000,20,9,10,4,1,0,0,0,0,3000,8,10";
 
 
      /**

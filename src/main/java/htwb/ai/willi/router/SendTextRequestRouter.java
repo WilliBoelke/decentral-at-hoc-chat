@@ -44,7 +44,7 @@ public class SendTextRequestRouter extends Router
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setMessageSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
-               Transmission transmission =new Transmission(request);
+               Transmission transmission = new Transmission(request);
                transmission.setHops(route.getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
@@ -52,7 +52,7 @@ public class SendTextRequestRouter extends Router
           {
                LOG.info("No matching route found");
                RouteRequest routeRequest = buildRequest((SendTextRequest) request);
-               Transmission transmission =new Transmission(routeRequest);
+               Transmission transmission = new Transmission(routeRequest);
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
      }
@@ -65,7 +65,7 @@ public class SendTextRequestRouter extends Router
           {
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
                request.setNextHopInRoute(route.getNextInRoute());
-               Transmission transmission =new Transmission(request);
+               Transmission transmission = new Transmission(request);
                transmission.setHops(route.getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }

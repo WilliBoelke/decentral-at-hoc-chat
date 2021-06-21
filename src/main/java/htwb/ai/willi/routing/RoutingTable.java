@@ -30,7 +30,7 @@ public class RoutingTable
      /**
       * A list of {@link Route}
       */
-     private  ArrayList<Route> routes;
+     private ArrayList<Route> routes;
 
 
      //--------------constructors and init--------------//
@@ -78,27 +78,27 @@ public class RoutingTable
                LOG.info("Route to this node...return.");
                return;
           }
-          for (Route r: routes)
+          for (Route r : routes)
           {
                if (r.equals(route))
                {
                     LOG.info("Route already exists, updating route ..,.");
-                    if(r.getDestinationSequenceNumber() > route.getDestinationSequenceNumber())
+                    if (r.getDestinationSequenceNumber() > route.getDestinationSequenceNumber())
                     {
                          r.updateRoute(route);
                          r.updatePrecursorList(previousHopAddress);
                     }
-                    else if(r.getDestinationSequenceNumber() == route.getDestinationSequenceNumber() && route.getHops() +1 < r.getHops())
+                    else if (r.getDestinationSequenceNumber() == route.getDestinationSequenceNumber() && route.getHops() + 1 < r.getHops())
                     {
                          r.updateRoute(route);
                          r.updatePrecursorList(previousHopAddress);
                     }
-                    if(r.getDestinationSequenceNumber() == -1)
+                    if (r.getDestinationSequenceNumber() == -1)
                     {
                          r.updateRoute(route);
                          r.updatePrecursorList(previousHopAddress);
                     }
-                    if(r.getHops() == route.getHops() && r.getDestinationSequenceNumber() == r.getDestinationSequenceNumber() && r.getNextInRoute() == route.getNextInRoute())
+                    if (r.getHops() == route.getHops() && r.getDestinationSequenceNumber() == r.getDestinationSequenceNumber() && r.getNextInRoute() == route.getNextInRoute())
                     {
                          // TTL reset
                          r.updateRoute(route);
@@ -125,13 +125,17 @@ public class RoutingTable
           if (request instanceof RouteReply)
           {
                LOG.info("Add Route from RouteReply " + request.getDestinationAddress());
-               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), (byte) (((RouteReply) request).getHopCount() +1), ((RouteReply) request).getOriginSequenceNumber(), request.getLastHopInRoute());
+               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
+                       (byte) (((RouteReply) request).getHopCount() + 1),
+                       ((RouteReply) request).getOriginSequenceNumber(), request.getLastHopInRoute());
                addRoute(route, request.getLastHopInRoute());
           }
           else if (request instanceof RouteRequest)
           {
                LOG.info("Add Route from RouteRequest " + request.getDestinationAddress());
-               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), (byte) (((RouteRequest) request).getHopCount()+1), ((RouteRequest) request).getOriginSequenceNumber(), request.getLastHopInRoute());
+               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
+                       (byte) (((RouteRequest) request).getHopCount() + 1),
+                       ((RouteRequest) request).getOriginSequenceNumber(), request.getLastHopInRoute());
                addRoute(route, request.getLastHopInRoute());
           }
      }
@@ -180,10 +184,9 @@ public class RoutingTable
      {
           removeOldRouts();
 
-          String table =
-                          "\n\n|----ROUTING TABLE----------------------------------------------------|\n"+
-                          "| destination     | hops    | next hop   |  destination sequence      | \n" +
-                           "|-----------------|---------|------------|----------------------------| \n";
+          String table = "\n\n|----ROUTING TABLE----------------------------------------------------|\n" + "| " +
+                  "destination     | hops    | next hop   |  destination sequence      | \n" +
+                  "|-----------------|---------|------------|----------------------------| \n";
           for (Route r : routes)
           {
                table = table + r.toString();
@@ -294,7 +297,7 @@ public class RoutingTable
           /**
            * Timestamp of the routs creation
            */
-          private long timeStamp;
+          private final long timeStamp;
 
           /**
            * List of Nodes which have send to this destination
@@ -304,7 +307,8 @@ public class RoutingTable
 
           //--------------constructors and init--------------//
 
-          public Route(byte destinationAddress, byte nextInRoute, byte hops, byte destinationSequenceNumber, byte lastHopInRoute)
+          public Route(byte destinationAddress, byte nextInRoute, byte hops, byte destinationSequenceNumber,
+                       byte lastHopInRoute)
           {
                this.precursors = new ArrayList<>();
                this.precursors.add(lastHopInRoute);
@@ -357,7 +361,7 @@ public class RoutingTable
 
           public void updatePrecursorList(byte address)
           {
-               if(!this.precursors.contains(address))
+               if (!this.precursors.contains(address))
                {
                     precursors.add(address);
                }
@@ -396,7 +400,8 @@ public class RoutingTable
           @Override
           public int hashCode()
           {
-               return Objects.hash(destinationAddress, destinationSequenceNumber, nextInRoute, hops, timeStamp, precursors);
+               return Objects.hash(destinationAddress, destinationSequenceNumber, nextInRoute, hops, timeStamp,
+                       precursors);
           }
 
           public void updateRoute(Route route)

@@ -13,8 +13,8 @@ public class RouteReply extends Request
       */
      private byte originAddress;
      /**
-      *  The Hop count of already visited nodes
-      *  incremented by one when forwarded
+      * The Hop count of already visited nodes
+      * incremented by one when forwarded
       */
      private byte hopCount;
      /**
@@ -79,16 +79,13 @@ public class RouteReply extends Request
      }
 
 
-
      //--------------getter and setter--------------//
 
 
      @Override
      public String getAsReadable()
      {
-         return "\n\n|----ROUTE REPLY----------------------------------------------------------|\n" +
-                 "|     "+this.getType() + "    |    " + hopCount + "    |    " + originAddress + "    |    " + destinationAddress + "    |    " + destinationSequenceNumber + "    |    " + remainingLifeTime  +"\n"+
-                    "|-------------------------------------------------------------------------|\n\n";
+          return "\n\n|----ROUTE REPLY----------------------------------------------------------|\n" + "|     " + this.getType() + "    |    " + hopCount + "    |    " + originAddress + "    |    " + destinationAddress + "    |    " + destinationSequenceNumber + "    |    " + remainingLifeTime + "\n" + "|-------------------------------------------------------------------------|\n\n";
 
      }
 
