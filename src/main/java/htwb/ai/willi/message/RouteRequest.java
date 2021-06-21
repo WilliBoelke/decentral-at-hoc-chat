@@ -105,7 +105,7 @@ public class RouteRequest extends Request
      public String getAsReadable()
      {
            return   "\n\n|----ROUTE REQUEST--------------------------------------------------------|\n" +
-                         this.getType() + " | " + uFlag + " | " + hopCount + " | " + broadcastID + " | " + originAddress + " | " + originSequenceNumber +  " | " + destinationAddress +  " | " + destinationSequenceNumber +"\n"+
+                          "|     " + this.getType() + "    |    " + uFlag + "    |    " + hopCount + "    |    " + broadcastID + "    |    " + originAddress + "    |    " + originSequenceNumber +  "    |    " + destinationAddress +  "    |    " + destinationSequenceNumber +"\n"+
                          "|-------------------------------------------------------------------------|\n";
 
      }
