@@ -5,6 +5,7 @@ import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -50,7 +51,7 @@ public class UserCommandProcessor
      }
 
 
-     public void processData(String data)
+     public void processData(String data) throws IOException
      {
           switch (data.trim().toLowerCase())
           {
@@ -68,6 +69,10 @@ public class UserCommandProcessor
                case "tab -d":
                     System.out.println(">>>Reset Routing Table");
                     RoutingTable.getInstance().dropRoutingTable();
+                    break;
+               case "cls":
+                    Runtime.getRuntime().exec("clear");
+                    break;
                default:
                     System.out.println(">>>unknown user command");
           }
