@@ -67,8 +67,6 @@ public class Controller implements PropertyChangeListener
      {
 
           String[] cmd = {
-                  "/bin/bash",
-                  "-c",
                   "python reset.py"
           };
           try
