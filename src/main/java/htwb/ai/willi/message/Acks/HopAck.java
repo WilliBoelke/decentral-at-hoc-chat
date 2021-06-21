@@ -22,7 +22,6 @@ public class HopAck extends Request
      public static HopAck getInstanceFromEncodedString(String encoded, String address)
      {
           byte addressAsByte = Byte.parseByte(address.substring(2));
-          LOG.info("HOP ADDRESS ====== " + addressAsByte);
           HopAck reply = new HopAck();
           reply.setLastHopInRoute(addressAsByte);
           return reply;

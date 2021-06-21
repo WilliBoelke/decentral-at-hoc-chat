@@ -19,7 +19,6 @@ public class RouteReplyAck extends Request
      public static RouteReplyAck getInstanceFromEncodedString(String encoded, String address)
      {
           byte addressAsByte = Byte.parseByte(address.substring(2));
-          LOG.info("REPLY ADDRESS ====== " + addressAsByte);
           RouteReplyAck reply = new RouteReplyAck();
           reply.setLastHopInRoute(addressAsByte);
           return reply;
