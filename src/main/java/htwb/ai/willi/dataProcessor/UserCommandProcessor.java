@@ -51,7 +51,7 @@ public class UserCommandProcessor
      }
 
 
-     public void processData(String data) throws IOException
+     public void processData(String data)
      {
           switch (data.trim().toLowerCase())
           {
@@ -71,7 +71,14 @@ public class UserCommandProcessor
                     RoutingTable.getInstance().dropRoutingTable();
                     break;
                case "cls":
-                    Runtime.getRuntime().exec("clear");
+                    try
+                    {
+                         Runtime.getRuntime().exec("clear");
+                    }
+                    catch (IOException e)
+                    {
+                         e.printStackTrace();
+                    }
                     break;
                default:
                     System.out.println(">>>unknown user command");
