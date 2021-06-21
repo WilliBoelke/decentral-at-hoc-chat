@@ -16,6 +16,7 @@ public class Transmission
 
      public Transmission(Request request)
      {
+          this.hops = 1;
           this.request = request;
      }
 

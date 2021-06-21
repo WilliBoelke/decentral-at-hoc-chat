@@ -33,38 +33,27 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      @Override
      public void run()
      {
-          if (transmission.getRequest() instanceof RouteRequest)
+          for (int i = 0; i < Transmission.STD_RETRIES; i++)
           {
-               SerialOutput.getInstance().broadcast(transmission.getRequest());
-               waitForAck();
-          }
-          else
-          {
-               for (int i = 0; i < Transmission.STD_RETRIES; i++)
+               if(! finished)
                {
-                    if (finished)
+                    LOG.info("Trying to send, try number : " + i);
+                    if (transmission.getRequest() instanceof RouteRequest)
                     {
-                         LOG.info("Finished Transmission Successfully");
-                         Dispatcher.getInstance().unregisterPropertyChangeListener(this);
-                         return;
+                         SerialOutput.getInstance().broadcast(transmission.getRequest());
+                         waitForAck();
                     }
                     else
                     {
-                         if (transmission.getRequest() instanceof RouteReply)
-                         {
-                              LOG.info("Sending RouteReply");
-                         }
-                         LOG.info("Trying to send, tr  : " + i);
                          SerialOutput.getInstance().sendRequest(transmission.getRequest());
                     }
                     waitForAck();
                }
-
-               if (!finished)
-               {
-                    LOG.info("Transmission failed, out of retries");
-                    onTransmissionFailed();
-               }
+          }
+          if (!finished)
+          {
+               LOG.info("Transmission failed, out of retries");
+               onTransmissionFailed();
           }
      }
 

@@ -35,7 +35,7 @@ public abstract class Request implements Routable
      /**
       * The timeout between retries for this request
       */
-     private int timeout;
+     private int timeout = 30;
 
 
      //---------------public methods--------------//
