@@ -36,9 +36,9 @@ public class RouteReplyRouter extends Router
           RouteReply preparedToForward = (RouteReply) request;
           if (RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()) != null)
           {
-               Transmission transmission = new Transmission(request);
-               transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getOriginAddress()).getHops()); //TODO origin or destination address?? ...i am to tired now
                preparedToForward.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(preparedToForward.getDestinationAddress()));
+               Transmission transmission = new Transmission(preparedToForward);
+               transmission.setHops(RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()).getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
           else
