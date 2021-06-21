@@ -5,6 +5,7 @@ import htwb.ai.willi.io.Ping;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
+import htwb.ai.willi.loraModule.ModuleManger.LoraModule;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RequestEncoderAndDecoder;
 import htwb.ai.willi.message.SendTextRequest;
@@ -18,9 +19,6 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-import java.io.InputStreamReader;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 /**
  * Initializes all needed classes and instances
@@ -35,6 +33,7 @@ public class Controller implements PropertyChangeListener
      {
      }
 
+
      /**
       * Starts the initialization and an endless loop to listen for new events
       *
@@ -45,96 +44,14 @@ public class Controller implements PropertyChangeListener
      public void start(String address)
      {
           Address.getInstance().setAddress(Byte.parseByte(address));
-          LOG.info("====================================================");
-          configureSerialPort();
-          configureLoraModule();
-          //startPing();
-          LOG.info("====================================================");
-     }
-
-     private void startPing()
-     {
-          Ping ping = new Ping(240000, "ping");
-          new Thread(ping).start();
-     }
-
-
-     /**
-      * Sets the Lora module to its standard
-      * settings.
-      */
-     private void configureLoraModule()
-     {
-
-          String[] cmd = {
-                  "/bin/bash",
-                  "-c",
-                  "python reset.py"
-          };
-          try
-          {
-               Runtime.getRuntime().exec(cmd);
-          }
-          catch (IOException e)
-          {
-               e.printStackTrace();
-          }
-
-          LOG.info("configureLoraModule: start configuration");
-          LOG.info("configureLoraModule: reset module");
-          SerialOutput.getInstance().sendConfiguration("AT+RST");
-          LOG.info("configureLoraModule: send config string");
-          SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
-          LOG.info("configureLoraModule: rx");
-          SerialOutput.getInstance().sendConfiguration("AT+RX");
-          LOG.info("configureLoraModule: send address");
-          SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
-          SerialOutput.getInstance().sendConfiguration("AT+SAVE");
-          //SerialOutput.getInstance().sendConfiguration("AT+DEST=" + Constants.BROADCAST_ADDRESS);
-     }
-
-     private void configureSerialPort()
-     {
-
-          LOG.info("configureSerialPort: start configuration");
-
-          try
-          {
-               SerialPort ser =
-                       ((SerialPort) CommPortIdentifier.getPortIdentifier(Constants.PORT).open(this.getClass().getName(), 0));
-               ser.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-               ser.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
-               ser.disableReceiveTimeout();
-               ser.disableReceiveFraming();
-               ser.disableReceiveThreshold();
-
-               LOG.info("configureSerialPort: serial port name: " + ser.getName());
-               LOG.info("configureSerialPort: setup serial in- and output");
-               SerialInput.getInstance().setInputScanner(new Scanner(ser.getInputStream()));
-               SerialOutput.getInstance().setPrintWriter(new PrintWriter(ser.getOutputStream()));
-               new Thread(SerialInput.getInstance()).start();
-               //That doesnt belong here
-               SerialInput.getInstance().registerPropertyChangeListener(this);
-               UserInput.getInstance();
-               new Thread(UserInput.getInstance()).start();
-               UserInput.getInstance().registerPropertyChangeListener(this);
-          }
-          catch (PortInUseException e)
-          {
-               e.printStackTrace();
-          }
-          catch (NoSuchPortException e)
-          {
-               e.printStackTrace();
-          }
-          catch (IOException e)
-          {
-               e.printStackTrace();
-          }
-          catch (UnsupportedCommOperationException e)
-          {
-               e.printStackTrace();
-          }
+          System.out.println("====================================================");
+          LoraModule.getInstance().configureSerialPort();
+          LoraModule.getInstance().configureModule();
+          UserInput.getInstance();
+          new Thread(UserInput.getInstance()).start();
+          SerialInput.getInstance().registerPropertyChangeListener(this);
+          UserInput.getInstance().registerPropertyChangeListener(this);
+          System.out.println("====================================================");
      }
 
 
@@ -166,7 +83,7 @@ public class Controller implements PropertyChangeListener
                     sendTextRequestManager.route((SendTextRequest) changedData);
                }
           }
-          else if (event.getSource() instanceof SerialInput && changedData instanceof String)
+          else if (event.getSource() instanceof SerialInput && changedData instanceof String && event.getPropertyName()=="request")
           {
                //Message from another node
                if (((String) changedData).contains("LR,"))

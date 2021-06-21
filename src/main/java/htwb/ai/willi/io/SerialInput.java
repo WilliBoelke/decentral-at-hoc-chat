@@ -1,6 +1,7 @@
 package htwb.ai.willi.io;
 
 import htwb.ai.willi.controller.Constants;
+import htwb.ai.willi.loraModule.ModuleManger.LoraModule;
 import purejavacomm.SerialPortEvent;
 import purejavacomm.SerialPortEventListener;
 
@@ -92,7 +93,11 @@ public class SerialInput implements SerialPortEventListener, Runnable
                     String msg = inputScanner.next();
                     if (!isSystemMessage(msg))
                     {
-                         changes.firePropertyChange(new PropertyChangeEvent(this, "serialInput", "", msg));
+                         if(msg == "AERR:CPU_BUSY" ||  msg == "ERR:CPU_BUSY")
+                         {
+                              changes.firePropertyChange( new PropertyChangeEvent(this, LoraModule.CPU_BUSY_EVENT, "", msg));
+                         }
+                         changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
                     }
                }
           }
