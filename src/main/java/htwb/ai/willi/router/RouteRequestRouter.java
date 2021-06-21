@@ -61,6 +61,7 @@ public class RouteRequestRouter extends Router
           }
           catch (NullPointerException e)
           {
+               e.printStackTrace();
                LOG.info("Something went wroong while building the route reply");
           }
 
