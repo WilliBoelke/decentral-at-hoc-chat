@@ -36,7 +36,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           if (transmission.getRequest() instanceof RouteRequest)
           {
                SerialOutput.getInstance().broadcast(transmission.getRequest());
-               waitForAck(30);
+               waitForAck();
           }
           else
           {
@@ -57,7 +57,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                          LOG.info("Trying to send, tr  : " + i);
                          SerialOutput.getInstance().sendRequest(transmission.getRequest());
                     }
-                    waitForAck(5);
+                    waitForAck();
                }
 
                if (!finished)
@@ -69,14 +69,15 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      }
 
 
-     public void waitForAck(Integer times)
+     public void waitForAck()
      {
+          int times = transmission.getHops();
           LOG.info("Waiting for answer");
           for (int i = 0; i < times; i++)
           {
                try
                {
-                    Thread.sleep(Constants.SEND_MESSAGE_TIMEOUT);
+                    Thread.sleep(transmission.getRequest().getTimeout()*1000);
                }
                catch (InterruptedException e)
                {
@@ -99,7 +100,9 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     SendTextRequest sendTextRequest = routeRequest.getSendTextRequest();
                     //Setting the next hop
                     sendTextRequest.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(sendTextRequest.getDestinationAddress()));
-                    Dispatcher.getInstance().dispatchWithAck(routeRequest.getSendTextRequest());
+                    Transmission transmission = new Transmission(routeRequest.getSendTextRequest());
+                    transmission.setHops(RoutingTable.getInstance().getRouteTo(sendTextRequest.getDestinationAddress()).getHops());
+                    Dispatcher.getInstance().dispatchWithAck(transmission);
                }
           }
      }

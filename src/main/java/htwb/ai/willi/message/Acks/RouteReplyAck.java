@@ -13,6 +13,7 @@ public class RouteReplyAck extends Request
 
      public RouteReplyAck()
      {
+          this.setTimeout((int) (Math.random() * (ACK_TIMEOUT_MAX - ACK_TIMEOUT_MIN + 1) + ACK_TIMEOUT_MIN));
           this.setType(ROUTE_ACK);
      }
 

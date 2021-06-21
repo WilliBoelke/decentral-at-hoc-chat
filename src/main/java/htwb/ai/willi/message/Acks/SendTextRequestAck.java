@@ -33,6 +33,7 @@ public class SendTextRequestAck extends Request
 
      public SendTextRequestAck()
      {
+          this.setTimeout((int) (Math.random() * (ACK_TIMEOUT_MAX - ACK_TIMEOUT_MIN + 1) + ACK_TIMEOUT_MIN));
           this.setType(SEND_TEXT_REQUEST_ACK);
      }
 

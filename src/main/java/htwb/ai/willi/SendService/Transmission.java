@@ -12,6 +12,8 @@ public class Transmission
       */
      private Request request;
 
+     private int hops;
+
      public Transmission(Request request)
      {
           this.request = request;
@@ -30,6 +32,16 @@ public class Transmission
      public void setRequest(Request request)
      {
           this.request = request;
+     }
+
+     public int getHops()
+     {
+          return hops;
+     }
+
+     public void setHops(int hops)
+     {
+          this.hops = hops;
      }
 }
 

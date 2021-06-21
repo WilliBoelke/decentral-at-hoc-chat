@@ -61,6 +61,7 @@ public class RouteRequest extends Request
                          SendTextRequest sendTextRequest)
      {
           this.setType(ROUTE_REQUEST);
+          this.setTimeout(ROUTE_REQUEST_TIMEOUT);
           this.originAddress = originAddress;
           this.destinationAddress = destinationAddress;
           this.hopCount = hopCount;

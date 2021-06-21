@@ -1,6 +1,7 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.SendService.Transmission;
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
@@ -43,13 +44,16 @@ public class SendTextRequestRouter extends Router
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setMessageSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
-               Dispatcher.getInstance().dispatchWithAck(request);
+               Transmission transmission =new Transmission(request);
+               transmission.setHops(route.getHops());
+               Dispatcher.getInstance().dispatchWithAck(transmission);
           }
           else
           {
                LOG.info("No matching route found");
                RouteRequest routeRequest = buildRequest((SendTextRequest) request);
-               Dispatcher.getInstance().dispatchWithAck(routeRequest);
+               Transmission transmission =new Transmission(routeRequest);
+               Dispatcher.getInstance().dispatchWithAck(transmission);
           }
      }
 
@@ -61,7 +65,9 @@ public class SendTextRequestRouter extends Router
           {
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
                request.setNextHopInRoute(route.getNextInRoute());
-               Dispatcher.getInstance().dispatchWithAck(request);
+               Transmission transmission =new Transmission(request);
+               transmission.setHops(route.getHops());
+               Dispatcher.getInstance().dispatchWithAck(transmission);
           }
           else
           {

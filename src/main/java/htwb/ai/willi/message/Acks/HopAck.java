@@ -3,6 +3,7 @@ package htwb.ai.willi.message.Acks;
 import htwb.ai.willi.message.Request;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class HopAck extends Request
@@ -16,6 +17,9 @@ public class HopAck extends Request
 
      public HopAck()
      {
+          Random r = new Random();
+
+          this.setTimeout((int) (Math.random() * (ACK_TIMEOUT_MAX - ACK_TIMEOUT_MIN + 1) + ACK_TIMEOUT_MIN));
           this.setType(HOP_ACK);
      }
 

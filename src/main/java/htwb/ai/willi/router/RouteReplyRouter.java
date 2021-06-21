@@ -1,6 +1,7 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.SendService.Transmission;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteReply;
@@ -35,8 +36,11 @@ public class RouteReplyRouter extends Router
           RouteReply preparedToForward = (RouteReply) request;
           if (RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()) != null)
           {
+
+               Transmission transmission =new Transmission(request);
+               transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getDestinationAddress()).getHops());
                preparedToForward.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(preparedToForward.getDestinationAddress()));
-               Dispatcher.getInstance().dispatchWithAck(preparedToForward);
+               Dispatcher.getInstance().dispatchWithAck(transmission);
           }
           else
           {

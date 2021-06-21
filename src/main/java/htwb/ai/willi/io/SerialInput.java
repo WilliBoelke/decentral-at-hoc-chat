@@ -28,7 +28,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
      //--------------instance variables--------------//
 
-     private final String[] systemMessages = {"AT,OK", "AT,SENDED", "AT,SENDING", "ERR:CPU_BUSY"};
+     private final String[] systemMessages = {"AT,OK", "AT,SENDED", "AT,SENDING"};
      /**
       * PropertyChangeSupport, updates with new received String
       */

@@ -38,6 +38,7 @@ public class SendTextRequest extends Request
      public SendTextRequest(String message, byte messageSequenceNumber, byte originAddress, byte destinationAddress)
      {
           this.setType(SEND_TEXT_REQUEST);
+          this.setTimeout(SEND_TEXT_TIMEOUT);
           this.message = message;
           this.messageSequenceNumber = messageSequenceNumber;
           this.originAddress = originAddress;

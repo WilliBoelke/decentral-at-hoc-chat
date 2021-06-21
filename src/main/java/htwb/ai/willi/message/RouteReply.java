@@ -43,6 +43,7 @@ public class RouteReply extends Request
                        byte destinationSequenceNumber, byte remainingLifeTime)
      {
           this.setType(ROUTE_REPLY);
+          this.setTimeout(ROUTE_REPLY_TIMEOUT);
           this.originAddress = originAddress;
           this.hopCount = hopCount;
           this.destinationAddress = destinationAddress;

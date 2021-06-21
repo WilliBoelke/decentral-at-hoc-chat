@@ -45,12 +45,11 @@ public class Dispatcher
       * reached
       * ----------------------------------------------------------------------
       *
-      * @param request
+      * @param transmission
       */
-     public void dispatchWithAck(Request request)
+     public void dispatchWithAck(Transmission transmission )
      {
           LOG.info("dispatching and waiting for ACK");
-          Transmission transmission = new Transmission(request);
           TransmissionCoordinator coordinator = new TransmissionCoordinator(transmission);
           registerPropertyChangeListener(coordinator);
           new Thread(coordinator).start();
@@ -64,6 +63,14 @@ public class Dispatcher
       */
      public void dispatchBroadcast(Request request)
      {
+          try
+          {
+               Thread.sleep(request.getTimeout() * 1000);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().broadcast(request);
      }
 
@@ -78,6 +85,14 @@ public class Dispatcher
       */
      public void dispatch(Request request)
      {
+          try
+          {
+               Thread.sleep(request.getTimeout() * 1000);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().sendRequest(request);
      }
 

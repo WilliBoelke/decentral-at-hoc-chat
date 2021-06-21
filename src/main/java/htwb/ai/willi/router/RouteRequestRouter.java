@@ -1,6 +1,7 @@
 package htwb.ai.willi.router;
 
 import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.SendService.Transmission;
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.message.Request;
@@ -52,7 +53,10 @@ public class RouteRequestRouter extends Router
           reply.setDestinationSequenceNumber(((RouteRequest) request).getOriginSequenceNumber());
           reply.setOriginSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
           reply.setRemainingLifeTime(Constants.SDT_TTL);
-          Dispatcher.getInstance().dispatchWithAck(reply);
+
+          Transmission transmission =new Transmission(request);
+          transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getDestinationAddress()).getHops());
+          Dispatcher.getInstance().dispatchWithAck(transmission);
      }
 
      @Override

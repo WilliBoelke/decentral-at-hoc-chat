@@ -16,6 +16,13 @@ public abstract class Request implements Routable
      public static final byte HOP_ACK = 6;
      public static final byte SEND_TEXT_REQUEST_ACK = 7;
 
+     public static final int ACK_TIMEOUT_MIN = 4;
+     public static final int ACK_TIMEOUT_MAX= 6;
+     public static final int ROUTE_REQUEST_TIMEOUT = 30;
+     public static final int ROUTE_REPLY_TIMEOUT = 30;
+     public static final int SEND_TEXT_TIMEOUT = 30;
+
+
 
      //--------------instance variables--------------//
 
@@ -24,6 +31,11 @@ public abstract class Request implements Routable
      private byte nextHopInRoute;
 
      private byte lastHopInRoute;
+
+     /**
+      * The timeout between retries for this request
+      */
+     private int timeout;
 
 
      //---------------public methods--------------//
@@ -71,6 +83,16 @@ public abstract class Request implements Routable
      }
 
      public abstract String getAsReadable();
+
+     public int getTimeout()
+     {
+          return this.timeout;
+     }
+
+     protected void setTimeout(int timeout)
+     {
+          this.timeout = timeout;
+     }
 }
 
 
