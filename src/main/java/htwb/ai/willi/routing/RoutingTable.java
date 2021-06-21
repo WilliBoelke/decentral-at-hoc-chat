@@ -125,8 +125,7 @@ public class RoutingTable
           if (request instanceof RouteReply)
           {
                LOG.info("Add Route from RouteReply " + request.getDestinationAddress());
-               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
-                       ((RouteReply) request).getHopCount(), ((RouteReply) request).getOriginSequenceNumber(), request.getLastHopInRoute());
+               Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(), (byte) (((RouteReply) request).getHopCount() +1), ((RouteReply) request).getOriginSequenceNumber(), request.getLastHopInRoute());
                addRoute(route, request.getLastHopInRoute());
           }
           else if (request instanceof RouteRequest)
