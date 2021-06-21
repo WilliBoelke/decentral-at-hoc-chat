@@ -60,13 +60,16 @@ public class UserCommandProcessor
                case "deb":
                     break;
                case "adr":
-                    System.out.println("This nodes Address is : " + Address.getInstance().getAddress());
+                    System.out.println(">>>This nodes Address is : " + Address.getInstance().getAddress());
                     break;
                case "seq":
-                    System.out.println("The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
+                    System.out.println(">>>The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
                     break;
+               case "tab -d":
+                    System.out.println(">>>Reset Routing Table");
+                    RoutingTable.getInstance().dropRoutingTable();
                default:
-                    System.out.println("unknown user command");
+                    System.out.println(">>>unknown user command");
           }
      }
 

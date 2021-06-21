@@ -30,7 +30,7 @@ public class RoutingTable
      /**
       * A list of {@link Route}
       */
-     private final ArrayList<Route> routes;
+     private  ArrayList<Route> routes;
 
 
      //--------------constructors and init--------------//
@@ -63,38 +63,46 @@ public class RoutingTable
 
      //--------------public methods--------------//
 
+     public void dropRoutingTable()
+     {
+          this.routes = new ArrayList<>();
+     }
+
      /*
       * Adds a new route to the RouteList3
       */
-     public void addRoute(Route route)
+     public void addRoute(Route route, byte previousHopAddress)
      {
-          LOG.info(route.getDestinationAddress() + " | "+ Address.getInstance().getAddress());
           if (route.getDestinationAddress() == Address.getInstance().getAddress())
           {
-               LOG.info("Route to this node..return.");
+               LOG.info("Route to this node...return.");
                return;
           }
           for (Route r: routes)
           {
                if (r.equals(route))
                {
-                    LOG.info("Route Already exists, updating route ..,.");
+                    LOG.info("Route already exists, updating route ..,.");
                     if(r.getDestinationSequenceNumber() > route.getDestinationSequenceNumber())
                     {
                          r.updateRoute(route);
+                         r.updatePrecursorList(previousHopAddress);
                     }
                     else if(r.getDestinationSequenceNumber() == route.getDestinationSequenceNumber() && route.getHops() +1 < r.getHops())
                     {
                          r.updateRoute(route);
+                         r.updatePrecursorList(previousHopAddress);
                     }
                     if(r.getDestinationSequenceNumber() == -1)
                     {
                          r.updateRoute(route);
+                         r.updatePrecursorList(previousHopAddress);
                     }
                     if(r.getHops() == route.getHops() && r.getDestinationSequenceNumber() == r.getDestinationSequenceNumber() && r.getNextInRoute() == route.getNextInRoute())
                     {
                          // TTL reset
                          r.updateRoute(route);
+                         r.updatePrecursorList(previousHopAddress);
                     }
                     return;
                }
@@ -113,19 +121,20 @@ public class RoutingTable
      public void addRoute(Request request)
      {
           removeOldRouts();
-          LOG.info("Add Route to " + request.getDestinationAddress());
+
           if (request instanceof RouteReply)
           {
+               LOG.info("Add Route from RouteReply " + request.getDestinationAddress());
                Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
-                       ((RouteReply) request).getHopCount(), ((RouteReply) request).getOriginSequenceNumber());
-               addRoute(route);
+                       ((RouteReply) request).getHopCount(), ((RouteReply) request).getOriginSequenceNumber(), request.getLastHopInRoute());
+               addRoute(route, request.getLastHopInRoute());
           }
           else if (request instanceof RouteRequest)
           {
                LOG.info("Add Route from RouteRequest " + request.getDestinationAddress());
                Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
-                       ((RouteRequest) request).getHopCount(), ((RouteRequest) request).getOriginSequenceNumber());
-               addRoute(route);
+                       ((RouteRequest) request).getHopCount(), ((RouteRequest) request).getOriginSequenceNumber(), request.getLastHopInRoute());
+               addRoute(route, request.getLastHopInRoute());
           }
      }
 
@@ -297,8 +306,10 @@ public class RoutingTable
 
           //--------------constructors and init--------------//
 
-          public Route(byte destinationAddress, byte nextInRoute, byte hops, byte destinationSequenceNumber)
+          public Route(byte destinationAddress, byte nextInRoute, byte hops, byte destinationSequenceNumber, byte lastHopInRoute)
           {
+               this.precursors = new ArrayList<>();
+               this.precursors.add(lastHopInRoute);
                this.destinationSequenceNumber = destinationSequenceNumber;
                this.destinationAddress = destinationAddress;
                this.nextInRoute = nextInRoute;
@@ -395,6 +406,16 @@ public class RoutingTable
                this.nextInRoute = route.nextInRoute;
                this.destinationSequenceNumber = route.destinationSequenceNumber;
                this.hops = route.getHops();
+          }
+
+          public ArrayList<Byte> getPrecursors()
+          {
+               return precursors;
+          }
+
+          public void setPrecursors(ArrayList<Byte> precursors)
+          {
+               this.precursors = precursors;
           }
      }
 }

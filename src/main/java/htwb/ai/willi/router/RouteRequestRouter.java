@@ -21,6 +21,7 @@ public class RouteRequestRouter extends Router
      @Override
      protected void anyCase(Request request)
      {
+          // updating route and precursors
           RoutingTable.getInstance().addRoute(request);
      }
 

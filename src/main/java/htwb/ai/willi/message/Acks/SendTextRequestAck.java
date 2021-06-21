@@ -61,7 +61,7 @@ public class SendTextRequestAck extends Request
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----SEND TEXT ACK-----------------------------------------------------|\n" +
+          return "\n\n|----SEND TEXT ACK--------------------------------------------------------|\n" +
                   "|     "+ this.getType() + "    |    " + originAddress + "    |    " + destinationAddress + "    |    " + messageSequenceNumber + "\n" +
           "|-------------------------------------------------------------------------|\n\n";
      }
