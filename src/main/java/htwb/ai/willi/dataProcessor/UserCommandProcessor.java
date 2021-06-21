@@ -73,7 +73,8 @@ public class UserCommandProcessor
                case "cls":
                     try
                     {
-                         Runtime.getRuntime().exec("clear");
+                         String[] cmd = {"/bin/bash", "-c", "clear"};
+                         Runtime.getRuntime().exec(cmd);
                     }
                     catch (IOException e)
                     {
