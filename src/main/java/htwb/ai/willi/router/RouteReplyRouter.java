@@ -36,7 +36,6 @@ public class RouteReplyRouter extends Router
           RouteReply preparedToForward = (RouteReply) request;
           if (RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()) != null)
           {
-
                Transmission transmission =new Transmission(request);
                transmission.setHops(RoutingTable.getInstance().getRouteTo(request.getDestinationAddress()).getHops());
                preparedToForward.setNextHopInRoute(RoutingTable.getInstance().getNextInRouteTo(preparedToForward.getDestinationAddress()));

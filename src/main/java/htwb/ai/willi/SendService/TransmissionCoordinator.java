@@ -22,8 +22,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
 
      private boolean finished;
 
-     private boolean failed;
-
      public TransmissionCoordinator(Transmission transmission)
      {
           this.transmission = transmission;
@@ -100,8 +98,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      private void onTransmissionFailed()
      {
           LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " + "destination address");
-          this.finished = false;
-          this.failed = true;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
           Dispatcher.getInstance().unregisterPropertyChangeListener(this);
           if(this.transmission.getRequest() instanceof SendTextRequest)
@@ -116,14 +112,21 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      private void sendErrorRequest()
      {
           LOG.info("Send link break error to other nodes, unreachable : " + this.transmission.getRequest().getNextHopInRoute());
-          RouteError routeError = new RouteError();
-          RoutingTable.Route failedRoute  = RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
-          routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
-          routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
-          routeError.setDestinationCount((byte) 0);
-          routeError.setAdditionalAddress((byte) 0);
-          routeError.setAdditionalSequenceNumber((byte) 0);
-          Dispatcher.getInstance().dispatchBroadcast(routeError);
+          try
+          {
+               RouteError routeError = new RouteError();
+               RoutingTable.Route failedRoute = RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
+               routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
+               routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
+               routeError.setDestinationCount((byte) 0);
+               routeError.setAdditionalAddress((byte) 0);
+               routeError.setAdditionalSequenceNumber((byte) 0);
+               Dispatcher.getInstance().dispatchBroadcast(routeError);
+          }
+          catch(NullPointerException e)
+          {
+               LOG.info("Coulnt send error" );
+          }
      }
 
 
