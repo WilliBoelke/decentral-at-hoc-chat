@@ -71,8 +71,8 @@ public class RouteReply extends Request
           this.setType(ROUTE_REPLY);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.hopCount = bytes[1];
-          this.originAddress = bytes[2];
-          this.destinationAddress = bytes[3];
+          this.destinationAddress = bytes[2];
+          this.originAddress = bytes[3];
           this.destinationSequenceNumber = bytes[4];
           this.remainingLifeTime = bytes[5];
      }
@@ -97,8 +97,8 @@ public class RouteReply extends Request
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           byteArrayOutputStream.write(this.getType());
           byteArrayOutputStream.write(this.hopCount);
-          byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
+          byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationSequenceNumber);
           byteArrayOutputStream.write(this.remainingLifeTime);
           return byteArrayOutputStream.toString();

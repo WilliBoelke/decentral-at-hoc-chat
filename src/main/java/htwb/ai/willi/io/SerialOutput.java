@@ -148,7 +148,7 @@ public class SerialOutput
      public void sendRequest(Request request)
      {
           String encodedRequest = request.encode();
-          System.out.println("\n\n ====>UNICAST" + request.getAsReadable() );
+          System.out.println("\n\n ====>UNICAST TO " +request.getNextHopInRoute()  + request.getAsReadable() );
           try
           {
                printWriter.println("AT+DEST=" + "00" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
