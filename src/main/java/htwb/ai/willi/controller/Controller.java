@@ -18,6 +18,9 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import java.io.InputStreamReader;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 /**
  * Initializes all needed classes and instances
@@ -63,6 +66,20 @@ public class Controller implements PropertyChangeListener
      private void configureLoraModule()
      {
 
+          String[] cmd = {
+                  "/bin/bash",
+                  "-c",
+                  "python reset.py"
+          };
+          try
+          {
+               Runtime.getRuntime().exec(cmd);
+          }
+          catch (IOException e)
+          {
+               e.printStackTrace();
+          }
+
           LOG.info("configureLoraModule: start configuration");
           LOG.info("configureLoraModule: reset module");
           SerialOutput.getInstance().sendConfiguration("AT+RST");
@@ -101,7 +118,6 @@ public class Controller implements PropertyChangeListener
                UserInput.getInstance();
                new Thread(UserInput.getInstance()).start();
                UserInput.getInstance().registerPropertyChangeListener(this);
-
           }
           catch (PortInUseException e)
           {
