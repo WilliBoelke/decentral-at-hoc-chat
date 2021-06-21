@@ -112,7 +112,10 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           this.failed = true;
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
           Dispatcher.getInstance().unregisterPropertyChangeListener(this);
-          sendErrorRequest();
+          if(this.transmission.getRequest() instanceof SendTextRequest)
+          {
+               sendErrorRequest();
+          }
      }
 
      /**
@@ -122,9 +125,10 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      {
           LOG.info("Send link break error to other nodes, unreachable : " + this.transmission.getRequest().getNextHopInRoute());
           RouteError routeError = new RouteError();
+          RoutingTable.Route failedRoute  = RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
           routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
-          routeError.setUnreachableDestinationSequenceNumber(RoutingTable.getInstance().getNewesKnownSequenceNumberFromNode(transmission.getRequest().getNextHopInRoute()));
-          routeError.setDestinationCount((byte) 1);
+          routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
+          routeError.setDestinationCount((byte) 0);
           routeError.setAdditionalAddress((byte) 0);
           routeError.setAdditionalSequenceNumber((byte) 0);
           Dispatcher.getInstance().dispatchBroadcast(routeError);
