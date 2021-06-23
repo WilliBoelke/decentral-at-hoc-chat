@@ -162,7 +162,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                // If forwarded
                else if (this.transmission.getRequest().getOriginAddress() != Address.getInstance().getAddress())
                {
-                    if (incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequestAck) transmission.getRequest()).getMessageSequenceNumber())
+                    if (incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
                     {
                          finished = true;
                     }

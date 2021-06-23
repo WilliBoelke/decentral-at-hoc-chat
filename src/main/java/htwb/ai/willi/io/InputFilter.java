@@ -126,7 +126,6 @@ public class InputFilter
                this.timeStamp = timeStamp;
           }
 
-
           public int getRemainingLifeTime()
           {
                long elapsedSeconds = ((System.currentTimeMillis() - timeStamp) / 1000);
