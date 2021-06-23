@@ -43,7 +43,7 @@ public class HopAck extends Request
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----HOP ACK--------------------------------------------------------|\n" + "| Ty: " + this.getType() + "  | Lh: " + this.getLastHopInRoute() + "  | Nh: " + this.getNextHopInRoute() + "\n" + "|-------------------------------------------------------------------------|\n\n";
+          return "\n\n|----HOP ACK-------------------------------------------------------------|\n" + "| Ty: " + this.getType() + "  | Lh: " + this.getLastHopInRoute() + "  | Nh: " + this.getNextHopInRoute() + "\n" + "|-------------------------------------------------------------------------|\n\n";
 
      }
 

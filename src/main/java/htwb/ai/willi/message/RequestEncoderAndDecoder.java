@@ -29,7 +29,7 @@ public class RequestEncoderAndDecoder
      public Request decode(String encodedRequest) throws IllegalArgumentException
      {
 
-          Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,[0-9]{2}\\,");
+          Pattern headerPattern = Pattern.compile("LR\\,[0-9]{4}\\,[0-9A-F]{2}\\,");
           Matcher headerMatcher = headerPattern.matcher(encodedRequest);
           headerMatcher.find();
           String header = headerMatcher.group();
