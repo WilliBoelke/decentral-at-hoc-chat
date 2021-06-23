@@ -54,15 +54,15 @@ public class SendTextRequestAck extends Request
      {
           this.setType(SEND_TEXT_REQUEST_ACK);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          this.originAddress = bytes[1];
-          this.destinationAddress = bytes[2];
+          this.destinationAddress= bytes[1];
+          this.originAddress = bytes[2];
           this.messageSequenceNumber = bytes[3];
      }
 
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----SEND TEXT ACK--------------------------------------------------------|\n" + "|     " + this.getType() + "    |    " + originAddress + "    |    " + destinationAddress + "    |    " + messageSequenceNumber + "\n" + "|-------------------------------------------------------------------------|\n\n";
+          return "\n\n|----SEND TEXT ACK--------------------------------------------------------|\n" + "| Ty: " + this.getType() + "    | Oa: " + originAddress + "    | Da: " + destinationAddress + "    | Ms: " + messageSequenceNumber + "\n" + "|-------------------------------------------------------------------------|\n\n";
      }
 
 
@@ -73,8 +73,8 @@ public class SendTextRequestAck extends Request
           //Message type
           byteArrayOutputStream.write(this.getType());
           //origin address
-          byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
+          byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.messageSequenceNumber);
           return byteArrayOutputStream.toString();
      }

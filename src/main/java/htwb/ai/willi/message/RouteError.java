@@ -68,7 +68,8 @@ public class RouteError extends Request
      @Override
      public String getAsReadable()
      {
-          return this.getType() + ", " + destinationCount + ", " + unreachableDestinationAddress + ", " + unreachableDestinationSequenceNumber + ", " + additionalAddress + ", " + additionalSequenceNumber;
+          return "\n\n|----ROUTE ERROR----------------------------------------------------------|\n" + "| Ty: " + this.getType() + "    | Dc: " + destinationCount + "    | Ua: " + unreachableDestinationAddress + "    | Us: " + unreachableDestinationSequenceNumber + "    | Aa:" + additionalAddress + "    | As: " + additionalSequenceNumber + "\n" + "|-------------------------------------------------------------------------|\n\n";
+
      }
 
 

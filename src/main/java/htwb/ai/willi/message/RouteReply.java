@@ -85,8 +85,7 @@ public class RouteReply extends Request
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----ROUTE REPLY----------------------------------------------------------|\n" + "|     " + this.getType() + "    |    " + hopCount + "    |    " + originAddress + "    |    " + destinationAddress + "    |    " + destinationSequenceNumber + "    |    " + remainingLifeTime + "\n" + "|-------------------------------------------------------------------------|\n\n";
-
+          return "\n\n|----ROUTE REPLY----------------------------------------------------------|\n" + "| Ty: " + this.getType() + "    | Hc: " + hopCount + "    | Oa: " + originAddress + "    | Da: " + destinationAddress + "    | Ds: " + destinationSequenceNumber + "    | Lt: " + remainingLifeTime + "\n" + "|-------------------------------------------------------------------------|\n\n";
      }
 
      @Override
