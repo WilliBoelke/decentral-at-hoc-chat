@@ -1,5 +1,8 @@
 package htwb.ai.willi.routing;
 
+/*
+* Singleton  to manage the Sequence number of this Specific node
+ */
 public class SequenceNumberManager
 {
 

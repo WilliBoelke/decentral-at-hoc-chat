@@ -16,24 +16,24 @@ public class HopAckRouter extends Router
      @Override
      public void requestFromMe(Request request)
      {
-
+          //not needed here
      }
 
      @Override
      public void requestToForward(Request request)
      {
+          //not needed here
      }
 
      @Override
      protected void requestForMe(Request request)
      {
-
+          //not needed here
      }
-
 
      @Override
      protected void dispatchAck(Request request)
      {
-
+          //not needed here
      }
 }

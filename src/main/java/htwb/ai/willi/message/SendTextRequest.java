@@ -80,9 +80,7 @@ public class SendTextRequest extends Request
      public String encode()
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-          //Message type
           byteArrayOutputStream.write(this.getType());
-          //origin address
           byteArrayOutputStream.write(this.originAddress);
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.messageSequenceNumber);

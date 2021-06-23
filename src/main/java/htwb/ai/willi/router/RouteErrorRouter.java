@@ -10,6 +10,7 @@ public class RouteErrorRouter extends Router
      @Override
      protected void anyCase(Request request)
      {
+          // Removing the Route to the unreachable address
           RouteError routeError = (RouteError) request;
           byte address = routeError.getUnreachableDestinationAddress();
           byte sequenceNumber = routeError.getUnreachableDestinationSequenceNumber();
@@ -24,7 +25,7 @@ public class RouteErrorRouter extends Router
      @Override
      protected void requestFromMe(Request request)
      {
-
+          //not needed here
      }
 
      @Override

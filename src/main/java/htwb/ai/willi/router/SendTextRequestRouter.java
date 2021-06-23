@@ -31,12 +31,13 @@ public class SendTextRequestRouter extends Router
      @Override
      protected void anyCase(Request request)
      {
+          //not needed here
      }
 
      @Override
      protected void requestFromMe(Request request)
      {
-          if (RoutingTable.getInstance().hasFittingRoute(request))
+          if (RoutingTable.getInstance().hasFittingRoute(request)) // a route to the destination is known
           {
                LOG.info("Found Route");
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
@@ -48,7 +49,7 @@ public class SendTextRequestRouter extends Router
                transmission.setHops(route.getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
-          else
+          else  // no route to the destination is known
           {
                LOG.info("No matching route found");
                RouteRequest routeRequest = buildRequest((SendTextRequest) request);
@@ -61,7 +62,7 @@ public class SendTextRequestRouter extends Router
      protected void requestToForward(Request request)
      {
           dispatchAck(request);
-          if (RoutingTable.getInstance().hasFittingRoute(request))
+          if (RoutingTable.getInstance().hasFittingRoute(request))  // no route to the destination is known
           {
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
                request.setNextHopInRoute(route.getNextInRoute());
@@ -90,6 +91,7 @@ public class SendTextRequestRouter extends Router
           sendTextRequestAck.setOriginAddress(Address.getInstance().getAddress());
           sendTextRequestAck.setNextHopInRoute(request.getOriginAddress());
           Dispatcher.getInstance().dispatch(sendTextRequestAck);
+
           // Output message
           SendTextRequest sendTextRequest = (SendTextRequest) request;
           System.out.println(sendTextRequest.getReadableMessage());
