@@ -104,8 +104,8 @@ public class SendTextRequest extends Request
 
      public String getReadableMessage()
      {
-          return "\n\n|----" + getOriginAddress() + " WROTE " +
-                  "YOU---------------------------------------------------------|\n" + "|     " + message.toUpperCase(Locale.ROOT) + " \n" + "|-------------------------------------------------------------------------|\n";
+          return "\n\n|----" + getOriginAddress() + " WROTE " + "YOU" +
+                  "---------------------------------------------------------|\n" + "|     " + message.toUpperCase(Locale.ROOT) + " \n" + "|-------------------------------------------------------------------------|\n";
      }
 
      public String getEncodedMessage()

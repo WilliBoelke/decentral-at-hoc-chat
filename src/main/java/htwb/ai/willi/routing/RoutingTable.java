@@ -429,7 +429,7 @@ public class RoutingTable
 
           public void addBroadcastId(byte id)
           {
-               if(!broadcastIDs.contains(id))
+               if (!broadcastIDs.contains(id))
                {
                     broadcastIDs.add(id);
                }
@@ -437,11 +437,7 @@ public class RoutingTable
 
           public boolean broadcastAlreadyReceived(byte id)
           {
-               if(broadcastIDs.contains(id))
-               {
-                    return true;
-               }
-               return false;
+               return broadcastIDs.contains(id);
           }
      }
 }

@@ -54,7 +54,7 @@ public class SendTextRequestAck extends Request
      {
           this.setType(SEND_TEXT_REQUEST_ACK);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          this.destinationAddress= bytes[1];
+          this.destinationAddress = bytes[1];
           this.originAddress = bytes[2];
           this.messageSequenceNumber = bytes[3];
      }
