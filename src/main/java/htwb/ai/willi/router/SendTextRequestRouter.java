@@ -78,6 +78,12 @@ public class SendTextRequestRouter extends Router
      @Override
      protected void requestForMe(Request request)
      {
+          //Send HopAck
+          HopAck ack = new HopAck();
+          ack.setNextHopInRoute(request.getLastHopInRoute());
+          Dispatcher.getInstance().dispatch(ack);
+
+          // Send SendTextRequestAck
           SendTextRequestAck sendTextRequestAck = new SendTextRequestAck();
           sendTextRequestAck.setMessageSequenceNumber(((SendTextRequest) request).getMessageSequenceNumber());
           sendTextRequestAck.setDestinationAddress(request.getOriginAddress());
