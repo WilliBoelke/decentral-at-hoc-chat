@@ -54,9 +54,7 @@ public class RouteError extends Request
      public String encode()
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-          //Message type
           byteArrayOutputStream.write(this.getType());
-          //origin address
           byteArrayOutputStream.write(this.destinationCount);
           byteArrayOutputStream.write(this.unreachableDestinationAddress);
           byteArrayOutputStream.write(this.unreachableDestinationSequenceNumber);

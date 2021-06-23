@@ -117,9 +117,7 @@ public class RouteRequest extends Request
      public String encode()
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-          //Message type
           byteArrayOutputStream.write(this.getType());
-          //origin address
           byteArrayOutputStream.write(this.uFlag);
           byteArrayOutputStream.write(this.hopCount);
           byteArrayOutputStream.write(this.broadcastID);

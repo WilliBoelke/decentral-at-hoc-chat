@@ -2,6 +2,13 @@ package htwb.ai.willi.SendService;
 
 import htwb.ai.willi.message.Request;
 
+/**
+ * This Wraps a request which shall be send with the Transmission coordinator,
+ * meaning with retries and acks
+ *
+ * this make sit possible to give a Request additional information, which arent
+ * part of the request, but needed by the transmission coordinator
+ */
 public class Transmission
 {
 
