@@ -98,7 +98,7 @@ public class SendTextRequest extends Request
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----SEND TEXT REQUEST----------------------------------------------------|\n" + "| Ty:" + this.getType() + "    | oA: " + originAddress + "    | dA: " + destinationAddress + "    | Sq: " + messageSequenceNumber + "    | Tx:" + message + " \n" + "|-------------------------------------------------------------------------|\n";
+          return "\n\n|----SEND TEXT REQUEST----------------------------------------------------|\n" + "| Ty:" + this.getType() + "  | oA: " + originAddress + "  | dA: " + destinationAddress + "  | Sq: " + messageSequenceNumber + "  | Tx:" + message + " \n" + "|-------------------------------------------------------------------------|\n";
 
      }
 

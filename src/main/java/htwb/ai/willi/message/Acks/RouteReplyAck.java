@@ -38,7 +38,7 @@ public class RouteReplyAck extends Request
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----ROUTE REPLY ACK--------------------------------------------------------|\n" + "| Ty: " + this.getType() + "    | Lh: " + this.getLastHopInRoute() + "    | Nh: " + this.getNextHopInRoute() + "\n" + "|-------------------------------------------------------------------------|\n\n";
+          return "\n\n|----ROUTE REPLY ACK--------------------------------------------------------|\n" + "| Ty: " + this.getType() + "  | Lh: " + this.getLastHopInRoute() + "  | Nh: " + this.getNextHopInRoute() + "\n" + "|-------------------------------------------------------------------------|\n\n";
      }
 
      @Override
