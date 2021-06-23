@@ -74,7 +74,8 @@ public class UserCommandProcessor
                     System.out.println(RoutingTable.getInstance().toString());
                     break;
                case "deb":
-                    if(debug == true)
+                    debug = !debug;
+                    if(debug == false)
                     {
                          System.out.println(">>>Disable debug mode");
                     }
