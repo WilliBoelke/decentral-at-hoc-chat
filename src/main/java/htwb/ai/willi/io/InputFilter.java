@@ -94,7 +94,7 @@ public class InputFilter
 
      private class MessageHash
      {
-          private final int TTL = 120;
+          private final int TTL = 50;
 
           private String hash;
 
