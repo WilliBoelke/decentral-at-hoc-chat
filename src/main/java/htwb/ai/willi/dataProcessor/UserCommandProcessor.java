@@ -1,13 +1,25 @@
 package htwb.ai.willi.dataProcessor;
 
+import htwb.ai.willi.SendService.Dispatcher;
+import htwb.ai.willi.SendService.Transmission;
+import htwb.ai.willi.SendService.TransmissionCoordinator;
 import htwb.ai.willi.controller.Address;
+import htwb.ai.willi.controller.Controller;
+import htwb.ai.willi.io.SerialInput;
+import htwb.ai.willi.io.SerialOutput;
+import htwb.ai.willi.io.UserInput;
+import htwb.ai.willi.message.Acks.RouteReplyAck;
+import htwb.ai.willi.message.RouteReply;
+import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
+import htwb.ai.willi.router.Router;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -24,6 +36,8 @@ public class UserCommandProcessor
      public static final Logger LOG = Logger.getLogger(UserCommandProcessor.class.getName());
 
      private static UserCommandProcessor instance;
+
+     private boolean debug = true;
 
 
      //--------------constructors and init--------------//
@@ -60,11 +74,23 @@ public class UserCommandProcessor
                     System.out.println(RoutingTable.getInstance().toString());
                     break;
                case "deb":
+                    if(debug == true)
+                    {
+                         System.out.println(">>>Disable debug mode");
+                    }
+                    else
+                    {
+                         System.out.println(">>>Enable debug mode");
+                    }
+                    toggleDebug();
                     break;
                case "adr":
                     System.out.println(">>>This nodes Address is : " + Address.getInstance().getAddress());
                     break;
                case "seq":
+                    System.out.println(">>>The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
+                    break;
+               case "bid":
                     System.out.println(">>>The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
                     break;
                case "tab -d":
@@ -81,6 +107,7 @@ public class UserCommandProcessor
                     System.out.println(">>>unknown user command");
           }
      }
+
 
      //--------------public methods--------------//
 
@@ -145,4 +172,32 @@ public class UserCommandProcessor
           System.out.println("Your message is to long");
           return false;
      }
+
+     private void toggleDebug()
+     {
+          Level loggerLevel;
+
+          if (debug)
+          {
+               loggerLevel = Level.ALL;
+          }
+          else
+          {
+               loggerLevel = Level.OFF;
+          }
+
+          Controller.LOG.setLevel(loggerLevel);
+          Router.LOG.setLevel(loggerLevel);
+          RouteRequest.LOG.setLevel(loggerLevel);
+          RouteReplyAck.LOG.setLevel(loggerLevel);
+          RoutingTable.LOG.setLevel(loggerLevel);
+          UserInput.LOG.setLevel(loggerLevel);
+          SerialInput.LOG.setLevel(loggerLevel);
+          SerialOutput.LOG.setLevel(loggerLevel);
+          TransmissionCoordinator.LOG.setLevel(loggerLevel);
+          Dispatcher.LOG.setLevel(loggerLevel);
+          RoutingTable.LOG.setLevel(loggerLevel);
+     }
+
+
 }

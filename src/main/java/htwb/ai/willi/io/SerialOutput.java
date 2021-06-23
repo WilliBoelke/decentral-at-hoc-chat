@@ -1,6 +1,7 @@
 package htwb.ai.willi.io;
 
 import htwb.ai.willi.controller.Constants;
+import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Request;
 
 import java.io.PrintWriter;
@@ -34,7 +35,7 @@ public class SerialOutput
      /**
       * The logger
       */
-     public final Logger LOG = Logger.getLogger(TAG);
+     public static final Logger LOG = Logger.getLogger(SerialOutput.class.getName());
 
 
      //--------------constructors and init--------------//
