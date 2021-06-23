@@ -45,15 +45,7 @@ public class SequenceNumberManager
 
      public byte getCurrentSequenceNumberAndIncrement()
      {
-
-          if (currentSequenceNumber == 127)
-          {
-               currentSequenceNumber = 0;
-          }
-          else
-          {
-               currentSequenceNumber++;
-          }
+          currentSequenceNumber++;
           return currentSequenceNumber;
      }
 

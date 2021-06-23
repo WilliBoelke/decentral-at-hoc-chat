@@ -83,7 +83,7 @@ public class RoutingTable
                if (r.equals(route))
                {
                     LOG.info("Route already exists, updating route ..,.");
-                    if (r.getDestinationSequenceNumber() > route.getDestinationSequenceNumber())
+                    if (route.getDestinationSequenceNumber() - r.getDestinationSequenceNumber() > 0)
                     {
                          r.updateRoute(route);
                          r.updatePrecursorList(previousHopAddress);
@@ -316,6 +316,7 @@ public class RoutingTable
           public Route(byte destinationAddress, byte nextInRoute, byte hops, byte destinationSequenceNumber,
                        byte lastHopInRoute)
           {
+               this.broadcastIDs = new ArrayList<>();
                this.precursors = new ArrayList<>();
                this.precursors.add(lastHopInRoute);
                this.destinationSequenceNumber = destinationSequenceNumber;

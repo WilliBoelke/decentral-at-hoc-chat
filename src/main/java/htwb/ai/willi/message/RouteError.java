@@ -43,11 +43,11 @@ public class RouteError extends Request
      {
           this.setType(ROUTE_ERROR);
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
-          this.destinationCount = bytes[2];
-          this.unreachableDestinationAddress = bytes[3];
-          this.unreachableDestinationSequenceNumber = bytes[4];
-          this.additionalAddress = bytes[5];
-          this.additionalSequenceNumber = bytes[6];
+          this.destinationCount = bytes[1];
+          this.unreachableDestinationAddress = bytes[2];
+          this.unreachableDestinationSequenceNumber = bytes[3];
+          this.additionalAddress = bytes[4];
+          this.additionalSequenceNumber = bytes[5];
      }
 
      @Override

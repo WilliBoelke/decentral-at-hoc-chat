@@ -9,10 +9,12 @@ import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
+import htwb.ai.willi.message.RequestEncoderAndDecoder;
 import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.router.Router;
+import htwb.ai.willi.router.SendTextRequestRouter;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
@@ -191,6 +193,8 @@ public class UserCommandProcessor
           Router.LOG.setLevel(loggerLevel);
           RouteRequest.LOG.setLevel(loggerLevel);
           RouteReplyAck.LOG.setLevel(loggerLevel);
+          SendTextRequestRouter.LOG.setLevel(loggerLevel);
+          RequestEncoderAndDecoder.LOG.setLevel(loggerLevel);
           RoutingTable.LOG.setLevel(loggerLevel);
           UserInput.LOG.setLevel(loggerLevel);
           SerialInput.LOG.setLevel(loggerLevel);
