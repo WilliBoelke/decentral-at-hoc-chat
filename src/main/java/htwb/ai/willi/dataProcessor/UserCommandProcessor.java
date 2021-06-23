@@ -53,7 +53,8 @@ public class UserCommandProcessor
 
      public void processData(String data)
      {
-          switch (data.trim().toLowerCase())
+          String command = data.trim().toLowerCase();
+          switch (command)
           {
                case "tab":
                     System.out.println(RoutingTable.getInstance().toString());
@@ -71,15 +72,10 @@ public class UserCommandProcessor
                     RoutingTable.getInstance().dropRoutingTable();
                     break;
                case "cls":
-                    try
-                    {
-                         String[] cmd = {"/bin/bash", "-c", "clear"};
-                         Runtime.getRuntime().exec(cmd);
-                    }
-                    catch (IOException e)
-                    {
-                         e.printStackTrace();
-                    }
+                         final String ANSI_CLS = "\u001b[2J";
+                         final String ANSI_HOME = "\u001b[H";
+                         System.out.print(ANSI_CLS + ANSI_HOME);
+                         System.out.flush();
                     break;
                default:
                     System.out.println(">>>unknown user command");
