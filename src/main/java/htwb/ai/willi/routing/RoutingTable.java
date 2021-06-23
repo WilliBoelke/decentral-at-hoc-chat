@@ -304,6 +304,12 @@ public class RoutingTable
            */
           private ArrayList<Byte> precursors;
 
+          /**
+           * List of broadcasts already received from this this (destination)
+           * Node
+           */
+          private ArrayList<Byte> broadcastIDs;
+
 
           //--------------constructors and init--------------//
 
@@ -419,6 +425,23 @@ public class RoutingTable
           public void setPrecursors(ArrayList<Byte> precursors)
           {
                this.precursors = precursors;
+          }
+
+          public void addBroadcastId(byte id)
+          {
+               if(!broadcastIDs.contains(id))
+               {
+                    broadcastIDs.add(id);
+               }
+          }
+
+          public boolean broadcastAlreadyReceived(byte id)
+          {
+               if(broadcastIDs.contains(id))
+               {
+                    return true;
+               }
+               return false;
           }
      }
 }

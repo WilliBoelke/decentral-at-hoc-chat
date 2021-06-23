@@ -6,6 +6,7 @@ import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.*;
+import htwb.ai.willi.routing.BroadcastIDManager;
 import htwb.ai.willi.routing.RoutingTable;
 
 import java.beans.PropertyChangeEvent;
@@ -37,6 +38,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     LOG.info("Trying to send, try number : " + i);
                     if (transmission.getRequest() instanceof RouteRequest)
                     {
+                         ((RouteRequest) transmission.getRequest()).setBroadcastID(BroadcastIDManager.getInstance().getCurrentSequenceNumberAndIncrement());
                          SerialOutput.getInstance().broadcast(transmission.getRequest());
                          waitForAck();
                     }

@@ -127,8 +127,6 @@ public class RouteRequest extends Request
           byteArrayOutputStream.write(this.originSequenceNumber);
           byteArrayOutputStream.write(this.destinationAddress);
           byteArrayOutputStream.write(this.destinationSequenceNumber);
-          LOG.info("Encoded as : " + byteArrayOutputStream);
-          LOG.info("Encoded len : " + byteArrayOutputStream.toString().length());
           return byteArrayOutputStream.toString();
      }
 

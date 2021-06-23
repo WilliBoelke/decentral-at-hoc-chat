@@ -36,8 +36,12 @@ public class RouteRequestRouter extends Router
      protected void requestToForward(Request request)
      {
           RouteRequest routeRequest = (RouteRequest) request;
-          routeRequest.setHopCount((byte) (routeRequest.getHopCount() + 1));
-          Dispatcher.getInstance().dispatchBroadcast(routeRequest);
+          if(! RoutingTable.getInstance().getRouteTo(routeRequest.getOriginAddress()).broadcastAlreadyReceived(routeRequest.getBroadcastID())) // Broadcast already send
+          {
+               RoutingTable.getInstance().getRouteTo(routeRequest.getOriginAddress()).addBroadcastId(routeRequest.getBroadcastID()); // Adding the Broadcast ID to the list
+               routeRequest.setHopCount((byte) (routeRequest.getHopCount() + 1));
+               Dispatcher.getInstance().dispatchBroadcast(routeRequest);
+          }
      }
 
      @Override
