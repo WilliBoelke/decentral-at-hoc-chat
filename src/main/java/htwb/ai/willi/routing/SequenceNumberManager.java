@@ -40,7 +40,6 @@ public class SequenceNumberManager
 
      //--------------public methods--------------//
 
-
      public byte getCurrentSequenceNumber()
      {
           return currentSequenceNumber;

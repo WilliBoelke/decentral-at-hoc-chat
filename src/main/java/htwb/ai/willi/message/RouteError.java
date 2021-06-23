@@ -38,7 +38,6 @@ public class RouteError extends Request
           return new RouteError(encoded);
      }
 
-
      private void setUpInstanceFromString(String encoded)
      {
           this.setType(ROUTE_ERROR);
@@ -70,7 +69,6 @@ public class RouteError extends Request
 
      }
 
-
      @Override
      public byte getDestinationAddress()
      {
@@ -82,7 +80,6 @@ public class RouteError extends Request
      {
           return -1;
      }
-
 
      public byte getDestinationCount()
      {

@@ -404,13 +404,6 @@ public class RoutingTable
                return destinationAddress == route.destinationAddress;
           }
 
-          @Override
-          public int hashCode()
-          {
-               return Objects.hash(destinationAddress, destinationSequenceNumber, nextInRoute, hops, timeStamp,
-                       precursors);
-          }
-
           public void updateRoute(Route route)
           {
                this.nextInRoute = route.nextInRoute;

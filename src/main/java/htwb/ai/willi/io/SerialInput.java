@@ -98,7 +98,10 @@ public class SerialInput implements SerialPortEventListener, Runnable
                               changes.firePropertyChange(new PropertyChangeEvent(this, LoraModule.CPU_BUSY_EVENT, "",
                                       msg));
                          }
-                         changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
+                         if(! InputFilter.getInstance().wasRecentlyReceived(msg))
+                         {
+                              changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
+                         }
                     }
                }
           }
