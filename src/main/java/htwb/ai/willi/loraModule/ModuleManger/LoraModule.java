@@ -69,14 +69,9 @@ public class LoraModule implements PropertyChangeListener
      public void configureModule()
      {
           this.resetGPIOPins();
-          LOG.info("reset module");
           SerialOutput.getInstance().sendConfiguration("AT+RST");
-          LOG.info("end config string");
           SerialOutput.getInstance().sendConfiguration(buildConfigString());
-          SerialOutput.getInstance().sendConfiguration(Constants.CONFIG);
-          LOG.info("rx");
           SerialOutput.getInstance().sendConfiguration("AT+RX");
-          LOG.info("send address");
           SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
           SerialOutput.getInstance().sendConfiguration("AT+SAVE");
      }

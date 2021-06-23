@@ -67,12 +67,10 @@ public class Controller implements PropertyChangeListener
           {
                if (changedData instanceof String)
                {
-                    LOG.info("propertyChange: received user command" + changedData);
                     UserCommandProcessor.getInstance().processData((String) changedData);
                }
                else if (changedData instanceof SendTextRequest)
                {
-                    LOG.info("propertyChange: received message from user, sending to manager" + changedData);
                     SendTextRequestRouter sendTextRequestManager = new SendTextRequestRouter();
                     sendTextRequestManager.route((SendTextRequest) changedData);
                }
