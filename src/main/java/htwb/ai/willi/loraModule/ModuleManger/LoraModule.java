@@ -78,7 +78,7 @@ public class LoraModule implements PropertyChangeListener
 
      public void resetGPIOPins()
      {
-          String[] cmd = {"/bin/bash", "-c", "python reset.py"};
+          String[] cmd = {"/bin/bash", "-c", "python rekset.py"};
           try
           {
                Runtime.getRuntime().exec(cmd);
