@@ -92,7 +92,6 @@ public class SerialInput implements SerialPortEventListener, Runnable
                          e.printStackTrace();
                     }
                     String msg = inputScanner.next();
-                    System.out.println(msg);
                     if (msg.contains("CPU_BUSY"))
                     {
                          changes.firePropertyChange(new PropertyChangeEvent(this, this.CPU_BUSY_EVENT, "", msg));
