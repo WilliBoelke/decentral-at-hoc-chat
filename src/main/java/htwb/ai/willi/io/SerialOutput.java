@@ -170,12 +170,12 @@ public class SerialOutput implements PropertyChangeListener
                if (event.getPropertyName() == SerialInput.SENDED_EVENT)
                {
                     LOG.info("Received SEDNED event");
-                    this.notify();
+                    notifyAll();
                }
                else if (event.getPropertyName() == SerialInput.OK_EVENT)
                {
                     LOG.info("Received OK event");
-                    this.notify();
+                    notifyAll();
                }
           }
 
