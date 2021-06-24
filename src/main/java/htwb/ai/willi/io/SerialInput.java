@@ -29,7 +29,7 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
      //--------------instance variables--------------//
 
-     private final String[] systemMessages = {"AT,OK", "AT,SENDED", "AT,SENDING"};
+     private final String[] systemMessages = {"T,OK", "AT,OK", "AT,SENDED", "AT,SENDING"};
      /**
       * PropertyChangeSupport, updates with new received String
       */
@@ -93,11 +93,11 @@ public class SerialInput implements SerialPortEventListener, Runnable
                     String msg = inputScanner.next();
                     if (!isSystemMessage(msg))
                     {
-                         if (msg == "AERR:CPU_BUSY" || msg == "ERR:CPU_BUSY")
+                         if ( msg.trim() == "AERR:CPU_BUSY" || msg.trim() == "ERR:CPU_BUSY")
                          {
                               changes.firePropertyChange(new PropertyChangeEvent(this, LoraModule.CPU_BUSY_EVENT, "", msg));
                          }
-                         if(! InputFilter.getInstance().wasRecentlyReceived(msg))
+                         else if(! InputFilter.getInstance().wasRecentlyReceived(msg))
                          {
                               changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
                          }
