@@ -1,3 +1,6 @@
+#!/usr/bin/python
+import sys
+
 import RPi.GPIO as GPIO
 import time
 

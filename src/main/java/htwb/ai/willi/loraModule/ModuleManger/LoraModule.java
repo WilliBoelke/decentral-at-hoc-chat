@@ -80,7 +80,7 @@ public class LoraModule implements PropertyChangeListener
      {
           Process process = null;
           try{
-               process = Runtime.getRuntime().exec(new String[]{"reset.py"});
+               process = Runtime.getRuntime().exec(new String[]{"reset"});
           }catch(Exception e) {
                System.out.println("Exception Raised" + e.toString());
           }
