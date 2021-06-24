@@ -2,22 +2,23 @@ package htwb.ai.willi.message;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class RouteError extends Request
 {
      private byte destinationCount;
      private byte unreachableDestinationAddress;
      private byte unreachableDestinationSequenceNumber;
-     private byte additionalAddress;
-     private byte additionalSequenceNumber;
+     private ArrayList<Byte> additionalAddresses;
+     private ArrayList<Byte> additionalSequenceNumbers;
 
 
-     public RouteError(byte additionalAddress, byte destinationCount, byte unreachableDestinationAddress,
-                       byte unreachableDestinationSequenceNumber, byte additionalSequenceNumber)
+     public RouteError(ArrayList<Byte> additionalAddresses, byte destinationCount, byte unreachableDestinationAddress,
+                       byte unreachableDestinationSequenceNumber, ArrayList<Byte> additionalSequenceNumbers)
      {
           this.setType(ROUTE_ERROR);
-          this.additionalAddress = additionalAddress;
-          this.additionalSequenceNumber = additionalSequenceNumber;
+          this.additionalAddresses = additionalAddresses;
+          this.additionalSequenceNumbers = additionalSequenceNumbers;
           this.destinationCount = destinationCount;
           this.unreachableDestinationAddress = unreachableDestinationAddress;
           this.unreachableDestinationSequenceNumber = unreachableDestinationSequenceNumber;
@@ -45,8 +46,12 @@ public class RouteError extends Request
           this.destinationCount = bytes[1];
           this.unreachableDestinationAddress = bytes[2];
           this.unreachableDestinationSequenceNumber = bytes[3];
-          this.additionalAddress = bytes[4];
-          this.additionalSequenceNumber = bytes[5];
+          for (int i = 0; i < destinationCount; i++)
+          {
+               //Lets make both in one loop
+               additionalAddresses.add(bytes[4+i]);
+               additionalSequenceNumbers.add(bytes[4+i+destinationCount]);
+          }
      }
 
      @Override
@@ -54,18 +59,28 @@ public class RouteError extends Request
      {
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           byteArrayOutputStream.write(this.getType());
-          byteArrayOutputStream.write(this.destinationCount);
+          byteArrayOutputStream.write(this.additionalAddresses.size());
           byteArrayOutputStream.write(this.unreachableDestinationAddress);
           byteArrayOutputStream.write(this.unreachableDestinationSequenceNumber);
-          byteArrayOutputStream.write(this.additionalAddress);
-          byteArrayOutputStream.write(this.additionalSequenceNumber);
+          for (Byte a: additionalAddresses)
+          {
+               byteArrayOutputStream.write(a.byteValue());
+          }
+          for (Byte s: additionalSequenceNumbers)
+          {
+               byteArrayOutputStream.write(s.byteValue());
+          }
           return byteArrayOutputStream.toString();
      }
 
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----ROUTE ERROR----------------------------------------------------------|\n" + "| Ty: " + this.getType() + "  | Dc: " + destinationCount + "  | Ua: " + unreachableDestinationAddress + "  | Us: " + unreachableDestinationSequenceNumber + "  | Aa:" + additionalAddress + "  | As: " + additionalSequenceNumber + "\n" + "|-------------------------------------------------------------------------|\n\n";
+          return "\n\n|----ROUTE ERROR----------------------------------------------------------|\n"
+                  + "| Ty: " + this.getType() + "  | Dc: " + destinationCount + "  | Ua: " + unreachableDestinationAddress + "  | Us: "
+                  + unreachableDestinationSequenceNumber + "  | Aa:" + additionalAddresses.toString()
+                  + "  | As: " + additionalSequenceNumbers.toString() + "\n"
+                  + "|-------------------------------------------------------------------------|\n\n";
 
      }
 
@@ -111,23 +126,23 @@ public class RouteError extends Request
           this.unreachableDestinationSequenceNumber = unreachableDestinationSequenceNumber;
      }
 
-     public byte getAdditionalAddress()
+     public ArrayList<Byte> getAdditionalAddresses()
      {
-          return additionalAddress;
+          return this.additionalAddresses;
      }
 
      public void setAdditionalAddress(byte additionalAddress)
      {
-          this.additionalAddress = additionalAddress;
+          this.additionalAddresses.add(additionalAddress);
      }
 
-     public byte getAdditionalSequenceNumber()
+     public ArrayList<Byte> getAdditionalSequenceNumber()
      {
-          return additionalSequenceNumber;
+          return this.additionalSequenceNumbers;
      }
 
-     public void setAdditionalSequenceNumber(byte additionalSequenceNumber)
+     public void addAdditionalSequenceNumber(byte additionalSequenceNumber)
      {
-          this.additionalSequenceNumber = additionalSequenceNumber;
+          this.additionalSequenceNumbers.add( additionalSequenceNumber);
      }
 }

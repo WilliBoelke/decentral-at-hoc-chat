@@ -9,7 +9,9 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * This class filters incoming messages, to prevent doubling messages
+ * This is a Singleton class
+ * which makes it possible to filter out fast repeating incoming messages
+ *
  */
 public class InputFilter
 {
