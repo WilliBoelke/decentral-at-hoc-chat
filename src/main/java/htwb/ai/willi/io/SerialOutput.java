@@ -100,7 +100,7 @@ public class SerialOutput implements PropertyChangeListener
                printWriter.flush();
                LOG.info("Waiting for OK event");
                synchronized(this){
-                    this.wait();// waiting for OK even
+                    this.wait(2000);// waiting for OK even
                }
           }
           catch (InterruptedException e)
@@ -127,19 +127,19 @@ public class SerialOutput implements PropertyChangeListener
                printWriter.flush();
                LOG.info("Waiting for OK event");
                synchronized(this){
-                    this.wait();// waiting for OK even
+                    this.wait(2000);// waiting for OK even
                }
                printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                LOG.info("Waiting for OK event");
                synchronized(this){
-                    this.wait();// waiting for OK even
+                    this.wait(2000);// waiting for OK even
                }
                printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                LOG.info("Waiting for SENDED event");
                synchronized(this){
-                    this.wait();// waiting for sented even
+                    this.wait(2000);// waiting for sented even
                }
           }
           catch (NullPointerException | InterruptedException e)
@@ -159,7 +159,7 @@ public class SerialOutput implements PropertyChangeListener
           {
                LOG.info("Waiting for SEDNED event");
                synchronized(this){
-                    this.wait();
+                    this.wait(2000);
                }
           }
           catch (InterruptedException e)
