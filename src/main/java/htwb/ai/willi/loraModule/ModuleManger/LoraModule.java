@@ -88,7 +88,7 @@ public class LoraModule implements PropertyChangeListener
      {
           Process process = null;
           try{
-               process = Runtime.getRuntime().exec(new String[]{"reset"});
+               process = Runtime.getRuntime().exec(new String[]{"reasset"});
           }catch(Exception e) {
                System.out.println("Exception Raised" + e.toString());
           }
@@ -102,6 +102,7 @@ public class LoraModule implements PropertyChangeListener
           }catch(IOException e){
                System.out.println("Exception in reading output"+ e.toString());
           }
+
      }
 
 
@@ -261,8 +262,7 @@ public class LoraModule implements PropertyChangeListener
           {
                if (event.getPropertyName() == SerialInput.CPU_BUSY_EVENT)
                {
-                    System.out.println("\n\n\n\nWARNING : RESETTING MODULE CPU_BUSY_ERROR\n\n\n\n");
-                    this.resetGPIOPins();
+                    //this.resetGPIOPins();
                }
           }
      }
