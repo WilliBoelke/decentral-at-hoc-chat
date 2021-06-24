@@ -80,41 +80,6 @@ public class SerialOutput
 
      //--------------public methods--------------//
 
-     /**
-      * Writes a normal String to the serial output
-      *
-      * @param message
-      *         String
-      */
-     public void sendString(String message)
-     {
-          //Random wait time to avoid collisions with other nodes
-          int waitTime = new Random().nextInt(1000);
-          try
-          {
-               Thread.sleep(waitTime);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
-
-          int messageLength = message.length();
-          try
-          {
-               Thread.sleep(250);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
-          // Writing the String with AT command and carriage return
-          printWriter.println("AT+SEND=" + messageLength + Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
-          printWriter.println(message + Constants.CARRIAGE_RETURN_LINE_FEED);
-          printWriter.flush();
-     }
-
 
      /**
       * Writes an AT commands /  configuration string  to the Serial port

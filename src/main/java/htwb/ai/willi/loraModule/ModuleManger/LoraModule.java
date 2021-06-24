@@ -69,11 +69,59 @@ public class LoraModule implements PropertyChangeListener
      public void configureModule()
      {
           this.resetGPIOPins();
+          try
+          {
+               Thread.sleep(1000);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().sendConfiguration("AT+RST");
+          try
+          {
+               Thread.sleep(500);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().sendConfiguration(buildConfigString());
+          try
+          {
+               Thread.sleep(500);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().sendConfiguration("AT+RX");
+          try
+          {
+               Thread.sleep(500);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
+          try
+          {
+               Thread.sleep(500);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
           SerialOutput.getInstance().sendConfiguration("AT+SAVE");
+          try
+          {
+               Thread.sleep(500);
+          }
+          catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
      }
 
      public void resetGPIOPins()
