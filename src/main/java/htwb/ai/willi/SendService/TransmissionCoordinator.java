@@ -121,8 +121,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
                routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
                routeError.setDestinationCount((byte) 0);
-               routeError.setAdditionalAddress((byte) 0);
-               routeError.setAdditionalSequenceNumber((byte) 0);
                Dispatcher.getInstance().dispatchBroadcast(routeError);
           }
           catch (NullPointerException e)

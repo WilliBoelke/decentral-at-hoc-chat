@@ -131,7 +131,7 @@ public class RouteError extends Request
           return this.additionalAddresses;
      }
 
-     public void setAdditionalAddress(byte additionalAddress)
+     public void addAdditionalAddress(byte additionalAddress)
      {
           this.additionalAddresses.add(additionalAddress);
      }
