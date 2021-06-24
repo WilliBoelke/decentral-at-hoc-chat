@@ -49,6 +49,7 @@ public class InputFilter
           if(hashes.contains(new MessageHash(hash)))
           {
                LOG.info("message was received in the last 2 minutes, and will be ignored");
+               System.out.println(msg);
                return  true;
           }
           LOG.info("message was not received recently");
