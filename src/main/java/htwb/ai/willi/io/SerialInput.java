@@ -1,15 +1,12 @@
 package htwb.ai.willi.io;
 
 import htwb.ai.willi.controller.Constants;
-import htwb.ai.willi.loraModule.ModuleManger.LoraModule;
 import purejavacomm.SerialPortEvent;
 import purejavacomm.SerialPortEventListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -29,7 +26,11 @@ public class SerialInput implements SerialPortEventListener, Runnable
 
      //--------------instance variables--------------//
 
-     private final String[] systemMessages = {"T,OK", "AT,OK", "AT,SENDED", "AT,SENDING"};
+     public static final String CPU_BUSY_EVENT = "cpu_busy";
+     public static final String OK_EVENT = "ok";
+     public static final String SENDED_EVENT = "sended";
+     public static final String SENDING_EVENT = "sending";
+
      /**
       * PropertyChangeSupport, updates with new received String
       */
@@ -91,26 +92,30 @@ public class SerialInput implements SerialPortEventListener, Runnable
                          e.printStackTrace();
                     }
                     String msg = inputScanner.next();
-                    if (!isSystemMessage(msg))
+                    if (msg.contains("CPU_BUSY"))
                     {
-                         if (msg.contains("CPU_BUSY"))
-                         {
-                              changes.firePropertyChange(new PropertyChangeEvent(this, LoraModule.CPU_BUSY_EVENT, "", msg));
-                         }
-                         else if(! InputFilter.getInstance().wasRecentlyReceived(msg))
-                         {
-                              changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
-                         }
+                         changes.firePropertyChange(new PropertyChangeEvent(this, this.CPU_BUSY_EVENT, "", msg));
+                    }
+                    else if (msg.contains("OK"))
+                    {
+                         changes.firePropertyChange(new PropertyChangeEvent(this, this.OK_EVENT, "", msg));
+                    }
+                    else if (msg.contains("SENDED"))
+                    {
+                         changes.firePropertyChange(new PropertyChangeEvent(this, this.SENDED_EVENT, "", msg));
+                    }
+                    else if (msg.contains("SENDING"))
+                    {
+                         changes.firePropertyChange(new PropertyChangeEvent(this, this.SENDING_EVENT, "", msg));
+                    }
+                    else if (!InputFilter.getInstance().wasRecentlyReceived(msg))
+                    {
+                         changes.firePropertyChange(new PropertyChangeEvent(this, "request", "", msg));
                     }
                }
           }
      }
 
-     private boolean isSystemMessage(String message)
-     {
-          List<String> list = Arrays.asList(systemMessages);
-          return list.contains(message);
-     }
 
      /**
       * Lets new LPropertyChangeListener register

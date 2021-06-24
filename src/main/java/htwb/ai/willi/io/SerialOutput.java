@@ -4,6 +4,8 @@ import htwb.ai.willi.controller.Constants;
 import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.message.Request;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.PrintWriter;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -13,7 +15,7 @@ import java.util.logging.Logger;
  * Needs a PrintWriter set to the SerialPort of the Lora
  * module
  */
-public class SerialOutput
+public class SerialOutput implements PropertyChangeListener
 {
 
      //--------------static variable--------------//
@@ -88,14 +90,14 @@ public class SerialOutput
       * @param config
       *         the configuration String
       */
-     public void sendConfiguration(String config)
+     public synchronized void sendConfiguration(String config)
      {
           LOG.info("sendConfiguration: " + config);
           try
           {
                printWriter.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
-               Thread.sleep(1000);
+               wait(); // waiting for ok event
           }
           catch (InterruptedException e)
           {
@@ -111,7 +113,7 @@ public class SerialOutput
           printWriter.close();
      }
 
-     public void sendRequest(Request request)
+     public synchronized void sendRequest(Request request)
      {
           String encodedRequest = request.encode();
           System.out.println("\n\n ====>UNICAST TO " + request.getNextHopInRoute() + request.getAsReadable());
@@ -139,7 +141,7 @@ public class SerialOutput
           printWriter.flush();
           try
           {
-               Thread.sleep(250);
+               wait();// waiting for sended event
           }
           catch (InterruptedException e)
           {
@@ -149,5 +151,22 @@ public class SerialOutput
           printWriter.flush();
           printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
           printWriter.flush();
+     }
+
+     @Override
+     public void propertyChange(PropertyChangeEvent event)
+     {
+          if (event.getSource() instanceof SerialInput )
+          {
+               if (event.getPropertyName() == SerialInput.SENDED_EVENT)
+               {
+                    notifyAll();
+               }
+               else if (event.getPropertyName() == SerialInput.OK_EVENT)
+               {
+                    notifyAll();
+               }
+          }
+
      }
 }

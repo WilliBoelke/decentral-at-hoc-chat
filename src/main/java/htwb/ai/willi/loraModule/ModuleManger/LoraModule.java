@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class LoraModule implements PropertyChangeListener
 {
      public static final Logger LOG = Logger.getLogger(LoraModule.class.getName());
-     public static final String CPU_BUSY_EVENT = "cpu_busy";
+
 
      private static LoraModule instance;
      private String frequency;
@@ -71,57 +71,17 @@ public class LoraModule implements PropertyChangeListener
           this.resetGPIOPins();
           try
           {
-               Thread.sleep(1000);
+               Thread.sleep(2000);
           }
           catch (InterruptedException e)
           {
                e.printStackTrace();
           }
           SerialOutput.getInstance().sendConfiguration("AT+RST");
-          try
-          {
-               Thread.sleep(500);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
           SerialOutput.getInstance().sendConfiguration(buildConfigString());
-          try
-          {
-               Thread.sleep(500);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
           SerialOutput.getInstance().sendConfiguration("AT+RX");
-          try
-          {
-               Thread.sleep(500);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
           SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
-          try
-          {
-               Thread.sleep(500);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
           SerialOutput.getInstance().sendConfiguration("AT+SAVE");
-          try
-          {
-               Thread.sleep(500);
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
      }
 
      public void resetGPIOPins()
@@ -299,7 +259,7 @@ public class LoraModule implements PropertyChangeListener
      {
           if (event.getSource() instanceof SerialInput && event.getNewValue() instanceof String)
           {
-               if (event.getPropertyName() == CPU_BUSY_EVENT)
+               if (event.getPropertyName() == SerialInput.CPU_BUSY_EVENT)
                {
                     System.out.println("\n\n\n\nWARNING : RESETTING MODULE CPU_BUSY_ERROR\n\n\n\n");
                     this.resetGPIOPins();
