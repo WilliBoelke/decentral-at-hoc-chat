@@ -8,8 +8,8 @@ import purejavacomm.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -78,14 +78,21 @@ public class LoraModule implements PropertyChangeListener
 
      public void resetGPIOPins()
      {
-          String[] cmd = {"/bin/bash", "-c", "python rekset.py"};
-          try
-          {
-               Runtime.getRuntime().exec(cmd);
+          Process process = null;
+          try{
+               process = Runtime.getRuntime().exec(new String[]{"reset"});
+          }catch(Exception e) {
+               System.out.println("Exception Raised" + e.toString());
           }
-          catch (IOException e)
-          {
-               e.printStackTrace();
+          InputStream stdout = process.getInputStream();
+          BufferedReader reader = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
+          String line;
+          try{
+               while((line = reader.readLine()) != null){
+                    System.out.println("stdout: "+ line);
+               }
+          }catch(IOException e){
+               System.out.println("Exception in reading output"+ e.toString());
           }
      }
 
