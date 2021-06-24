@@ -47,6 +47,7 @@ public class SerialOutput implements PropertyChangeListener
       */
      private SerialOutput()
      {
+          SerialInput.getInstance().registerPropertyChangeListener(this);
      }
 
 
@@ -98,7 +99,7 @@ public class SerialOutput implements PropertyChangeListener
                printWriter.println(config + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                LOG.info("Waiting for OK event");
-               wait();// waiting for sented even
+               this.wait();// waiting for sented even
           }
           catch (InterruptedException e)
           {
@@ -123,15 +124,15 @@ public class SerialOutput implements PropertyChangeListener
                printWriter.println("AT+DEST=" + "00" + request.getNextHopInRoute() + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                LOG.info("Waiting for OK event");
-               wait();// waiting for sented even
+               this.wait();// waiting for sented even
                printWriter.println("AT+SEND=" + encodedRequest.length() + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                LOG.info("Waiting for OK event");
-               wait();// waiting for sented even
+               this.wait();// waiting for sented even
                printWriter.println(encodedRequest + Constants.CARRIAGE_RETURN_LINE_FEED);
                printWriter.flush();
                LOG.info("Waiting for SENDED event");
-               wait();// waiting for sented even
+               this.wait();// waiting for sented even
           }
           catch (NullPointerException | InterruptedException e)
           {
@@ -149,7 +150,7 @@ public class SerialOutput implements PropertyChangeListener
           try
           {
                LOG.info("Waiting for SEDNED event");
-               wait();// waiting for sended event
+               this.wait();// waiting for sended event
           }
           catch (InterruptedException e)
           {
@@ -169,12 +170,12 @@ public class SerialOutput implements PropertyChangeListener
                if (event.getPropertyName() == SerialInput.SENDED_EVENT)
                {
                     LOG.info("Received SEDNED event");
-                    notifyAll();
+                    this.notify();
                }
                else if (event.getPropertyName() == SerialInput.OK_EVENT)
                {
                     LOG.info("Received OK event");
-                    notifyAll();
+                    this.notify();
                }
           }
 
