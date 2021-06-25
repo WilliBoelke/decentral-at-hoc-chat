@@ -65,7 +65,7 @@ public class Dispatcher
      {
           try
           {
-               Thread.sleep(request.getTimeout() / 1000);
+               Thread.sleep(request.getTimeout() / 500); // TODO now so long waiting?
           }
           catch (InterruptedException e)
           {
