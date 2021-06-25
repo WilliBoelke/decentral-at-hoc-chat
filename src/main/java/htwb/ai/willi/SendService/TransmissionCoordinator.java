@@ -6,6 +6,7 @@ import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Acks.SendTextRequestAck;
 import htwb.ai.willi.message.*;
+import htwb.ai.willi.routing.BlackList;
 import htwb.ai.willi.routing.BroadcastIDManager;
 import htwb.ai.willi.routing.RoutingTable;
 
@@ -107,13 +108,21 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
           LOG.info("The message was send unsuccessfully" + Transmission.STD_RETRIES + " times. Consider a different " + "destination address");
           RoutingTable.getInstance().removeRoute(transmission.getRequest().getDestinationAddress());
           Dispatcher.getInstance().unregisterPropertyChangeListener(this);
-          if (this.transmission.getRequest() instanceof SendTextRequest)
-          {
-               sendErrorRequest();
-          }
-
+          blockList();
+          sendErrorRequest();
      }
 
+
+     private void blockList()
+     {
+          if(this.transmission.getRequest() instanceof  SendTextRequest)
+          {
+               if(receivedHopHack == false)
+               {
+                    BlackList.getInstance().addNodeToBlackLis(transmission.getRequest().getNextHopInRoute());
+               }
+          }
+     }
      /**
       * Send a RouteError if the transmission wasn't successful
       */

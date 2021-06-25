@@ -20,7 +20,7 @@ public abstract class Router
 
      public void route(Request request)
      {
-          if(BlackList.getInstance().isBlackListed(request.getLastHopInRoute()) || BlackList.getInstance().isBlackListed(request.getDestinationAddress()))
+          if( ! BlackList.getInstance().isBlackListed(request.getLastHopInRoute()) || ! BlackList.getInstance().isBlackListed(request.getDestinationAddress()))
           {
                System.out.println("\n\n ====>RECEIVED" + request.getAsReadable());
                anyCase(request);
