@@ -1,16 +1,15 @@
 package htwb.ai.willi.dataProcessor;
 
 import htwb.ai.willi.SendService.Dispatcher;
-import htwb.ai.willi.SendService.Transmission;
 import htwb.ai.willi.SendService.TransmissionCoordinator;
 import htwb.ai.willi.controller.Address;
 import htwb.ai.willi.controller.Controller;
 import htwb.ai.willi.io.SerialInput;
 import htwb.ai.willi.io.SerialOutput;
 import htwb.ai.willi.io.UserInput;
+import htwb.ai.willi.loraModule.ModuleManger.LoraModule;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.RequestEncoderAndDecoder;
-import htwb.ai.willi.message.RouteReply;
 import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.router.Router;
@@ -19,7 +18,6 @@ import htwb.ai.willi.routing.BlackList;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -78,7 +76,7 @@ public class UserCommandProcessor
                     break;
                case "deb":
                     debug = !debug;
-                    if(debug == false)
+                    if (debug == false)
                     {
                          System.out.println(">>>Disable debug mode");
                     }
@@ -97,15 +95,18 @@ public class UserCommandProcessor
                case "bli":
                     System.out.println(BlackList.getInstance().toString());
                     break;
+               case "pwr":
+                    changeModulePower();
+                    break;
                case "drp":
                     System.out.println(">>>Reset Routing Table");
                     RoutingTable.getInstance().dropRoutingTable();
                     break;
                case "cls":
-                         final String ANSI_CLS = "\u001b[2J";
-                         final String ANSI_HOME = "\u001b[H";
-                         System.out.print(ANSI_CLS + ANSI_HOME);
-                         System.out.flush();
+                    final String ANSI_CLS = "\u001b[2J";
+                    final String ANSI_HOME = "\u001b[H";
+                    System.out.print(ANSI_CLS + ANSI_HOME);
+                    System.out.flush();
                     break;
                default:
                     System.out.println(">>>unknown user command");
@@ -146,6 +147,30 @@ public class UserCommandProcessor
 
 
      //----------------check input----------------//
+
+
+     private void changeModulePower()
+     {
+          Scanner scanner = new Scanner(System.in);
+          String newPowerValue = "";
+          do
+          {
+               System.out.println("Enter a power level between 1 and 20 . ");
+               newPowerValue = scanner.nextLine();
+          }
+          while (!isValidPowerLevel(newPowerValue));
+          LoraModule.getInstance().setPower(newPowerValue);
+     }
+
+     private boolean isValidPowerLevel(String newPowerValue)
+     {
+          if (Integer.parseInt(newPowerValue) <= 20 && Integer.parseInt(newPowerValue) > 0)
+          {
+               return true;
+          }
+          return false;
+     }
+
 
      private boolean isValidAddress(String givenAddress)
      {
