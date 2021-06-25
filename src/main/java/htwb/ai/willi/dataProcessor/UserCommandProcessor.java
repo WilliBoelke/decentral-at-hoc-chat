@@ -15,6 +15,7 @@ import htwb.ai.willi.message.RouteRequest;
 import htwb.ai.willi.message.SendTextRequest;
 import htwb.ai.willi.router.Router;
 import htwb.ai.willi.router.SendTextRequestRouter;
+import htwb.ai.willi.routing.BlackList;
 import htwb.ai.willi.routing.RoutingTable;
 import htwb.ai.willi.routing.SequenceNumberManager;
 
@@ -93,10 +94,10 @@ public class UserCommandProcessor
                case "seq":
                     System.out.println(">>>The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
                     break;
-               case "bid":
-                    System.out.println(">>>The current Sequence Number is : " + SequenceNumberManager.getInstance().getCurrentSequenceNumber());
+               case "bli":
+                    System.out.println(BlackList.getInstance().toString());
                     break;
-               case "tab -d":
+               case "drp":
                     System.out.println(">>>Reset Routing Table");
                     RoutingTable.getInstance().dropRoutingTable();
                     break;

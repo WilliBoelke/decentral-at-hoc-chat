@@ -249,6 +249,25 @@ public class RoutingTable
           routes.removeIf(r -> r.getRemainingLifeTime() <= (0));
      }
 
+     public void removeWithSequenceNumberCheck(byte address, byte sequeceNumebr)
+     {
+          routes.removeIf(r -> r.getDestinationAddress() == address && r.getDestinationSequenceNumber() - sequeceNumebr > 0);
+     }
+
+     public ArrayList<Route> getRoutesWithNextHop(byte nextHopInRoute)
+     {
+          removeOldRouts();
+          ArrayList<Route> routsWithNextHop = new ArrayList<>();
+          for (Route r: routes)
+          {
+               if (r.getNextInRoute() == nextHopInRoute)
+               {
+                    routsWithNextHop.add(r);
+               }
+          }
+          return routsWithNextHop;
+     }
+
      /**
       * The Route class
       * <p>

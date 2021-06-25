@@ -11,6 +11,7 @@ import htwb.ai.willi.routing.RoutingTable;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 
@@ -21,9 +22,15 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
      private final Transmission transmission;
 
      private boolean finished;
+     /**
+      * indicates if a HopAck was received
+      */
+     private boolean receivedHopHack;
 
      public TransmissionCoordinator(Transmission transmission)
      {
+          this.finished = false;
+          this.receivedHopHack = false;
           this.transmission = transmission;
      }
 
@@ -112,20 +119,40 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
       */
      private void sendErrorRequest()
      {
-          LOG.info("Send link break error to other nodes, unreachable : " + this.transmission.getRequest().getNextHopInRoute());
-          try
+          if(this.transmission.getRequest() instanceof SendTextRequest && receivedHopHack == false )
           {
-               RouteError routeError = new RouteError();
-               RoutingTable.Route failedRoute =
-                       RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
-               routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
-               routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
-               routeError.setDestinationCount((byte) 0);
-               Dispatcher.getInstance().dispatchBroadcast(routeError);
-          }
-          catch (NullPointerException e)
-          {
-               LOG.info("Couldn't send error");
+               LOG.info("Send link break error to other nodes, unreachable : " + this.transmission.getRequest().getNextHopInRoute());
+               try
+               {
+                    RoutingTable.Route failedRoute = RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress());
+                    ArrayList<Byte> precursorAddresses = RoutingTable.getInstance().getRouteTo(this.transmission.getRequest().getDestinationAddress()).getPrecursors();
+                    ArrayList<RoutingTable.Route> additionalRoutes = RoutingTable.getInstance().getRoutesWithNextHop(this.transmission.getRequest().getNextHopInRoute());
+
+                    RouteError routeError = new RouteError();
+                    routeError.setUnreachableDestinationAddress(this.transmission.getRequest().getNextHopInRoute());
+                    routeError.setUnreachableDestinationSequenceNumber(failedRoute.getDestinationSequenceNumber());
+                    routeError.setDestinationCount((byte) additionalRoutes.size());
+                    Dispatcher.getInstance().dispatchBroadcast(routeError);
+                    for (RoutingTable.Route r: additionalRoutes)
+                    {
+                         routeError.addAdditionalAddress(r.getDestinationAddress());
+                         routeError.addAdditionalSequenceNumber(r.getDestinationSequenceNumber());
+                    }
+
+                    if(precursorAddresses.size() == 1) // Unicast reicht
+                    {
+                         routeError.setNextHopInRoute(precursorAddresses.get(0));
+                         Dispatcher.getInstance().dispatch(routeError);
+                    }
+                    else // Broadcast if several precursors
+                    {
+                         Dispatcher.getInstance().dispatchBroadcast(routeError);
+                    }
+               }
+               catch (NullPointerException e)
+               {
+                    LOG.info("Couldn't send error");
+               }
           }
      }
 
@@ -162,7 +189,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                {
                     if (incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
                     {
-                         finished = true;
+                        this.receivedHopHack = true;
                     }
                }
           }

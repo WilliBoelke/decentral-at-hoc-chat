@@ -5,6 +5,7 @@ import htwb.ai.willi.dataProcessor.UserCommandProcessor;
 import htwb.ai.willi.message.Acks.HopAck;
 import htwb.ai.willi.message.Acks.RouteReplyAck;
 import htwb.ai.willi.message.Request;
+import htwb.ai.willi.routing.BlackList;
 
 import java.util.logging.Logger;
 
@@ -19,25 +20,32 @@ public abstract class Router
 
      public void route(Request request)
      {
-          System.out.println("\n\n ====>RECEIVED" + request.getAsReadable());
-          anyCase(request);
-          if (false == request instanceof HopAck || request instanceof RouteReplyAck == false)
+          if(BlackList.getInstance().isBlackListed(request.getLastHopInRoute()) || BlackList.getInstance().isBlackListed(request.getDestinationAddress()))
           {
-               if (isRequestFromMe(request))
+               System.out.println("\n\n ====>RECEIVED" + request.getAsReadable());
+               anyCase(request);
+               if (false == request instanceof HopAck || request instanceof RouteReplyAck == false)
                {
-                    LOG.info("request from me ");
-                    requestFromMe(request);
+                    if (isRequestFromMe(request))
+                    {
+                         LOG.info("request from me ");
+                         requestFromMe(request);
+                    }
+                    else if (isRequestForMe(request))
+                    {
+                         LOG.info("request for me ");
+                         requestForMe(request);
+                    }
+                    else if (isRequestToForward(request))
+                    {
+                         LOG.info("request to forward ");
+                         requestToForward(request);
+                    }
                }
-               else if (isRequestForMe(request))
-               {
-                    LOG.info("request for me ");
-                    requestForMe(request);
-               }
-               else if (isRequestToForward(request))
-               {
-                    LOG.info("request to forward ");
-                    requestToForward(request);
-               }
+          }
+          else
+          {
+               LOG.info("Request was from a blacklisted node - ignored");
           }
      }
 

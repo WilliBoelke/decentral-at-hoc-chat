@@ -148,7 +148,7 @@ public class SerialOutput implements PropertyChangeListener
           }
      }
 
-     public void broadcast(Request request)
+     public synchronized void broadcast(Request request)
      {
           String encodedRequest = request.encode();
           System.out.println("\n\n ====>BROADCAST" + request.getAsReadable());

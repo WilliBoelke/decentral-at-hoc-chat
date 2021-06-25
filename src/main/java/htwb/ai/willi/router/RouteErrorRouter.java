@@ -4,6 +4,8 @@ import htwb.ai.willi.message.Request;
 import htwb.ai.willi.message.RouteError;
 import htwb.ai.willi.routing.RoutingTable;
 
+import java.util.ArrayList;
+
 public class RouteErrorRouter extends Router
 {
 
@@ -14,11 +16,14 @@ public class RouteErrorRouter extends Router
           RouteError routeError = (RouteError) request;
           byte address = routeError.getUnreachableDestinationAddress();
           byte sequenceNumber = routeError.getUnreachableDestinationSequenceNumber();
+          RoutingTable.getInstance().removeWithSequenceNumberCheck(address, sequenceNumber);
 
-          RoutingTable.Route routeToUnreachable = RoutingTable.getInstance().getRouteTo(address);
-          if (routeToUnreachable.getDestinationSequenceNumber() < sequenceNumber)
+          ArrayList<Byte> addresses = routeError.getAdditionalAddresses();
+          ArrayList<Byte> sequenceNumbers = routeError.getAdditionalSequenceNumber();
+
+          for (int i = 0; i < addresses.size(); i++)
           {
-               RoutingTable.getInstance().removeRoute(address);
+               RoutingTable.getInstance().removeWithSequenceNumberCheck(addresses.get(i), sequenceNumbers.get(i));
           }
      }
 

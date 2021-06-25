@@ -3,6 +3,8 @@ package htwb.ai.willi.message;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 
 public class RouteError extends Request
 {
@@ -11,6 +13,7 @@ public class RouteError extends Request
      private byte unreachableDestinationSequenceNumber;
      private ArrayList<Byte> additionalAddresses;
      private ArrayList<Byte> additionalSequenceNumbers;
+     public static final Logger LOG = Logger.getLogger(RouteError.class.getName());
 
 
      public RouteError(ArrayList<Byte> additionalAddresses, byte destinationCount, byte unreachableDestinationAddress,
@@ -46,11 +49,12 @@ public class RouteError extends Request
           this.destinationCount = bytes[1];
           this.unreachableDestinationAddress = bytes[2];
           this.unreachableDestinationSequenceNumber = bytes[3];
-          for (int i = 0; i < destinationCount; i++)
+
+          for (int i = 0; i < destinationCount; i+=2)
           {
                //Lets make both in one loop
                additionalAddresses.add(bytes[4+i]);
-               additionalSequenceNumbers.add(bytes[4+i+destinationCount]);
+               additionalSequenceNumbers.add(bytes[5+i]);
           }
      }
 
@@ -62,13 +66,10 @@ public class RouteError extends Request
           byteArrayOutputStream.write(this.additionalAddresses.size());
           byteArrayOutputStream.write(this.unreachableDestinationAddress);
           byteArrayOutputStream.write(this.unreachableDestinationSequenceNumber);
-          for (Byte a: additionalAddresses)
+          for (int i = 0; i < additionalAddresses.size(); i++)
           {
-               byteArrayOutputStream.write(a.byteValue());
-          }
-          for (Byte s: additionalSequenceNumbers)
-          {
-               byteArrayOutputStream.write(s.byteValue());
+               byteArrayOutputStream.write(additionalAddresses.get(i));
+               byteArrayOutputStream.write(additionalSequenceNumbers.get(i));
           }
           return byteArrayOutputStream.toString();
      }
