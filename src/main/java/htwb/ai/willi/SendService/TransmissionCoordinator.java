@@ -48,7 +48,6 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     {
                          ((RouteRequest) transmission.getRequest()).setBroadcastID(BroadcastIDManager.getInstance().getCurrentSequenceNumberAndIncrement());
                          SerialOutput.getInstance().broadcast(transmission.getRequest());
-                         waitForAck();
                     }
                     else
                     {

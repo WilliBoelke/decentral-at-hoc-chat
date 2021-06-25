@@ -41,12 +41,12 @@ public class BlackList
      @Override
      public String toString()
      {
-          String response =  "\n\n|----BLACK LIST----------------------------------------------------------|\n";
+          String response =  "\n\n|----BLACK LIST-----------------------------------------------------------|\n";
           for (BlacklistEntry e: blackListedAddresses)
           {
                response = response + e.toString();
           }
-          response = response+  "|-------------------------------------------------------------------------|\n\n";
+          response = response+  "\\n|-------------------------------------------------------------------------|\n\n";
           return response;
 
      }
@@ -85,7 +85,7 @@ public class BlackList
           @Override
           public String toString()
           {
-               return " | Ad: " + address + "  |";
+               return "|  Ad: " + address + "   |   ";
           }
 
           public int getRemainingLifeTime()
