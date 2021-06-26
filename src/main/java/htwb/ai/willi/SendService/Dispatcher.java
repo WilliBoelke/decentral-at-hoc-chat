@@ -63,14 +63,6 @@ public class Dispatcher
       */
      public void dispatchBroadcast(Request request)
      {
-          try
-          {
-               Thread.sleep(request.getTimeout() / 500); // TODO now so long waiting?
-          }
-          catch (InterruptedException e)
-          {
-               e.printStackTrace();
-          }
           SerialOutput.getInstance().broadcast(request);
      }
 
