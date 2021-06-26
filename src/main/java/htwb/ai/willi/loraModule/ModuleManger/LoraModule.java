@@ -37,7 +37,7 @@ public class LoraModule implements PropertyChangeListener
      private LoraModule()
      {
           this.frequency = "433000000";
-          this.power = "5";
+          this.power = "10";
           this.bandwidth = "9";
           this.spreadingFactor = "7";
           this.errorCorrectionCode = "4";
