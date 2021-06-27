@@ -23,6 +23,7 @@ public class SendTextRequestRouter extends Router
      {
           HopAck ack = new HopAck();
           ack.setNextHopInRoute(request.getLastHopInRoute());
+          LOG.info("Sequence Number : " + ((SendTextRequest) request).getMessageSequenceNumber());
           ack.setMessageSequenceNumber(((SendTextRequest) request).getMessageSequenceNumber());
           Dispatcher.getInstance().dispatch(ack);
      }
@@ -42,7 +43,6 @@ public class SendTextRequestRouter extends Router
                LOG.info("Found Route");
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
                request.setNextHopInRoute(route.getNextInRoute());
-               ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setForwarded(false);
                ((SendTextRequest) request).setMessageSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
@@ -84,6 +84,7 @@ public class SendTextRequestRouter extends Router
           //Send HopAck
           HopAck ack = new HopAck();
           ack.setNextHopInRoute(request.getLastHopInRoute());
+          ack.setMessageSequenceNumber(((SendTextRequest) request).getMessageSequenceNumber());
           Dispatcher.getInstance().dispatch(ack);
 
           // Send SendTextRequestAck
