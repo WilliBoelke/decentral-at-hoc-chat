@@ -79,7 +79,7 @@ public class Dispatcher
      {
           try
           {
-               Thread.sleep(request.getTimeout() * 1000);
+               Thread.sleep(request.getTimeout() * 100);
           }
           catch (InterruptedException e)
           {
