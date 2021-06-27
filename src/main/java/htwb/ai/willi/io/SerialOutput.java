@@ -100,7 +100,7 @@ public class SerialOutput implements PropertyChangeListener
                printWriter.flush();
                LOG.info("Waiting for OK event");
                synchronized(this){
-                    this.wait(2000);// waiting for OK even
+                    this.wait(4000);// waiting for OK even
                }
           }
           catch (InterruptedException e)
