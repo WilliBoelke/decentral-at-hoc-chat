@@ -137,6 +137,10 @@ public class Controller implements PropertyChangeListener
                     {
                          LOG.info("A request was received incompletely and thus cant be decoded");
                     }
+                    catch (ArrayIndexOutOfBoundsException e)
+                    {
+                         LOG.info("A request was received incompletely and thus cant be decoded");
+                    }
                }
           }
      }

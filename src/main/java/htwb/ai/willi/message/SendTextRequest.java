@@ -31,6 +31,7 @@ public class SendTextRequest extends Request
       */
      private byte destinationAddress;
 
+     private boolean forwarded;
 
      //-------------constructors and init-------------//
 
@@ -58,6 +59,7 @@ public class SendTextRequest extends Request
 
      private void setUpInstanceFromString(String encoded)
      {
+          this.forwarded = false;
           byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           this.originAddress = bytes[1];
           this.destinationAddress = bytes[2];
@@ -86,7 +88,6 @@ public class SendTextRequest extends Request
           byteArrayOutputStream.write(this.messageSequenceNumber);
           String encodedHeader = byteArrayOutputStream.toString();
           String encodedMessage = new String(message.getBytes(StandardCharsets.US_ASCII));
-
           return encodedHeader + encodedMessage;
      }
 
@@ -150,5 +151,15 @@ public class SendTextRequest extends Request
      public void setMessageSequenceNumber(byte destinationSequenceNumber)
      {
           this.messageSequenceNumber = destinationSequenceNumber;
+     }
+
+     public boolean isForwarded()
+     {
+          return forwarded;
+     }
+
+     public void setForwarded(boolean forwarded)
+     {
+          this.forwarded = forwarded;
      }
 }

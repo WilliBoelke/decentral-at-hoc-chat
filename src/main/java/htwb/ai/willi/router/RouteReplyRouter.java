@@ -42,10 +42,6 @@ public class RouteReplyRouter extends Router
                transmission.setHops(RoutingTable.getInstance().getRouteTo(preparedToForward.getDestinationAddress()).getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);
           }
-          else
-          {
-               // TODO send error
-          }
      }
 
      @Override

@@ -187,6 +187,10 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                //from me
                if (this.transmission.getRequest().getOriginAddress() == Address.getInstance().getAddress())
                {
+                    if (incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
+                    {
+                         this.receivedHopHack = true;
+                    }
                     if (incomingReply instanceof SendTextRequestAck && ((SendTextRequestAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
                     {
                          this.finished = true;
@@ -198,6 +202,7 @@ public class TransmissionCoordinator implements PropertyChangeListener, Runnable
                     if (incomingReply instanceof HopAck && ((HopAck) incomingReply).getMessageSequenceNumber() == ((SendTextRequest) transmission.getRequest()).getMessageSequenceNumber())
                     {
                         this.receivedHopHack = true;
+                        this.finished = true;
                     }
                }
           }

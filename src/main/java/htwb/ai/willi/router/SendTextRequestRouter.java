@@ -44,6 +44,7 @@ public class SendTextRequestRouter extends Router
                request.setNextHopInRoute(route.getNextInRoute());
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
                ((SendTextRequest) request).setOriginAddress(Address.getInstance().getAddress());
+               ((SendTextRequest) request).setForwarded(false);
                ((SendTextRequest) request).setMessageSequenceNumber(SequenceNumberManager.getInstance().getCurrentSequenceNumberAndIncrement());
                Transmission transmission = new Transmission(request);
                transmission.setHops(route.getHops());
@@ -66,6 +67,7 @@ public class SendTextRequestRouter extends Router
           {
                RoutingTable.Route route = RoutingTable.getInstance().getRouteTo(request.getDestinationAddress());
                request.setNextHopInRoute(route.getNextInRoute());
+               ((SendTextRequest) request).setForwarded(true);
                Transmission transmission = new Transmission(request);
                transmission.setHops(route.getHops());
                Dispatcher.getInstance().dispatchWithAck(transmission);

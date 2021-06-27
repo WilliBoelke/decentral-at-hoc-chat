@@ -1,11 +1,8 @@
 package htwb.ai.willi.routing;
 
-import htwb.ai.willi.io.InputFilter;
-import htwb.ai.willi.message.RouteRequest;
+
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
 
 public class BlackList
 {
@@ -46,7 +43,7 @@ public class BlackList
           {
                response = response + e.toString();
           }
-          response = response+  "\\n|-------------------------------------------------------------------------|\n\n";
+          response = response+  "\n|-------------------------------------------------------------------------|\n\n";
           return response;
 
      }
