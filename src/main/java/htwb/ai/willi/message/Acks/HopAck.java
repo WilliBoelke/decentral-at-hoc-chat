@@ -3,6 +3,7 @@ package htwb.ai.willi.message.Acks;
 import htwb.ai.willi.message.Request;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -25,9 +26,11 @@ public class HopAck extends Request
 
      public static HopAck getInstanceFromEncodedString(String encoded, String address)
      {
+          byte[] bytes = encoded.getBytes(StandardCharsets.US_ASCII);
           byte addressAsByte = Byte.parseByte(address.substring(2));
           HopAck reply = new HopAck();
           reply.setLastHopInRoute(addressAsByte);
+          reply.setMessageSequenceNumber(bytes[1]);
           return reply;
      }
 
@@ -37,13 +40,14 @@ public class HopAck extends Request
           ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
           //Message type
           byteArrayOutputStream.write(this.getType());
+          byteArrayOutputStream.write(this.getMessageSequenceNumber());
           return byteArrayOutputStream.toString();
      }
 
      @Override
      public String getAsReadable()
      {
-          return "\n\n|----HOP ACK-------------------------------------------------------------|\n" + "| Ty: " + this.getType() + "  | Lh: " + this.getLastHopInRoute() + "  | Nh: " + this.getNextHopInRoute() + "\n" + "|-------------------------------------------------------------------------|\n\n";
+          return "\n\n|----HOP ACK-------------------------------------------------------------|\n" + "| Ty: " + this.getType() + "  | Lh: " + this.getLastHopInRoute() + "  | Nh: " + this.getNextHopInRoute() + "\n" + "  | Ms: " + this.messageSequenceNumber + "\n" + "|-------------------------------------------------------------------------|\n\n";
 
      }
 
