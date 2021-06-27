@@ -68,7 +68,7 @@ public class LoraModule implements PropertyChangeListener
      public void configureModule()
      {
           SerialOutput.getInstance().sendConfiguration("AT+RST");
-          SerialOutput.getInstance().sendConfiguration(buildConfigString());
+          SerialOutput.getInstance().sendConfiguration("AT+CFG=433000000,5,9,7,4,1,0,0,0,0,3000,8,10");
           SerialOutput.getInstance().sendConfiguration("AT+RX");
           SerialOutput.getInstance().sendConfiguration("AT+ADDR=" + Address.getInstance().getAddress());
           SerialOutput.getInstance().sendConfiguration("AT+SAVE");
