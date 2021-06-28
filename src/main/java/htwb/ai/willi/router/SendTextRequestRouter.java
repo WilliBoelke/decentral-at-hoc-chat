@@ -92,7 +92,7 @@ public class SendTextRequestRouter extends Router
           sendTextRequestAck.setMessageSequenceNumber(((SendTextRequest) request).getMessageSequenceNumber());
           sendTextRequestAck.setDestinationAddress(request.getOriginAddress());
           sendTextRequestAck.setOriginAddress(Address.getInstance().getAddress());
-          sendTextRequestAck.setNextHopInRoute(request.getOriginAddress());
+          sendTextRequestAck.setNextHopInRoute(request.getLastHopInRoute());
           Dispatcher.getInstance().dispatch(sendTextRequestAck);
 
           // Output message
