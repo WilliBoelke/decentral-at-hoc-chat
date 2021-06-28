@@ -126,7 +126,7 @@ public class RoutingTable
           {
                LOG.info("Add Route from RouteReply " + request.getDestinationAddress());
                Route route = new RoutingTable.Route(request.getOriginAddress(), request.getLastHopInRoute(),
-                       (byte) (((RouteReply) request).getHopCount() + 1),
+                       (byte) (((RouteReply) request).getHopCount()),
                        ((RouteReply) request).getOriginSequenceNumber(), request.getLastHopInRoute());
                addRoute(route, request.getLastHopInRoute());
           }
