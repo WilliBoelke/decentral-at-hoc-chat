@@ -1,4 +1,24 @@
-﻿## 1 Einleitung
+﻿- [1. Einleitung](#1-einleitung)
+- [2. Konzept und Entwurf](#2-konzept-und-entwurf)
+- [3. Kommunikation mit dem Modul](#3-kommunikation-mit-dem-modul)
+  - [3.1. Allgemein](#31-allgemein)
+  - [3.2. Modul Input und Events](#32-modul-input-und-events)
+- [4. Request Handling und Routing](#4-request-handling-und-routing)
+  - [4.1. Requests](#41-requests)
+  - [4.2. Empfang und Verarbeitung von Requests](#42-empfang-und-verarbeitung-von-requests)
+- [5. Routing Table](#5-routing-table)
+  - [5.1. Aufbau](#51-aufbau)
+  - [5.2. Add und Update](#52-add-und-update)
+- [6. Senden von Nachrichten](#6-senden-von-nachrichten)
+- [7. Filter und Blacklisting](#7-filter-und-blacklisting)
+- [8. Beispiel](#8-beispiel)
+- [9. Probleme und Fazit](#9-probleme-und-fazit)
+  - [9.1. Schwierigkeiten](#91-schwierigkeiten)
+  - [9.2. Noch bestehende Probleme in der Implementierung](#92-noch-bestehende-probleme-in-der-implementierung)
+- [10. Anhang](#10-anhang)
+  - [10.1. **Protokolldefinition](#101-protokolldefinition)
+
+## 1. Einleitung
 Im Rahmen des Kurses Technik mobiler Systeme wurde ein At-Hoc, Multi-Hop Routing Protokoll definiert und implementiert. Das Selbs definierte At-Hoc Protokoll (SAP) basiert auf AODV.
 
 Dazu gibt es einen Aufbau von Raspberry Pis die mit LoRa Modulen verbunden sind. 
@@ -6,7 +26,7 @@ Dazu gibt es einen Aufbau von Raspberry Pis die mit LoRa Modulen verbunden sind.
 Auf die Lora Module kann durch die Serielle Schnittstelle zugegriffen werden. Die Module können über den AT Befehlssatz gesteuert werden. Das von uns definierte Protokoll kann im Anhang eingesehen werden und wird hier nicht weiter ausgeführt.  
 
 Ziel ist es dabei ein Chat Anwendung auf Basis dieses Protokolls zu entwickeln. 
-## 2 Konzept und Entwurf
+## 2. Konzept und Entwurf
 In diesem Abschnitt wird das Grundlegende Konzept für meine Implementierung erklärt. 
 
 Das Programm verfügt über unterschiedliche Arten von In- und Outputs. 
@@ -33,12 +53,12 @@ Wird eine Nachricht gesendet, so soll dies ebenfalls in Threads geschehen, ein T
 
 Zur Kommunikation der verschiedenen Threads untereinander soll ein Event basiertes System zu Einsatz kommen, dass auf den Java PropertyChangeEvents basiert. So können sich Threads als Listener auf anderen Threads registrieren und werden beispielsweise über ankommende Nachrichten benachrichtigt.  
 
-## Kommunikation mit dem Modul
-### Allgemein 
+## 3. Kommunikation mit dem Modul
+### 3.1. Allgemein 
 Die Kommunikation mit dem LoRa Modul Erfolg über die serielle Schnittstelle.
 
 Dazu gibt es drei Klassen SerialInput und SerialOutput sowie die Klasse LoraModule. Die Klasse LoraModule ist für das Aufsetzen, Konfigurieren und neu Startens des Moduls verantwortlich, außerdem initialisiert sie den In- und Output.  Der Input läuft, wie geplant, asynchron und liest von der Seriellen Schnittstelle. Einkommende Nachrichten werden bis zum Carriage-return / Linefeed gelesen. Eine vollständig gelesene Nachricht wird dann so weit verarbeitet, als dass zwischen eintreffenden Request/Replys und Systemnachrichten unterschieden werden kann. 
-### Modul Input und Events
+### 3.2. Modul Input und Events
 Meine anfängliche Planung (siehe Kapitel 1) sah nicht vor auf Systemnachrichten (AT.OK,AT.SENDING etc.) zu reagieren.  Dies funktionierte problemlos, beim Loggen stellte ich allerdings fest, dass einige male einen CPU\_BUSY Error auftrat.
 
 Dies führte allerdings nicht dazu das die Anwendung nicht mehr funktionierte. Dennoch entschied ich mich deshalb dazu die Systemnachrichten zu verarbeiten. 
@@ -48,8 +68,8 @@ Dafür definiert der Serielle Input nun eine Reihe von Events dazu gehört das E
 
 Nun kann für jedes Schreiben in die Serielle Schnittstelle auf das Passende Event gewartet werden. Der Vollständigkeit halber muss erwähnt werden das dies nicht das CPU\_BUSY Problem behoben hat.
 
- ## Request Handling und Routing
- ### Requests
+ ## 4. Request Handling und Routing
+ ### 4.1. Requests
 Da ich bei der Implementierung möglichst Objektorientiert bleiben wollte, habe ich mich dazu entschlossen für jede der Requests eine eigene Klasse zu implementieren. Diese beinhaltet auch den Code zum de- und encoden der jeweiligen Requests in Bytes, sowie vom SAP verlangt. 
 
 Alle Requests, auch die Acks und Replies erben dabei von der Klasse Request. 
@@ -61,7 +81,7 @@ welche ich aus dem Header der Nachricht
 vom LoRa Modul auslese und später für Acknowledgments und Replys brauche. 
 
 Auf dieselbe Art werden die Requests um die Next-Hop-Adresse erweitert. Dies wird benutzt, sobald eine Route (für die Request destination) in der Routing-Tabelle gefunden wurde.
-### Empfang und Verarbeitung von Requests
+### 4.2. Empfang und Verarbeitung von Requests
 ![](Aspose.Words.503c3347-b03d-49ce-ac8b-9f519e0b8a5e.002.png)Wie im vorherigen Kapitel beschrieben, werden alle eintreffenden Requests und Replies über ein Event an den Controller geleitet. Dieser Benutzt den RequestDecoder, welcher zunächst das erste Byte ausliest und dann die passende Request-Klasse initialisiert und an den Controller zurückgibt. 
 
 Der Controller initialisiert dann wiederum eine Router Instanz, für jede Request gibt es ein eigener Router klasse, die diese, basierend auf origin- und destination Adresse, verarbeite. 
@@ -69,8 +89,8 @@ Der Controller initialisiert dann wiederum eine Router Instanz, für jede Reques
 Abbildung SEQ Abbildung \\* ARABIC1 : Forwarding einer SendTextRequest
 
 ![](Aspose.Words.503c3347-b03d-49ce-ac8b-9f519e0b8a5e.003.pngWie eingangs beschrieben lässt sich jede eingehende Request in drei Fälle einordnen, diese sind als Abstrakte Methoden in der Router Superklasse definiert, und werden von den jeweiligen Implementierungen überschrieben. Dieser Vorgang ist beispielhaft in Abbildung 1 zu sehen. Dort wird eine eintreffende SendTextRequest verarbeitet. Es werden zunächst di drei Fälle geprüft, es wird erkannt, dass die Request weitergeleitet werden muss. In der toForward Methode wird ein HopAck and den precursor gesendet, dann wird die passende Route aus der Routing Tabelle geholt, die SendTextRequest wird um den Next-Hop ergänzt und an den Dispatcher weitergegeben. 
-## Routing Table
-### Aufbau
+## 5. Routing Table
+### 5.1. Aufbau
 Die hier implementierte Routing Table enthält zu jeder (bekannten) destination Node genau eine Route. Diese Route soll die zum Zeitpunkt der Erstellung beste Route zum Ziel sein.
 
 In unserer Protokoll Definition sind für die Routing Table folgende eintrage für jede Route vorgesehen: 
@@ -79,13 +99,13 @@ In unserer Protokoll Definition sind für die Routing Table folgende eintrage f�
 | - | - | - | - | - | - | - | - |
 
 Abgelaufene Routen werden in meiner Tabelle vor jeder suchen nach einer Route gelöscht, weshalb ich dies (Expired Flag) nicht speichern extra muss. Zusätzlich Speicher ich für jede destination auch die Broadcast IDs, so muss ich nicht eine weitere Liste mit allen Nodes führen.  Für die Lifetime Speichere ich einen Timestamp, von diesem wird dann, wenn benötigt die verbleibende Zeit berechnet. 
-### Add und Update
+### 5.2. Add und Update
 Routen werden wie beschrieben nur dann hinzugefügt, wenn sie besser sind als eine bereits bestehende, oder wenn es bisher keine Route zum Ziel gibt. 
 
 Für die Auswahl der besten Route sind nach AODV zwei Informationen wichtig, die Metrik, in unserem Fall also der Hop Count, und die Sequenz Nummer der destination Node.
 
 Wenn die Sequenznummer größer ist (alt – neu > 0) so wird die Route in jedem Fall gepuderte. Andernfalls entscheidet der Hop Count.[^2] 
-## Senden von Nachrichten
+## 6. Senden von Nachrichten
 Nachdem in einer der Router Klassen eine Requests oder Reply initialisiert wurde, wird diese an die den Dispatcher gegeben, dieser verfügt über drei Methoden zum Senden von Nachrichten.
 
 Eine zum Broadcasten (forwarded RouteRequests), eine zum einzelnen Unicasten (Acks) und eine zum Senden mit Retries. Zum Senden von Retries wird ein Thread gestartet, dieser führt das Senden 3 mal durch und wartet den in der Request definierten (siehe 5.3) Zeitraum zwischen den Tries. 
@@ -93,7 +113,7 @@ Eine zum Broadcasten (forwarded RouteRequests), eine zum einzelnen Unicasten (Ac
 Jeder dieser Threads wir über jede ankommende Request (ACKs und RREPs) durch ein Event benachrichtigt. 
 
 Er vergleicht dann zunächst ob die Typen der Nachrichten zusammenpassen (z.B. SendTextRequest -> HopAck oder SendTextAck ) und dann die entsprechenden Adressen und oder Sequenznummern. 
-## Filter und Blacklisting
+## 7. Filter und Blacklisting
 Ich habe das SAP um einen Filter für wiederkehrende Nachrichten erweitert. Dies kommt vor allem aus der Test-Phase, in der viele Module genutzt wurden und immer wieder dieselben Nachrichten gesendet wurden. Dies machte das Debuggen / Finden von Fehlern sehr schwer. 
 
 Der Filter sitzt direkt auf dem Seriellen Input, um so eine weitere Verarbeitung direkt zu vermeiden. Gefiltert werden ausschließlich Nachrichten von anderen Nodes, da sich die Systemnachrichten zwangsläufig wiederholen.
@@ -103,7 +123,7 @@ Für das Filtern wird ein SHA-256 Hash auf der eingetroffenen Nachricht berechne
 Eine wiederkehrende Nachricht wird für 50 Sekunden blockiert, dies erweis sich als eine akzeptable Zeitspanne.
 
 Das Blacklisting nach AODV[^3] implementiert und hält nicht antwortende Nodes für 3 Minuten in einer Liste vor. Requests dieser Node werden für den genannten Zeitraum ignoriert.
-## Beispiel 
+## 8. Beispiel 
 Im Folgenden wird beispielhaft und anhand eines (vereinfachten) Sequenzdiagramms die Funktionsweise der Implementierung dargestellt. Dieses lässt sich, vom Prinzip her, auch auf alle anderen Requests / Replies anwenden.  Das Sequenzdiagram zeigt den Ablauf für den Erhalt (als destination Node) einer Route Request, über die Route Reply bis zum Erhalt des Route Reply ACKs. 
 
 ![](Aspose.Words.503c3347-b03d-49ce-ac8b-9f519e0b8a5e.004.png)
@@ -131,15 +151,15 @@ Der Dispatcher kann Nachrichten direkt senden (Acks), sie Broadcasten (Route Req
 
 
 
-## Probleme und Fazit 
+## 9. Probleme und Fazit 
 Dieses Kapitel beschäftigt sich mit Problemen bei der Implementierung und mit noch bestehenden Problemen in dem Programm. 
-### Schwierigkeiten 
+### 9.1. Schwierigkeiten 
 Bei der Definition unseres Protokolls haben wir uns darauf geeinigt, aus Performance gründen, Bytes für die Übertragungen zu benutzen. Dies verkleinert unsere Pakete erheblich und macht so unser Protokoll performanter. Lieder brachte dies auch einige Probleme bei der Implementierung und vor allem für das Debuggen mit sich. An vielen Stellen konnte nicht direkt erkannt werden, ob es sich um einen Übertragungsfehler oder eine Falsche Kodierung handelte. Ein weiteres Problem ergab sich daraus, dass wir die Bytes Ascii-encoded senden. Dies Führte dazu, dass die von vielen verwendete Methode zum Lesen einer Zeile (aus der seriellen Schnittstelle), dadurch gestört wurde, dass einige Bytes als break oder new-line gelesen wurden, auch hier lag die Vermutung zuerst auf Übertragungsproblemen. 
 
 Im Laufe der Implementierung stelle sich auch heraus, dass wir unsere Definition an manchen Stellen ungenau gehalten haben, dies führte zu schwerwiegenden Missverständnissen. 
 
 Dabei ist vor allem anzuführen, dass der RERR von einigen so interpretiert wurde, dass abwechselnd Sequenznummer und Adresse - und von Anderen so, dass erst alle Adressen und dann alle Sequenznummern geschrieben werden. Wir haben dieses Missverständnis glücklicherweise entdeckt und uns auf eine einheitliche Methode geeinigt. Ich denke jedoch, dass dies gut die Schwierigkeiten der Protokolldefinition zeigt. 
-### Noch bestehende Probleme in der Implementierung
+### 9.2. Noch bestehende Probleme in der Implementierung
 Zum jetzigen Zeitpunkt bestehen noch einige Probleme in meiner Implementierung des Protokolls. Das bereits beschriebene CPU\_BUSY Problem konnte ich bisher nicht beheben. Ich bin hier dabei die Wartezeiten auf das Event anzupassen, sodass es nicht zu großen Abweichungen von den Im Protokoll definierten Zeiten kommt.
 
 Auch habe ich bei einem längeren Praktischen Test festgestellt, dass es bei meiner Implementierung in einem Multihop-Szenario dazu kommt das sich eine Request exponentiell vervielfältigt. 
@@ -151,8 +171,8 @@ Dasselbe tut der intermediate Node, für 3 versuche von der Origin Node führt d
 Aus Zeitgründen werde ich dieses Problem nicht vollständig beheben können. Ich werde mein Programm aber dahingehend anpassen das intermediate Nodes die Nachricht nur einmal weiterleiten. 
 
 
-## Anhang
-### **Protokolldefinition
+## 10. Anhang
+### 10.1. **Protokolldefinition
 
 **Funktionale Anforderungen:**6
 
